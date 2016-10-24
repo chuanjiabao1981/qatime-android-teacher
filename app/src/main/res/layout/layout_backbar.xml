@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/top_style">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_top_tab" />
+
+    <ImageView
+        android:onClick="backClick"
+        android:src="@mipmap/back_arrow"
+        style="@style/backbar_icon_style" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:maxEms="6"
+        android:singleLine="true"
+        style="@style/backbar_text_style" />
+
+    <ImageView
+        android:id="@+id/right"
+        style="@style/backbar_icon_style"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>
