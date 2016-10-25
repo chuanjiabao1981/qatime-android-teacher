@@ -7,9 +7,12 @@ import com.android.volley.toolbox.Volley;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
+import libraryextra.bean.Profile;
+import libraryextra.utils.SPUtils;
+
 
 public class BaseApplication extends Application {
-    //    private static Profile profile;
+        private static Profile profile;
 //    public static UserInfoProvider userInfoProvider;
     private static BaseApplication context;
     private static RequestQueue Queue;
@@ -30,7 +33,7 @@ public class BaseApplication extends Application {
                 .setMethodCount(3)            // default 2
                 .hideThreadInfo()             // default it is shown
                 .setLogLevel(true ? LogLevel.FULL : LogLevel.NONE);  // default : LogLevel.FULL
-//        profile = SPUtils.getObject(this, "profile", Profile.class);
+        profile = SPUtils.getObject(this, "profile", Profile.class);
 //        initUmengPush();
 //        initYunxin();
     }
@@ -269,18 +272,18 @@ public class BaseApplication extends Application {
 //        }
 //    }
 
-//    public static Profile getProfile() {
-//        return profile == null ? new Profile() : profile;
-//    }
-//
-//    public static int getUserId() {
-//        return profile != null && profile.getData() != null && profile.getData().getUser() != null ? profile.getData().getUser().getId() : 0;
-//    }
-//
-//    public static void setProfile(Profile profile) {
-//        BaseApplication.profile = profile;
-//        SPUtils.putObject(context, "profile", profile);
-//    }
+    public static Profile getProfile() {
+        return profile == null ? new Profile() : profile;
+    }
+
+    public static int getUserId() {
+        return profile != null && profile.getData() != null && profile.getData().getUser() != null ? profile.getData().getUser().getId() : 0;
+    }
+
+    public static void setProfile(Profile profile) {
+        BaseApplication.profile = profile;
+        SPUtils.putObject(context, "profile", profile);
+    }
 //
     public static void clearToken() {
 //        if (profile != null && profile.getData() != null) {
@@ -338,24 +341,24 @@ public class BaseApplication extends Application {
     /**
      * 登录云信的账号
      */
-//    public static String getAccount() {
-//        if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
-//            return getProfile().getData().getUser().getChat_account().getAccid();
-//        } else {
-//            return "";
-//        }
-//    }
-//
-//    /**
-//     * 登录云信的token
-//     */
-//    public static String getAccountToken() {
-//        if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
-//            return getProfile().getData().getUser().getChat_account().getToken();
-//        } else {
-//            return "";
-//        }
-//    }
+    public static String getAccount() {
+        if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
+            return getProfile().getData().getUser().getChat_account().getAccid();
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * 登录云信的token
+     */
+    public static String getAccountToken() {
+        if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
+            return getProfile().getData().getUser().getChat_account().getToken();
+        } else {
+            return "";
+        }
+    }
 //
 //    public static UserInfoProvider getUserInfoProvide() {
 //        return userInfoProvider;
