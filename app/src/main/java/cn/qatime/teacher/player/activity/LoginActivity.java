@@ -12,6 +12,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
@@ -23,6 +27,9 @@ import java.util.Map;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
+import cn.qatime.teacher.player.config.UserPreferences;
+import cn.qatime.teacher.player.im.cache.TeamDataCache;
+import cn.qatime.teacher.player.im.cache.UserInfoCache;
 import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.bean.Profile;
@@ -280,60 +287,60 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String account = BaseApplication.getAccount();
         String token = BaseApplication.getAccountToken();
 
-//        if (!StringUtils.isNullOrBlanK(account) && !StringUtils.isNullOrBlanK(token)) {
-//            NIMClient.getService(AuthService.class).login(new LoginInfo(account, token)).setCallback(new RequestCallback<LoginInfo>() {
-//                @Override
-//                public void onSuccess(LoginInfo o) {
+        if (!StringUtils.isNullOrBlanK(account) && !StringUtils.isNullOrBlanK(token)) {
+            NIMClient.getService(AuthService.class).login(new LoginInfo(account, token)).setCallback(new RequestCallback<LoginInfo>() {
+                @Override
+                public void onSuccess(LoginInfo o) {
+                    DialogUtils.dismissDialog(progress);
+                    Logger.e("云信登录成功" + o.getAccount());
+                    // 初始化消息提醒
+                    NIMClient.toggleNotification(UserPreferences.getNotificationToggle());
+
+                    NIMClient.updateStatusBarNotificationConfig(UserPreferences.getStatusConfig());
+                    //缓存
+                    UserInfoCache.getInstance().clear();
+                    TeamDataCache.getInstance().clear();
+                    //                FriendDataCache.getInstance().clear();
+
+                    UserInfoCache.getInstance().buildCache();
+                    TeamDataCache.getInstance().buildCache();
+                    //好友维护,目前不需要
+                    //                FriendDataCache.getInstance().buildCache();
+
+                    UserInfoCache.getInstance().registerObservers(true);
+                    TeamDataCache.getInstance().registerObservers(true);
+//                                                FriendDataCache.getInstance().registerObservers(true);
+//
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    startActivity(intent);
 //                    DialogUtils.dismissDialog(progress);
-//                    Logger.e("云信登录成功" + o.getAccount());
-//                    // 初始化消息提醒
-//                    NIMClient.toggleNotification(UserPreferences.getNotificationToggle());
-//
-//                    NIMClient.updateStatusBarNotificationConfig(UserPreferences.getStatusConfig());
-//                    //缓存
-//                    UserInfoCache.getInstance().clear();
-//                    TeamDataCache.getInstance().clear();
-//                    //                FriendDataCache.getInstance().clear();
-//
-//                    UserInfoCache.getInstance().buildCache();
-//                    TeamDataCache.getInstance().buildCache();
-//                    //好友维护,目前不需要
-//                    //                FriendDataCache.getInstance().buildCache();
-//
-//                    UserInfoCache.getInstance().registerObservers(true);
-//                    TeamDataCache.getInstance().registerObservers(true);
-////                                                FriendDataCache.getInstance().registerObservers(true);
-////
-////                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-////                    startActivity(intent);
-////                    DialogUtils.dismissDialog(progress);
-////                    finish();
-//                }
-//
-//                @Override
-//                public void onFailed(int code) {
-//                    DialogUtils.dismissDialog(progress);
-////                    BaseApplication.clearToken();
-//                    profile.getData().setRemember_token("");
-//                    SPUtils.putObject(LoginActivity.this, "profile", profile);
-//                    Logger.e(code + "code");
-////                    if (code == 302 || code == 404) {
-////                        Toast.makeText(LoginActivity.this, R.string.account_or_password_error, Toast.LENGTH_SHORT).show();
-////                    } else {
-////                        Toast.makeText(LoginActivity.this, getResourceString(R.string.login_failed) + code, Toast.LENGTH_SHORT).show();
-////                    }
-//                }
-//
-//                @Override
-//                public void onException(Throwable throwable) {
-//                    DialogUtils.dismissDialog(progress);
-//                    Logger.e(throwable.getMessage());
-////                    BaseApplication.clearToken();
-//                    profile.getData().setRemember_token("");
-//                    SPUtils.putObject(LoginActivity.this, "profile", profile);
-//                }
-//            });
-//        }
+//                    finish();
+                }
+
+                @Override
+                public void onFailed(int code) {
+                    DialogUtils.dismissDialog(progress);
+//                    BaseApplication.clearToken();
+                    profile.getData().setRemember_token("");
+                    SPUtils.putObject(LoginActivity.this, "profile", profile);
+                    Logger.e(code + "code");
+//                    if (code == 302 || code == 404) {
+//                        Toast.makeText(LoginActivity.this, R.string.account_or_password_error, Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(LoginActivity.this, getResourceString(R.string.login_failed) + code, Toast.LENGTH_SHORT).show();
+//                    }
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+                    DialogUtils.dismissDialog(progress);
+                    Logger.e(throwable.getMessage());
+//                    BaseApplication.clearToken();
+                    profile.getData().setRemember_token("");
+                    SPUtils.putObject(LoginActivity.this, "profile", profile);
+                }
+            });
+        }
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         DialogUtils.dismissDialog(progress);

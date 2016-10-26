@@ -14,6 +14,8 @@ public class UrlUtils {
     public static boolean isDebug = true;
 
     public static String baseUrl = isDebug ? "http://testing.qatime.cn/" : "http://qatime.cn/";
+    //云信key
+    public static String appKey = isDebug ? "2a24ca70e580cab2bef58b1e62478f9f" : "4fe3a3fba0a40a00daf011049a29d995";
     //登录
     public static String urlLogin = baseUrl + "api/v1/sessions";
     //获取验证码
@@ -24,8 +26,10 @@ public class UrlUtils {
     public static String urlPersonalInformation = baseUrl + "api/v1/teachers/";
     //找回密码
     public static String urlfindPassword = baseUrl + "api/v1/password";
-
-
+    //我的辅导班列表
+    public static String urlMyRemedialClass = baseUrl + "api/v1/live_studio/teachers/";
+    //用户信息
+    public static String urlUser = baseUrl + "api/v1/users/";
 
 
     public static String getUrl(String function, Map<String, String> params) {
@@ -41,6 +45,7 @@ public class UrlUtils {
 //        LogUtils.e("请求地址------    " + url);
         return url;
     }
+
     /***
      * 对内使用
      *
