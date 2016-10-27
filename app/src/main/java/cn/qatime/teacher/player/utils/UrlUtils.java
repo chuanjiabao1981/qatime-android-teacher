@@ -30,7 +30,8 @@ public class UrlUtils {
     public static String urlMyRemedialClass = baseUrl + "api/v1/live_studio/teachers/";
     //用户信息
     public static String urlUser = baseUrl + "api/v1/users/";
-
+    //检查更新
+    public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
 
     public static String getUrl(String function, Map<String, String> params) {
         String url;
