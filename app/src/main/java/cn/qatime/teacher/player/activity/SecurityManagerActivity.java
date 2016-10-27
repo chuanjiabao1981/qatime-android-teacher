@@ -30,16 +30,12 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
     private TextView phoneNumberM;
     private LinearLayout bindEmail;
     private TextView email;
-    private LinearLayout parentPhoneNumber;
-    private TextView phoneNumberP;
     private LinearLayout changePassword;
 
     private void assignViews() {
         bindPhoneNumber = (LinearLayout) findViewById(R.id.bind_phone_number);
         bindEmail = (LinearLayout) findViewById(R.id.bind_email);
         email = (TextView) findViewById(R.id.email);
-        parentPhoneNumber = (LinearLayout) findViewById(R.id.parent_phone_number);
-        phoneNumberP = (TextView) findViewById(R.id.phone_number_p);
         phoneNumberM = (TextView) findViewById(R.id.phone_number_m);
         changePassword = (LinearLayout) findViewById(R.id.change_password);
 
@@ -87,14 +83,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
     }
 
     private void setValue(PersonalInformationBean bean) {
-        String parentPhone = bean.getData().getParent_phone();
-        if (parentPhone != null) {
-            phoneNumberP.setText("" + parentPhone);
-            phoneNumberP.setTextColor(0xff333333);
-        } else {
-            phoneNumberP.setText(getResourceString(R.string.not_bind));
-            phoneNumberP.setTextColor(Color.RED);
-        }
+
         String email = bean.getData().getEmail();
         if (email != null) {
             this.email.setText("" + email);
@@ -121,7 +110,6 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
 
         bindPhoneNumber.setOnClickListener(this);
         bindEmail.setOnClickListener(this);
-        parentPhoneNumber.setOnClickListener(this);
         changePassword.setOnClickListener(this);
     }
 
@@ -142,11 +130,6 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
                 intent = new Intent(this, VerifyPhoneActivity.class);
                 intent.putExtra("next", "email");
                 startActivity(intent);
-                break;
-            case R.id.parent_phone_number://家长手机
-//                intent = new Intent(this, ParentPhoneActivity.class);
-//                intent.putExtra("phoneP", phoneNumberP.getText());
-//                startActivity(intent);
                 break;
             case R.id.change_password://修改密码
                 intent = new Intent(this, ChangePasswordActivity.class);

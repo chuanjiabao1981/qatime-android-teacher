@@ -309,7 +309,7 @@
     <string name="hint_6_16_password">6-16位字母或数字</string>
     <string name="hint_contact">请留下联系方式（手机/QQ/微信），方便我们联系您</string>
     <string name="hint_input_again">再输入一次</string>
-    <string name="hint_input_current_password">请输入当前登录密码</string>
+    <string name="hint_input_current_password">输入当前登录密码</string>
     <string name="hint_input_email">请输入完整邮箱地址</string>
     <string name="hint_input_new_phone">输入新手机号码（仅支持大陆地区11位）</string>
     <string name="hint_opinion">请在此输入您的宝贵意见和建议，它能够帮助我们有效的改进产品，使其更满足您的需要。</string>
@@ -383,4 +383,6 @@
     <string name="performance_optimization">性能优化</string>
     <string name="is_newest_version">已经是最新版本</string>
     <string name="customer_service_phone_number">0353-2135828</string>
+    <string name="hint_input_new_password">输入新密码</string>
+    <string name="hint_confirm_new_password">确认新密码</string>
 </resources>

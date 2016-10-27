@@ -39,7 +39,7 @@
 
             <EditText
                 android:id="@+id/code"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_weight"
                 android:inputType="number" />
 
             <TextView

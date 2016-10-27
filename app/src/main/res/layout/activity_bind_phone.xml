@@ -15,7 +15,7 @@
 
             <EditText
                 android:id="@+id/target_phone"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:inputType="phone"
                 android:maxLength="11" />
         </LinearLayout>
@@ -27,7 +27,7 @@
 
             <EditText
                 android:id="@+id/code"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_weight"
                 android:inputType="number" />
 
             <TextView
