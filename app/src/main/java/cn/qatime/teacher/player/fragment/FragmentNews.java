@@ -74,7 +74,6 @@ public class FragmentNews extends BaseFragment {
     private UserInfoObservable userInfoObservable;
     private TutorialClassBean courses;
     //    private boolean shouldPost = false;//是否需要向messageactivity发推流地址
-    private String sessionId;
 
     @Nullable
     @Override
