@@ -28,7 +28,6 @@
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:src="@mipmap/pay_success"
                 android:visibility="invisible" />
         </LinearLayout>
 
@@ -52,7 +51,6 @@
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:src="@mipmap/pay_success"
                 android:visibility="invisible" />
         </LinearLayout>
 
@@ -73,7 +71,6 @@
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:src="@mipmap/pay_success"
                 android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>

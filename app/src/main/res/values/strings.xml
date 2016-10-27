@@ -382,4 +382,5 @@
     <string name="check_for_update_failed_check_net">检查更新失败，请检查网络连接</string>
     <string name="performance_optimization">性能优化</string>
     <string name="is_newest_version">已经是最新版本</string>
+    <string name="customer_service_phone_number">0353-2135828</string>
 </resources>
