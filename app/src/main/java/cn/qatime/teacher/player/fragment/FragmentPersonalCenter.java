@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.PersonalMyWalletActivity;
+import cn.qatime.teacher.player.activity.ClassTableActivity;
 import cn.qatime.teacher.player.activity.SettingActivity;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.utils.Constant;
@@ -52,6 +53,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.class_table:
+                getActivity().startActivity(new Intent(getActivity(),ClassTableActivity.class));
                 break;
             case R.id.my_tutorship:
                 break;
