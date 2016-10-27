@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.activity.PersonalMyWalletActivity;
 import cn.qatime.teacher.player.activity.SettingActivity;
 import cn.qatime.teacher.player.base.BaseFragment;
+import cn.qatime.teacher.player.utils.Constant;
 
 /**
  * @author lungtify
@@ -22,6 +24,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private View myTutorship;
     private View setting;
     private View manage;
+    private View information;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,12 +38,14 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         myTutorship = view.findViewById(R.id.my_tutorship);
         setting = view.findViewById(R.id.setting);
         manage = view.findViewById(R.id.manage);
+        information = view.findViewById(R.id.information);
 
 
         classTable.setOnClickListener(this);
         myTutorship.setOnClickListener(this);
         setting.setOnClickListener(this);
         manage.setOnClickListener(this);
+        information.setOnClickListener(this);
     }
 
     @Override
@@ -55,6 +60,12 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 getActivity().startActivity(intent);
                 break;
             case R.id.manage:
+                intent = new Intent(getActivity(), PersonalMyWalletActivity.class);
+                startActivityForResult(intent,Constant.REQUEST);
+                break;
+            case R.id.information:
+//                intent = new Intent(getActivity(), PersonalInformationActivity.class);
+//                startActivityForResult(intent, Constant.REQUEST);
                 break;
         }
     }
