@@ -409,4 +409,9 @@
     <string name="withdraw_num">提现金额</string>
     <string name="withdraw_num_hint">请输入提现金额</string>
     <string name="recharge_confirm">交易确认</string>
+    <string name="nick_name">昵称</string>
+    <string name="teaching_years">教龄</string>
+    <string name="teach_type">类型</string>
+    <string name="subject">科目</string>
+    <string name="area">地区</string>
 </resources>
