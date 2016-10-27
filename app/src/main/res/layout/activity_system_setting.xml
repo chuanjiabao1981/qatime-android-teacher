@@ -147,7 +147,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:visibility="gone"
             android:background="#dfdddd" />
 
         <LinearLayout
@@ -155,7 +154,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -170,10 +168,10 @@
                 android:layout_weight="1"
                 android:background="#ffffff" />
 
-
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                style="@style/setting_icon_margin_right"
                 android:src="@mipmap/personal_enter" />
         </LinearLayout>
 

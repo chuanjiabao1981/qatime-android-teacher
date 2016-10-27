@@ -20,7 +20,7 @@
 
             <EditText
                 android:id="@+id/input_new_email"
-                style="@style/activity_edit_text_style_fill"
+                style="@style/activity_edit_text_style_weight"
                 android:layout_marginLeft="12dp"
                 android:hint="@string/hint_input_email"
                 android:inputType="textEmailAddress" />
@@ -43,7 +43,7 @@
 
             <EditText
                 android:id="@+id/confirm_new_email"
-                style="@style/activity_edit_text_style_fill"
+                style="@style/activity_edit_text_style_weight"
                 android:layout_marginLeft="12dp"
                 android:hint="@string/hint_input_again"
                 android:inputType="textEmailAddress" />

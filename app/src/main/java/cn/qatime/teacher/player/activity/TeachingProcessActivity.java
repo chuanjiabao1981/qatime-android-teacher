@@ -9,7 +9,7 @@ import cn.qatime.teacher.player.base.BaseActivity;
 /**
  * Created by lenovo on 2016/8/22.
  */
-public class LearningProcessActivity extends BaseActivity {
+public class TeachingProcessActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +20,7 @@ public class LearningProcessActivity extends BaseActivity {
 
     @Override
     public int getContentView() {
-        return R.layout.activity_learning_process;
+        return R.layout.activity_teaching_process;
     }
 
 
