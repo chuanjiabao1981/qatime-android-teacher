@@ -14,22 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.DecimalFormat;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
-import cn.qatime.teacher.player.base.BaseApplication;
-import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.utils.Constant;
-import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.SPUtils;
-import libraryextra.utils.VolleyListener;
 
 /**
  * @author Tianhaoranly
@@ -77,41 +67,41 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
     }
 
     private void initData() {
-        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(this) {
-
-            @Override
-            protected void onTokenOut() {
-                tokenOut();
-            }
-
-            @Override
-            protected void onSuccess(JSONObject response) {
-                try {
-                    String price = df.format(Double.valueOf(response.getJSONObject("data").getString("balance")));
-                    if (price.startsWith(".")) {
-                        price = "0" + price;
-                    }
-                    balance.setText(price);
-                    String price1 = df.format(Double.valueOf(response.getJSONObject("data").getString("total_expenditure")));
-                    if (price1.startsWith(".")) {
-                        price1 = "0" + price1;
-                    }
-                    consumption.setText(price1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            protected void onError(JSONObject response) {
-                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-            }
-        }));
+//        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(this) {
+//
+//            @Override
+//            protected void onTokenOut() {
+//                tokenOut();
+//            }
+//
+//            @Override
+//            protected void onSuccess(JSONObject response) {
+//                try {
+//                    String price = df.format(Double.valueOf(response.getJSONObject("data").getString("balance")));
+//                    if (price.startsWith(".")) {
+//                        price = "0" + price;
+//                    }
+//                    balance.setText(price);
+//                    String price1 = df.format(Double.valueOf(response.getJSONObject("data").getString("total_expenditure")));
+//                    if (price1.startsWith(".")) {
+//                        price1 = "0" + price1;
+//                    }
+//                    consumption.setText(price1);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(JSONObject response) {
+//                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//            }
+//        }));
 
     }
 
@@ -160,12 +150,12 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
 
             case R.id.withdraw_record:
                 intent = new Intent(this, RecordFundActivity.class);
-                intent.putExtra("page", 1);
+                intent.putExtra("page", 0);
                 startActivity(intent);
                 break;
             case R.id.consumption_record:
                 intent = new Intent(this, RecordFundActivity.class);
-                intent.putExtra("page", 2);
+                intent.putExtra("page", 1);
                 startActivity(intent);
                 break;
         }

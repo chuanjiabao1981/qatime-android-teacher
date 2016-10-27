@@ -11,25 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
-import cn.qatime.teacher.player.base.BaseApplication;
-import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.utils.Constant;
-import cn.qatime.teacher.player.utils.UrlUtils;
-import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
-import libraryextra.utils.VolleyErrorListener;
-import libraryextra.utils.VolleyListener;
 
 /**
  * @author Tianhaoranly
@@ -73,33 +58,33 @@ public class WithdrawConfirmActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_getcode:
-                Map<String, String> map = new HashMap<>();
-                map.put("send_to", BaseApplication.getProfile().getData().getUser().getLogin_mobile());
-                map.put("key", "withdraw_cash");
-
-                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
-                    @Override
-                    protected void onTokenOut() {
-                        tokenOut();
-                    }
-
-                    @Override
-                    protected void onSuccess(JSONObject response) {
-                        withdrawCashNow.setEnabled(true);
-                        Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_success), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    protected void onError(JSONObject response) {
-                        Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_failed), Toast.LENGTH_LONG).show();
-                    }
-                },new VolleyErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        super.onErrorResponse(volleyError);
-                        Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
-                    }
-                }));
+//                Map<String, String> map = new HashMap<>();
+//                map.put("send_to", BaseApplication.getProfile().getData().getUser().getLogin_mobile());
+//                map.put("key", "withdraw_cash");
+//
+//                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
+//                    @Override
+//                    protected void onTokenOut() {
+//                        tokenOut();
+//                    }
+//
+//                    @Override
+//                    protected void onSuccess(JSONObject response) {
+//                        withdrawCashNow.setEnabled(true);
+//                        Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_success), Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    protected void onError(JSONObject response) {
+//                        Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_failed), Toast.LENGTH_LONG).show();
+//                    }
+//                },new VolleyErrorListener(){
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        super.onErrorResponse(volleyError);
+//                        Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+//                    }
+//                }));
 
 
                 time.start();
@@ -122,60 +107,60 @@ public class WithdrawConfirmActivity extends BaseActivity implements View.OnClic
                     return;
                 }
 
-                map = new HashMap<>();
-                map.put("send_to", BaseApplication.getProfile().getData().getUser().getLogin_mobile());
-                map.put("amount", amount);
-                map.put("pay_type", payType);
-                map.put("account", account.getText().toString().trim());
-                map.put("name", name.getText().toString().trim());
-                map.put("verify", code.getText().toString().trim());
-                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map), null, new VolleyListener(this) {
-                    @Override
-                    protected void onTokenOut() {
-                        tokenOut();
-                    }
-
-                    @Override
-                    protected void onSuccess(JSONObject response) {
-                        if (!response.isNull("data")) {
-                            WithdrawCashBean bean = JsonUtils.objectFromJson(response.toString(), WithdrawCashBean.class);
-                            Intent intent = new Intent(WithdrawConfirmActivity.this,WithdrawResultActivity.class);
-                            intent.putExtra("amount",bean.getData().getAmount());
-                            intent.putExtra("pay_type",bean.getData().getPay_type());
-                            intent.putExtra("id",bean.getData().getTransaction_no());
-                            intent.putExtra("create_at",bean.getData().getCreated_at());
-                            startActivityForResult(intent, Constant.REQUEST);
-                        } else {
-                            onError(response);
-                        }
-                    }
-
-                    @Override
-                    protected void onError(JSONObject response) {
-                        try {
-                            JSONObject error = response.getJSONObject("error");
-                            int code = error.getInt("code");
-                            if (code == 2003) {
-                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.code_error),Toast.LENGTH_SHORT).show();
-                            } else if (code == 3002) {//  "msg": "验证失败: Value 账户资金不足，无法提取!"
-                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.amount_not_enough),Toast.LENGTH_SHORT).show();
-                            } else  if (code == 3003) {//  "msg": "APIErrors::WithdrawExisted"
-                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.withdraw_existed),Toast.LENGTH_SHORT).show();
-                            } else{
-                               dialog();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new VolleyErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        super.onErrorResponse(volleyError);
-                        dialog();
-                        Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
-                    }
-                }));
+//                map = new HashMap<>();
+//                map.put("send_to", BaseApplication.getProfile().getData().getUser().getLogin_mobile());
+//                map.put("amount", amount);
+//                map.put("pay_type", payType);
+//                map.put("account", account.getText().toString().trim());
+//                map.put("name", name.getText().toString().trim());
+//                map.put("verify", code.getText().toString().trim());
+//                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map), null, new VolleyListener(this) {
+//                    @Override
+//                    protected void onTokenOut() {
+//                        tokenOut();
+//                    }
+//
+//                    @Override
+//                    protected void onSuccess(JSONObject response) {
+//                        if (!response.isNull("data")) {
+//                            WithdrawCashBean bean = JsonUtils.objectFromJson(response.toString(), WithdrawCashBean.class);
+//                            Intent intent = new Intent(WithdrawConfirmActivity.this,WithdrawResultActivity.class);
+//                            intent.putExtra("amount",bean.getData().getAmount());
+//                            intent.putExtra("pay_type",bean.getData().getPay_type());
+//                            intent.putExtra("id",bean.getData().getTransaction_no());
+//                            intent.putExtra("create_at",bean.getData().getCreated_at());
+//                            startActivityForResult(intent, Constant.REQUEST);
+//                        } else {
+//                            onError(response);
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void onError(JSONObject response) {
+//                        try {
+//                            JSONObject error = response.getJSONObject("error");
+//                            int code = error.getInt("code");
+//                            if (code == 2003) {
+//                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.code_error),Toast.LENGTH_SHORT).show();
+//                            } else if (code == 3002) {//  "msg": "验证失败: Value 账户资金不足，无法提取!"
+//                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.amount_not_enough),Toast.LENGTH_SHORT).show();
+//                            } else  if (code == 3003) {//  "msg": "APIErrors::WithdrawExisted"
+//                                Toast.makeText(WithdrawConfirmActivity.this,getResources().getString(R.string.withdraw_existed),Toast.LENGTH_SHORT).show();
+//                            } else{
+//                               dialog();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }, new VolleyErrorListener(){
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        super.onErrorResponse(volleyError);
+//                        dialog();
+//                        Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+//                    }
+//                }));
         }
     }
 

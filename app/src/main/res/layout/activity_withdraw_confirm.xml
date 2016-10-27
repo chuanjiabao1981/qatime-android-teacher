@@ -12,7 +12,7 @@
         <include layout="@layout/layout_backbar" />
         <EditText
             android:id="@+id/account"
-            style="@style/activity_edit_text_style"
+            style="@style/activity_edit_text_style_weight"
             android:layout_width="match_parent"
             android:layout_margin="12dp"
             android:gravity="center_vertical"
@@ -21,7 +21,7 @@
 
         <EditText
             android:id="@+id/name"
-            style="@style/activity_edit_text_style"
+            style="@style/activity_edit_text_style_weight"
             android:layout_width="match_parent"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="12dp"
@@ -35,7 +35,7 @@
 
             <EditText
                 android:id="@+id/code"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_weight"
                 android:inputType="number" />
 
             <TextView

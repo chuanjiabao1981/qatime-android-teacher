@@ -3,13 +3,13 @@ package cn.qatime.teacher.player.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,7 +30,7 @@ import libraryextra.view.FragmentLayoutWithLine;
  * @Description:
  */
 public class RecordFundActivity extends BaseFragmentActivity {
-    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2,R.id.tab_text3};
+    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2};
     FragmentLayoutWithLine fragmentlayout;
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
     private int page;
@@ -47,7 +47,7 @@ public class RecordFundActivity extends BaseFragmentActivity {
                 if (alertDialog == null) {
                     View view = View.inflate(RecordFundActivity.this, R.layout.dialog_cancel_or_confirm, null);
                     TextView text = (TextView) view.findViewById(R.id.text);
-                    text.setText(getResourceString(R.string.call_customer_service_phone) + getResourceString(R.string.customer_service_phone_number)+"?");
+                    text.setText(getResourceString(R.string.call_customer_service_phone) + getResourceString(R.string.customer_service_phone_number) + "?");
                     Button cancel = (Button) view.findViewById(R.id.cancel);
                     Button confirm = (Button) view.findViewById(R.id.confirm);
                     cancel.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class RecordFundActivity extends BaseFragmentActivity {
                     confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+ getResourceString(R.string.customer_service_phone_number)));
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + getResourceString(R.string.customer_service_phone_number)));
                             if (ActivityCompat.checkSelfPermission(RecordFundActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                 Toast.makeText(RecordFundActivity.this, "权限被拒绝", Toast.LENGTH_SHORT).show();
                                 return;
@@ -77,13 +77,13 @@ public class RecordFundActivity extends BaseFragmentActivity {
                 }
             }
         });
-        page = getIntent().getIntExtra("page",0);
+        page = getIntent().getIntExtra("page", 0);
         initView();
     }
 
     @Override
     public int getContentView() {
-        return   R.layout.activity_record_fund;
+        return R.layout.activity_record_fund;
     }
 
 
@@ -97,7 +97,7 @@ public class RecordFundActivity extends BaseFragmentActivity {
         fragmentlayout.setScorllToNext(true);
         fragmentlayout.setScorll(true);
         fragmentlayout.setWhereTab(1);
-        fragmentlayout.setTabHeight(4,0xffff9999);
+        fragmentlayout.setTabHeight(4, 0xffff9999);
         fragmentlayout.setOnChangeFragmentListener(new FragmentLayoutWithLine.ChangeFragmentListener() {
             @Override
             public void change(int lastPosition, int position, View lastTabView, View currentTabView) {

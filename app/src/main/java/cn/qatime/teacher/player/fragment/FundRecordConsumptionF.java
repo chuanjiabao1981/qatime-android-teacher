@@ -1,33 +1,25 @@
 package cn.qatime.teacher.player.fragment;
 
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-import org.json.JSONObject;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import cn.qatime.teacher.player.R;
-import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
-import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.teacher.player.utils.UrlUtils;
-import libraryextra.utils.JsonUtils;
-import libraryextra.utils.VolleyListener;
+import libraryextra.adapter.CommonAdapter;
+import libraryextra.adapter.ViewHolder;
+import libraryextra.bean.ConsumptionRecordBean;
 
 /**
  * @author Tianhaoranly
@@ -55,50 +47,50 @@ public class FundRecordConsumptionF extends BaseFragment {
         }
     }
     private void initData(final int loadType) {
-        Map<String, String> map = new HashMap<>();
-        map.put("page", "1");
-        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/consumption_records", map), null, new VolleyListener(getActivity()) {
-
-            @Override
-            protected void onTokenOut() {
-                tokenOut();
-            }
-
-            @Override
-            protected void onSuccess(JSONObject response) {
-                ConsumptionRecordBean bean = JsonUtils.objectFromJson(response.toString(), ConsumptionRecordBean.class);
-                isLoad = true;
-                if (loadType == 1) {
-                    data.clear();
-                }
-                data.addAll(bean.getData());
-                adapter.notifyDataSetChanged();
-                String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-                listView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(label);
-                listView.onRefreshComplete();
-            }
-
-            @Override
-            protected void onError(JSONObject response) {
-                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                String label = DateUtils.formatDateTime(
-                        getActivity(),
-                        System.currentTimeMillis(),
-                        DateUtils.FORMAT_SHOW_TIME
-                                | DateUtils.FORMAT_SHOW_DATE
-                                | DateUtils.FORMAT_ABBREV_ALL);
-                // Update the LastUpdatedLabel
-                listView.getLoadingLayoutProxy(false, true)
-                        .setLastUpdatedLabel(label);
-                listView.onRefreshComplete();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                listView.onRefreshComplete();
-            }
-        }));
+//        Map<String, String> map = new HashMap<>();
+//        map.put("page", "1");
+//        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/consumption_records", map), null, new VolleyListener(getActivity()) {
+//
+//            @Override
+//            protected void onTokenOut() {
+//                tokenOut();
+//            }
+//
+//            @Override
+//            protected void onSuccess(JSONObject response) {
+//                ConsumptionRecordBean bean = JsonUtils.objectFromJson(response.toString(), ConsumptionRecordBean.class);
+//                isLoad = true;
+//                if (loadType == 1) {
+//                    data.clear();
+//                }
+//                data.addAll(bean.getData());
+//                adapter.notifyDataSetChanged();
+//                String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+//                listView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(label);
+//                listView.onRefreshComplete();
+//            }
+//
+//            @Override
+//            protected void onError(JSONObject response) {
+//                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                String label = DateUtils.formatDateTime(
+//                        getActivity(),
+//                        System.currentTimeMillis(),
+//                        DateUtils.FORMAT_SHOW_TIME
+//                                | DateUtils.FORMAT_SHOW_DATE
+//                                | DateUtils.FORMAT_ABBREV_ALL);
+//                // Update the LastUpdatedLabel
+//                listView.getLoadingLayoutProxy(false, true)
+//                        .setLastUpdatedLabel(label);
+//                listView.onRefreshComplete();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                listView.onRefreshComplete();
+//            }
+//        }));
     }
 
     private void initview(View view) {

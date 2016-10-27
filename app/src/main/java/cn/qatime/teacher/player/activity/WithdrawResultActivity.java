@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cn.qatime.player.R;
-import cn.qatime.player.base.BaseActivity;
-import cn.qatime.player.utils.Constant;
+import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.base.BaseActivity;
+import cn.qatime.teacher.player.utils.Constant;
+
 
 /**
  * @author Tianhaoranly
@@ -47,9 +48,13 @@ public class WithdrawResultActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_withdraw_result);
         setTitle(getResourceString(R.string.recharge_confirm));
         assignViews();
+    }
+
+    @Override
+    public int getContentView() {
+        return R.layout.activity_withdraw_result;
     }
 
     @Override

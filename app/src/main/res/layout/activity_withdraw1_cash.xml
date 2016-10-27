@@ -36,7 +36,7 @@
 
                 <EditText
                     android:id="@+id/recharge_num"
-                    style="@style/activity_edit_text_style"
+                    style="@style/activity_edit_text_style_weight"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:hint="@string/withdraw_num_hint"
@@ -148,7 +148,7 @@
         android:id="@+id/recharge_now"
         style="@style/button_full_width_style"
         android:layout_alignParentBottom="true"
-        android:text="@string/recharge_now" />
+        android:text="@string/next" />
     <!--<LinearLayout-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="wrap_content"-->

@@ -1,9 +1,9 @@
 package cn.qatime.teacher.player.fragment;
 
+
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,27 +14,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.utils.UrlUtils;
+import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
-import libraryextra.utils.JsonUtils;
+import libraryextra.bean.WithdrawCashRecordBean;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 
@@ -54,7 +51,6 @@ public class FundRecordWithdrawCashF extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fund_record_withdraw_cash, container, false);
-        EventBus.getDefault().register(this);
         initview(view);
         return view;
     }
@@ -67,50 +63,50 @@ public class FundRecordWithdrawCashF extends BaseFragment {
     }
 
     private void initData(final int loadType) {
-        Map<String, String> map = new HashMap<>();
-        map.put("page", String.valueOf(page));
-        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map), null, new VolleyListener(getActivity()) {
-
-            @Override
-            protected void onTokenOut() {
-                tokenOut();
-            }
-
-            @Override
-            protected void onSuccess(JSONObject response) {
-                WithdrawCashRecordBean bean = JsonUtils.objectFromJson(response.toString(), WithdrawCashRecordBean.class);
-                isLoad = true;
-                if (loadType == 1) {
-                    data.clear();
-                }
-                data.addAll(bean.getData());
-                adapter.notifyDataSetChanged();
-                String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-                listView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(label);
-                listView.onRefreshComplete();
-            }
-
-            @Override
-            protected void onError(JSONObject response) {
-                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                String label = DateUtils.formatDateTime(
-                        getActivity(),
-                        System.currentTimeMillis(),
-                        DateUtils.FORMAT_SHOW_TIME
-                                | DateUtils.FORMAT_SHOW_DATE
-                                | DateUtils.FORMAT_ABBREV_ALL);
-                // Update the LastUpdatedLabel
-                listView.getLoadingLayoutProxy(false, true)
-                        .setLastUpdatedLabel(label);
-                listView.onRefreshComplete();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                listView.onRefreshComplete();
-            }
-        }));
+//        Map<String, String> map = new HashMap<>();
+//        map.put("page", String.valueOf(page));
+//        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map), null, new VolleyListener(getActivity()) {
+//
+//            @Override
+//            protected void onTokenOut() {
+//                tokenOut();
+//            }
+//
+//            @Override
+//            protected void onSuccess(JSONObject response) {
+//                WithdrawCashRecordBean bean = JsonUtils.objectFromJson(response.toString(), WithdrawCashRecordBean.class);
+//                isLoad = true;
+//                if (loadType == 1) {
+//                    data.clear();
+//                }
+//                data.addAll(bean.getData());
+//                adapter.notifyDataSetChanged();
+//                String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+//                listView.getLoadingLayoutProxy(true, false).setLastUpdatedLabel(label);
+//                listView.onRefreshComplete();
+//            }
+//
+//            @Override
+//            protected void onError(JSONObject response) {
+//                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                String label = DateUtils.formatDateTime(
+//                        getActivity(),
+//                        System.currentTimeMillis(),
+//                        DateUtils.FORMAT_SHOW_TIME
+//                                | DateUtils.FORMAT_SHOW_DATE
+//                                | DateUtils.FORMAT_ABBREV_ALL);
+//                // Update the LastUpdatedLabel
+//                listView.getLoadingLayoutProxy(false, true)
+//                        .setLastUpdatedLabel(label);
+//                listView.onRefreshComplete();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+//                listView.onRefreshComplete();
+//            }
+//        }));
     }
 
     private void initview(View view) {
@@ -236,7 +232,6 @@ public class FundRecordWithdrawCashF extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     private String getPayType(String pay_type) {
