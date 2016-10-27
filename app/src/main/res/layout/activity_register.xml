@@ -16,7 +16,7 @@
 
             <EditText
                 android:id="@+id/phone"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:maxLength="11" />
         </LinearLayout>
 
@@ -28,7 +28,7 @@
 
             <EditText
                 android:id="@+id/code"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:ems="10"
                 android:inputType="number" />
 
@@ -48,7 +48,7 @@
 
             <EditText
                 android:id="@+id/password"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:inputType="textPassword"
                 android:maxLength="16" />
         </LinearLayout>
@@ -60,7 +60,7 @@
 
             <EditText
                 android:id="@+id/repassword"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:inputType="textPassword"
                 android:maxLength="16" />
         </LinearLayout>
@@ -72,7 +72,7 @@
 
             <EditText
                 android:id="@+id/register_code"
-                style="@style/activity_edit_text_style"
+                style="@style/activity_edit_text_style_fill"
                 android:inputType="textPassword"
                 android:maxLength="16" />
         </LinearLayout>
