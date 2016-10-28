@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.qatime.teacher.player.R;
@@ -80,7 +81,10 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
     private String select = "";//生日所选日期
     private GradeBean gradeBean;
     private CustomProgressDialog progress;
-    private AlertDialog alertDialog;
+    private AlertDialog alertDialogTeachingYears;
+    private AlertDialog alertDialogSubject;
+    private AlertDialog alertDialogCategory;
+    private AlertDialog alertDialogArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,102 +258,132 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
     }
 
     private void showTeachingYearsPickerDialog() {
+        if (alertDialogTeachingYears == null) {
             final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
-            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
-            wheelview.setOffset(1);
-            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.teaching_years)));
-            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
+            final WheelView wheelView = (WheelView) view.findViewById(R.id.wheel_view);
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            alertDialogTeachingYears = builder.create();
+            wheelView.setOffset(1);
+            List<String> list = Arrays.asList(getResources().getStringArray(R.array.teaching_years));
+            wheelView.setItems(list);
+            wheelView.setSeletion(list.indexOf(teachingYears.getText()));
+            wheelView.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-                    alertDialog.dismiss();
+                    alertDialogTeachingYears.dismiss();
                 }
             });
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setContentView(view);
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            alertDialogTeachingYears.show();
+            alertDialogTeachingYears.setContentView(view);
+            alertDialogTeachingYears.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    teachingYears.setText(wheelview.getSeletedItem());
+                    teachingYears.setText(wheelView.getSeletedItem());
                 }
             });
+        } else {
+            alertDialogTeachingYears.show();
+        }
+
     }
+
     private void showSubjectPickerDialog() {
+        if (alertDialogSubject == null) {
             final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
-            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
-            wheelview.setOffset(1);
-            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)));
-            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
+            final WheelView wheelView = (WheelView) view.findViewById(R.id.wheel_view);
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            alertDialogSubject = builder.create();
+            wheelView.setOffset(1);
+            List<String> list = Arrays.asList(getResources().getStringArray(R.array.subject));
+            wheelView.setItems(list);
+            wheelView.setSeletion(list.indexOf(subject.getText()));
+            wheelView.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-                    alertDialog.dismiss();
+                    alertDialogSubject.dismiss();
                 }
             });
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setContentView(view);
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            alertDialogSubject.show();
+            alertDialogSubject.setContentView(view);
+            alertDialogSubject.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    subject.setText(wheelview.getSeletedItem());
+                    subject.setText(wheelView.getSeletedItem());
                 }
             });
+        } else {
+            alertDialogSubject.show();
+        }
     }
+
     private void showCategoryPickerDialog() {
+        if (alertDialogCategory == null) {
             final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
-            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
-            wheelview.setOffset(1);
-            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.category)));
-            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
+            final WheelView wheelView = (WheelView) view.findViewById(R.id.wheel_view);
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            alertDialogCategory = builder.create();
+            wheelView.setOffset(1);
+            List<String> list = Arrays.asList(getResources().getStringArray(R.array.category));
+            wheelView.setItems(list);
+            wheelView.setSeletion(list.indexOf(category.getText()));
+            wheelView.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
-                    alertDialog.dismiss();
+                    alertDialogCategory.dismiss();
                 }
             });
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setContentView(view);
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            alertDialogCategory.show();
+            alertDialogCategory.setContentView(view);
+            alertDialogCategory.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    category.setText(wheelview.getSeletedItem());
+                    category.setText(wheelView.getSeletedItem());
                 }
             });
+        } else {
+            alertDialogCategory.show();
+        }
     }
+
     private void showAreaPickerDialog() {
+        if (alertDialogArea == null) {
             final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_two_wheel_picker, null);
-            final WheelView wheelview1 = (WheelView) view.findViewById(R.id.wheelView1);
-            final WheelView wheelview2 = (WheelView) view.findViewById(R.id.wheelView2);
-            wheelview1.setOffset(1);
-            wheelview1.setItems(Arrays.asList(getResources().getStringArray(R.array.provinces)));
-            wheelview1.setonItemClickListener(new WheelView.OnItemClickListener() {
-                @Override
-                public void onItemClick() {
-                    alertDialog.dismiss();
-                }
-            });
-            wheelview2.setOffset(1);
-            wheelview2.setItems(Arrays.asList(getResources().getStringArray(R.array.city)));
-            wheelview2.setonItemClickListener(new WheelView.OnItemClickListener() {
-                @Override
-                public void onItemClick() {
-                    alertDialog.dismiss();
-                }
-            });
+            final WheelView wheelView1 = (WheelView) view.findViewById(R.id.wheel_view1);
+            final WheelView wheelView2 = (WheelView) view.findViewById(R.id.wheel_view2);
             AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setContentView(view);
-            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            alertDialogArea = builder.create();
+            wheelView1.setOffset(1);
+            List<String> list1 = Arrays.asList(getResources().getStringArray(R.array.provinces));
+            wheelView1.setItems(list1);
+            wheelView1.setSeletion(list1.indexOf(provinces.getText()));
+            wheelView1.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialogArea.dismiss();
+                }
+            });
+            wheelView2.setOffset(1);
+            List<String> list2 = Arrays.asList(getResources().getStringArray(R.array.city));
+            wheelView2.setItems(list2);
+            wheelView2.setSeletion(list2.indexOf(city.getText()));
+            wheelView2.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialogArea.dismiss();
+                }
+            });
+            alertDialogArea.show();
+            alertDialogArea.setContentView(view);
+            alertDialogArea.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    provinces.setText(wheelview1.getSeletedItem());
-                    city.setText(wheelview2.getSeletedItem());
+                    provinces.setText(wheelView1.getSeletedItem());
+                    city.setText(wheelView2.getSeletedItem());
                 }
             });
+        } else {
+            alertDialogArea.show();
+        }
     }
 
     private void assignViews() {
