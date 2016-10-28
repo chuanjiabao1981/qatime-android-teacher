@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spingarr">
+        <item>@string/whole</item>
+        <item>@string/recruiting</item>
+        <item>@string/started</item>
+    </string-array>
+    <string-array name="sort">
+        <item>@string/comprehensive_sort</item>
+        <item>@string/in_price_low_to_high</item>
+        <item>@string/in_price_high_to_low</item>
+        <item>@string/in_number</item>
+    </string-array>
+    <string-array name="subject">
+        <item>@string/chinese</item>
+        <item>@string/math</item>
+        <item>@string/english</item>
+        <item>@string/chemistry</item>
+        <item>@string/science</item>
+        <item>@string/geography</item>
+        <item>@string/biology</item>
+        <item>@string/history</item>
+        <item>@string/politics</item>
+        <item>@string/physics</item>
+    </string-array>
+    <string-array name="teaching_years">
+        <item>@string/within_three_years</item>
+        <item>@string/within_ten_years</item>
+        <item>@string/within_twenty_years</item>
+    </string-array>
+    <string-array name="grade">
+        <item>@string/high3</item>
+        <item>@string/high2</item>
+        <item>@string/high1</item>
+        <item>@string/middle3</item>
+        <item>@string/middle2</item>
+        <item>@string/middle1</item>
+        <item>@string/primary6</item>
+        <item>@string/primary5</item>
+        <item>@string/primary4</item>
+        <item>@string/primary3</item>
+        <item>@string/primary2</item>
+        <item>@string/primary1</item>
+    </string-array>
+    <string-array name="category">
+        <item>小学</item>
+        <item>初中</item>
+        <item>高中</item>
+        <item>大学</item>
+    </string-array>
+    <string-array name="provinces">
+        <item>北京</item>
+        <item>山西</item>
+        <item>山东</item>
+        <item>河北</item>
+        <item>河南</item>
+        <item>上海</item>
+        <item>广州</item>
+        <item>深圳</item>
+    </string-array>
+    <string-array name="city">
+        <item>北京</item>
+        <item>北京</item>
+        <item>北京</item>
+        <item>北京</item>
+        <item>北京</item>
+        <item>北京</item>
+    </string-array>
+</resources>

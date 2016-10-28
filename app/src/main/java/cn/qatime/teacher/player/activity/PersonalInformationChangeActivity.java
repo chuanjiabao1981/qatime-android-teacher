@@ -27,6 +27,7 @@ import com.orhanobut.logger.Logger;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,6 +102,10 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
         replace.setOnClickListener(this);
         birthdayView.setOnClickListener(this);
         complete.setOnClickListener(this);
+        teachingYearsView.setOnClickListener(this);
+        categoryView.setOnClickListener(this);
+        subjectView.setOnClickListener(this);
+        areaView.setOnClickListener(this);
 //        gradeView.setOnClickListener(this);
         PersonalInformationBean data = (PersonalInformationBean) getIntent().getSerializableExtra("data");
         if (data != null && data.getData() != null) {
@@ -153,8 +158,17 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.grade_view:
-                showGradePickerDialog();
+            case R.id.teaching_years_view:
+                showTeachingYearsPickerDialog();
+                break;
+            case R.id.subject_view:
+                showSubjectPickerDialog();
+                break;
+            case R.id.category_view:
+                showCategoryPickerDialog();
+                break;
+            case R.id.area_view:
+                showAreaPickerDialog();
                 break;
             case R.id.replace://去选择图片
                 final Intent intent = new Intent(PersonalInformationChangeActivity.this, PictureSelectActivity.class);
@@ -239,35 +253,103 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
         }
     }
 
-    private void showGradePickerDialog() {
-        if (alertDialog == null) {
-            final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_grade_picker, null);
-            final WheelView grade = (WheelView) view.findViewById(R.id.grade);
-            grade.setOffset(1);
-            grade.setItems(gradeBean.getData().getGrades());
-//            grade.setSeletion(gradeBean.getData().getGrades().indexOf(textGrade.getText()));
-            grade.setonItemClickListener(new WheelView.OnItemClickListener(){
+    private void showTeachingYearsPickerDialog() {
+            final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
+            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
+            wheelview.setOffset(1);
+            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.teaching_years)));
+            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
                     alertDialog.dismiss();
                 }
             });
             AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
-            alertDialog = builder.create();
+            AlertDialog alertDialog = builder.create();
             alertDialog.show();
             alertDialog.setContentView(view);
             alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-//                    textGrade.setText(grade.getSeletedItem());
+                    teachingYears.setText(wheelview.getSeletedItem());
                 }
             });
-//            WindowManager.LayoutParams attributes = alertDialog.getWindow().getAttributes();
-//            attributes.width= ScreenUtils.getScreenWidth(getApplicationContext())- DensityUtils.dp2px(getApplicationContext(),20)*2;
-//            alertDialog.getWindow().setAttributes(attributes);
-        } else {
+    }
+    private void showSubjectPickerDialog() {
+            final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
+            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
+            wheelview.setOffset(1);
+            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.subject)));
+            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialog.dismiss();
+                }
+            });
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            AlertDialog alertDialog = builder.create();
             alertDialog.show();
-        }
+            alertDialog.setContentView(view);
+            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    subject.setText(wheelview.getSeletedItem());
+                }
+            });
+    }
+    private void showCategoryPickerDialog() {
+            final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_single_picker, null);
+            final WheelView wheelview = (WheelView) view.findViewById(R.id.wheelView);
+            wheelview.setOffset(1);
+            wheelview.setItems(Arrays.asList(getResources().getStringArray(R.array.category)));
+            wheelview.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialog.dismiss();
+                }
+            });
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setContentView(view);
+            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    category.setText(wheelview.getSeletedItem());
+                }
+            });
+    }
+    private void showAreaPickerDialog() {
+            final View view = View.inflate(PersonalInformationChangeActivity.this, R.layout.dialog_two_wheel_picker, null);
+            final WheelView wheelview1 = (WheelView) view.findViewById(R.id.wheelView1);
+            final WheelView wheelview2 = (WheelView) view.findViewById(R.id.wheelView2);
+            wheelview1.setOffset(1);
+            wheelview1.setItems(Arrays.asList(getResources().getStringArray(R.array.provinces)));
+            wheelview1.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialog.dismiss();
+                }
+            });
+            wheelview2.setOffset(1);
+            wheelview2.setItems(Arrays.asList(getResources().getStringArray(R.array.city)));
+            wheelview2.setonItemClickListener(new WheelView.OnItemClickListener() {
+                @Override
+                public void onItemClick() {
+                    alertDialog.dismiss();
+                }
+            });
+            AlertDialog.Builder builder = new AlertDialog.Builder(PersonalInformationChangeActivity.this);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setContentView(view);
+            alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    provinces.setText(wheelview1.getSeletedItem());
+                    city.setText(wheelview2.getSeletedItem());
+                }
+            });
     }
 
     private void assignViews() {

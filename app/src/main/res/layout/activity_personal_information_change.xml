@@ -388,12 +388,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_input"
-                    android:gravity="top"
-                    android:hint="@string/hint_profiles"
+                    android:background="@drawable/shape_input_radius"
+                    android:hint="@string/hint_name"
+                    android:inputType="text"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:textColor="#1e1e1e"
                     android:textColorHint="#bfbfbf"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <LinearLayout
