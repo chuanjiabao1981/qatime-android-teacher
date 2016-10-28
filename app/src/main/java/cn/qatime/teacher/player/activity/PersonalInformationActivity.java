@@ -35,7 +35,7 @@ import libraryextra.utils.VolleyListener;
 public class PersonalInformationActivity extends BaseActivity {
     private ImageView headSculpture;
     private TextView nickName;
-    private TextView teachType;
+    private TextView category;
     private TextView subject;
     private TextView name;
     private TextView sex;
@@ -51,7 +51,7 @@ public class PersonalInformationActivity extends BaseActivity {
         sex = (TextView) findViewById(R.id.sex);
         birthday = (TextView) findViewById(R.id.birthday);
         teachingYears = (TextView) findViewById(R.id.teaching_years);
-        teachType = (TextView) findViewById(R.id.teach_type);
+        category = (TextView) findViewById(R.id.category);
         subject = (TextView) findViewById(R.id.subject);
         school = (TextView) findViewById(R.id.school);
         describe = (TextView) findViewById(R.id.describe);
@@ -89,7 +89,7 @@ public class PersonalInformationActivity extends BaseActivity {
             if (!StringUtils.isNullOrBlanK(data.getStringExtra("data"))) {
                 PersonalInformationBean sData = JsonUtils.objectFromJson(data.getStringExtra("data"), PersonalInformationBean.class);
                 if (sData != null && sData.getData() != null) {
-                    bean=sData;
+                    bean = sData;
                     setValue(sData);
                     BaseApplication.getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
                     Profile profile = BaseApplication.getProfile();
@@ -164,11 +164,22 @@ public class PersonalInformationActivity extends BaseActivity {
         } else {
             birthday.setText(format.format(new Date()));
         }
-//        if (!StringUtils.isNullOrBlanK(bean.getData().getGrade())) {
-//            grade.setText(bean.getData().getGrade());
-//        } else {
-//            grade.setText("");
-//        }
+        if (!StringUtils.isNullOrBlanK(bean.getData().getCategory())) {
+            category.setText(bean.getData().getCategory());
+        } else {
+            category.setText("");
+        }
+        if (!StringUtils.isNullOrBlanK(bean.getData().getSubject())) {
+            subject.setText(bean.getData().getSubject());
+        } else {
+            subject.setText("");
+        }
+        if (!StringUtils.isNullOrBlanK(bean.getData().getTeaching_years())) {
+            teachingYears.setText(getTeachingYear(bean.getData().getTeaching_years()));
+        } else {
+            teachingYears.setText("");
+        }
+
 //        if (!StringUtils.isNullOrBlanK(bean.getData().getProvince()) && !StringUtils.isNullOrBlanK(bean.getData().getCity())) {
 //            region.setText(bean.getData().getProvince() + " " + bean.getData().getCity());
 //        }else {
@@ -192,6 +203,18 @@ public class PersonalInformationActivity extends BaseActivity {
         } else {
             describe.setText("");
         }
+    }
+
+    private String getTeachingYear(String teaching_years) {
+        switch (teaching_years) {
+            case "within_three_years":
+                return getResourceString(R.string.within_three_years);
+            case "within_ten_years":
+                return getResourceString(R.string.within_ten_years);
+            case "within_twenty_years":
+                return getResourceString(R.string.within_twenty_years);
+        }
+        return "";
     }
 
 }

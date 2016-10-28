@@ -287,7 +287,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/teach_type_view"
+                android:id="@+id/category_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -307,7 +307,7 @@
                     android:text="@string/teach_type" />
 
                 <TextView
-                    android:id="@+id/teach_type"
+                    android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="高中" />

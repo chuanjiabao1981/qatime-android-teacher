@@ -177,7 +177,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/teach_type"
+                    android:id="@+id/category"
                     android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
                     android:text="高中" />

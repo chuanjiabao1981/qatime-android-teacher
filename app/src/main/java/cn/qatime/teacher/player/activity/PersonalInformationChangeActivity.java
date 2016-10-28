@@ -63,8 +63,8 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
     private TextView teachingYears;
     private LinearLayout subjectView;
     private TextView subject;
-    private LinearLayout teachTypeView;
-    private TextView teachType;
+    private LinearLayout categoryView;
+    private TextView category;
     private LinearLayout areaView;
     private TextView provinces;
     private TextView city;
@@ -284,8 +284,8 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
         teachingYears = (TextView) findViewById(R.id.teaching_years);
         subjectView = (LinearLayout) findViewById(R.id.subject_view);
         subject = (TextView) findViewById(R.id.subject);
-        teachTypeView = (LinearLayout) findViewById(R.id.teach_type_view);
-        teachType = (TextView) findViewById(R.id.teach_type);
+        categoryView = (LinearLayout) findViewById(R.id.category_view);
+        category = (TextView) findViewById(R.id.category);
         areaView = (LinearLayout) findViewById(R.id.area_view);
         provinces = (TextView) findViewById(R.id.provinces);
         city = (TextView) findViewById(R.id.city);
