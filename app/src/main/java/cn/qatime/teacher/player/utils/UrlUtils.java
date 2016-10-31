@@ -32,6 +32,8 @@ public class UrlUtils {
     public static String urlUser = baseUrl + "api/v1/users/";
     //检查更新
     public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
+    //账户充值
+    public static String urlpayment = baseUrl + "api/v1/payment/users/";
 
     public static String getUrl(String function, Map<String, String> params) {
         String url;

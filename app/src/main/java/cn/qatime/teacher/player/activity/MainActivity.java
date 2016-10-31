@@ -12,14 +12,16 @@ import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.orhanobut.logger.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
 import cn.qatime.teacher.player.fragment.FragmentMessage;
 import cn.qatime.teacher.player.fragment.FragmentPersonalCenter;
+import cn.qatime.teacher.player.utils.Constant;
 import libraryextra.utils.StringUtils;
 import libraryextra.view.FragmentLayout;
 
@@ -39,6 +41,14 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        File file = new File(Constant.CACHEPATH);
+        if (!file.mkdirs()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         initView();
     }
 
