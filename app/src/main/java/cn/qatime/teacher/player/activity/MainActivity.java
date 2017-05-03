@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
 import cn.qatime.teacher.player.fragment.FragmentMessage;
 import cn.qatime.teacher.player.fragment.FragmentPersonalCenter;
@@ -91,6 +92,7 @@ public class MainActivity extends BaseFragmentActivity {
             if (!StringUtils.isNullOrBlanK(intent.getStringExtra("sign"))) {
                 Intent start = new Intent(this, LoginActivity.class);
                 start.putExtra("sign", intent.getStringExtra("sign"));
+                BaseApplication.clearToken();
                 startActivity(start);
             }
             finish();

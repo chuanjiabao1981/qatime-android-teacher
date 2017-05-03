@@ -3,6 +3,8 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,7 +35,6 @@ import libraryextra.utils.VolleyListener;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     EditText phone;
     EditText code;
-    EditText registercode;
     Button getcode;
     EditText password;
     EditText repassword;
@@ -61,16 +62,41 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         getcode = (Button) findViewById(R.id.get_code);
         password = (EditText) findViewById(R.id.password);
         repassword = (EditText) findViewById(R.id.repassword);
-        registercode = (EditText) findViewById(R.id.register_code);
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         next = (Button) findViewById(R.id.next);
         agreement = (TextView) findViewById(R.id.agreement);
 
-        phone.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_phone_number)));
-        code.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_input_verification_code)));
-        password.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_input_password)));
-        repassword.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_confirm_password)));
-        registercode.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_qatime_register_code)));
+        phone.setHint(StringUtils.getSpannedString( getResources().getString(R.string.hint_phone_number)));
+        code.setHint(StringUtils.getSpannedString( getResources().getString(R.string.hint_input_verification_code)));
+        password.setHint(StringUtils.getSpannedString( getResources().getString(R.string.hint_input_password)));
+        repassword.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_confirm_password)));
+
+
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtils.isPhone(phone.getText().toString().trim())) {
+                        if(!time.ticking){//如果不在计时，允许点击
+                        getcode.setEnabled(true);
+                    }
+                } else {
+                    getcode.setEnabled(false);
+                    if(phone.getText().toString().length()==11) {
+                        Toast.makeText(RegisterActivity.this, R.string.phone_number_is_incorrect, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
         getcode.setOnClickListener(this);
         next.setOnClickListener(this);
@@ -134,19 +160,23 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
+    private class TimeCount extends CountDownTimer {
+        public boolean ticking;
+
+        TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 
         @Override
         public void onFinish() {// 计时完毕
+            ticking = false;
             getcode.setText(getResources().getString(R.string.get_verification_code));
             getcode.setEnabled(true);
         }
 
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程
+            ticking =true;
             getcode.setEnabled(false);//防止重复点击
             getcode.setText(millisUntilFinished / 1000 + "s");
         }
@@ -156,55 +186,49 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         if (StringUtils.isNullOrBlanK(phone.getText().toString().trim())) {//账号为空
             Toast.makeText(this, getResources().getString(R.string.account_can_not_be_empty), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
             return;
         }
 
         if (!StringUtils.isPhone(phone.getText().toString().trim())) {//手机号不正确
             Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
             return;
         }
         if (!StringUtils.isGoodPWD(password.getText().toString().trim())) {
             Toast.makeText(this, getResources().getString(R.string.password_6_16), Toast.LENGTH_LONG).show();
-            next.setClickable(true);
             return;
         }
         if (StringUtils.isNullOrBlanK(repassword.getText().toString().trim())) {  //确认密码为空
             Toast.makeText(this, getResources().getString(R.string.repassword_can_not_be_empty), Toast.LENGTH_LONG).show();
-            next.setClickable(true);
             return;
         }
         if (!password.getText().toString().trim().equals(repassword.getText().toString().trim())) {//前后不一致
             Toast.makeText(this, getResources().getString(R.string.password_and_repassword_are_incongruous), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
             return;
         }
         if (StringUtils.isNullOrBlanK(code.getText().toString().trim())) { //验证码
             Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
-            return;
-        }
-        if (StringUtils.isNullOrBlanK(registercode.getText().toString().trim())) {   //注册码
-            Toast.makeText(this, getResources().getString(R.string.enter_the_register_code), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
             return;
         }
         if (!checkBox.isChecked()) {   //协议勾选
             Toast.makeText(this, getResources().getString(R.string.agree_agreement), Toast.LENGTH_SHORT).show();
-            next.setClickable(true);
             return;
         }
 
+        registerTeacher();
+//下一步跳转
+//        Intent intent = new Intent(RegisterActivity.this, RegisterPerfectActivity.class);
+//        startActivity(intent);
+    }
+
+    private void registerTeacher() {
         Map<String, String> map = new HashMap<>();
         map.put("login_mobile", phone.getText().toString().trim());
         map.put("captcha_confirmation", code.getText().toString().trim());
         map.put("password", password.getText().toString().trim());
         map.put("password_confirmation", repassword.getText().toString().trim());//确认密码
         map.put("accept", "" + (checkBox.isChecked() ? 1 : 0));
-        map.put("type", "Student");
+        map.put("type", "teacher");
         map.put("client_type", "app");
-        map.put("register_code_value", registercode.getText().toString().trim());//注册码
 
 
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlRegister, map), null, new VolleyListener(this) {
@@ -269,9 +293,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         });
 
         addToRequestQueue(request);
-//下一步跳转
-//        Intent intent = new Intent(RegisterActivity.this, RegisterPerfectActivity.class);
-//        startActivity(intent);
     }
 
     @Override

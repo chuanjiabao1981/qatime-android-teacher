@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +19,8 @@ import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,10 +59,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button login;
     private CustomProgressDialog progress;
     private Profile profile;
-
+//    private IWXAPI api;
+    @Override
+    public int getContentView() {
+        return R.layout.activity_login;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        EventBus.getDefault().register(this);
+//        api = WXAPIFactory.createWXAPI(this, null);
+//        api.registerApp(Constant.APP_ID);
 
         checklayout = findViewById(R.id.checklayout);
         checkview = (CheckView) findViewById(R.id.checkview);
@@ -67,78 +79,96 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         username = (EditText) findViewById(R.id.name);
         password = (EditText) findViewById(R.id.pass);
         login = (Button) findViewById(R.id.login);
-        Button register = (Button) findViewById(R.id.register);
+        TextView register = (TextView) findViewById(R.id.register);
+        TextView enter = (TextView) findViewById(R.id.enter);
         View loginerror = findViewById(R.id.login_error);//忘记密码
-        View reload = findViewById(R.id.reload);
+        findViewById(R.id.wechat_login).setOnClickListener(this);
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
+        enter.setOnClickListener(this);
         loginerror.setOnClickListener(this);
-        reload.setOnClickListener(this);
         checkview.setOnClickListener(this);
 
         if (!StringUtils.isNullOrBlanK(SPUtils.get(LoginActivity.this, "username", ""))) {
             username.setText(SPUtils.get(LoginActivity.this, "username", "").toString());
         }
-        String sign = getIntent().getStringExtra("sign");//从系统设置退出登录页面跳转而来，清除用户登录信息
-        if (!StringUtils.isNullOrBlanK(sign) && sign.equals("exit_login")) {
-//            username.setText("");
-            password.setText("");
+        String sign = getIntent().getStringExtra("sign");
+        if (!StringUtils.isNullOrBlanK(sign)) {
+            if (sign.equals("exit_login")) {//从系统设置退出登录页面跳转而来，清除用户登录信息
+                password.setText("");
+            }
         }
     }
 
-    @Override
-    public int getContentView() {
-        return R.layout.activity_login;
-    }
+
 
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.login://登陆
                 login.setClickable(false);
-                if (checklayout.getVisibility() == View.VISIBLE) {
-                    if (CheckUtil.checkNum(checkcode.getText().toString(), checkNum)) {
-                        login();
-                    } else {
-                        login.setClickable(true);
-                        Toast.makeText(this, getResourceString(R.string.verification_code_is_incorrect), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                } else {
-                    login();
-                }
-
+                login();
                 break;
             case R.id.register://注册
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivityForResult(intent, Constant.REGIST);
+                intent = new Intent(LoginActivity.this, RegisterActivity.class);
+//                intent.putExtra("register_action",Constant.REGIST_1);
+//                startActivityForResult(intent, Constant.REGIST_1);
+                startActivityForResult(intent,Constant.REGIST);
                 break;
             case R.id.login_error://忘记密码
                 intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.reload://重新换验证码
-                initCheckNum();
-                break;
             case R.id.checkview://重新换验证码
                 initCheckNum();
                 break;
+            case R.id.enter://直接进入
+                intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+//            case R.id.wechat_login://微信登录
+//                if (!api.isWXAppInstalled()) {
+//                    Toast.makeText(this, R.string.login_failed_wechat_not_installed, Toast.LENGTH_SHORT).show();
+//                } else if (!api.isWXAppSupportAPI()) {
+//                    Toast.makeText(this, R.string.login_failed_wechat_not_support, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    SendAuth.Req req = new SendAuth.Req();
+//                    req.scope = "snsapi_userinfo";
+//                    req.state = "wechat_info";
+//                    api.sendReq(req);
+//                }
+//                break;
         }
     }
 
     private void login() {
-
-        if (TextUtils.isEmpty(username.getText().toString())) {
-            Toast.makeText(this, getResourceString(R.string.account_can_not_be_empty), Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(username.getText().toString().trim())) {
+            Toast.makeText(this, getResources().getString(R.string.account_can_not_be_empty), Toast.LENGTH_SHORT).show();
             login.setClickable(true);
             return;
         }
-        if (TextUtils.isEmpty(password.getText().toString())) {
-            Toast.makeText(this, getResourceString(R.string.password_can_not_be_empty), Toast.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(password.getText().toString().trim())) {
+            Toast.makeText(this, getResources().getString(R.string.password_can_not_be_empty), Toast.LENGTH_SHORT).show();
             login.setClickable(true);
             return;
+        }
+        if (!StringUtils.isGoodPWD(password.getText().toString().trim())) {
+            Toast.makeText(this, R.string.password_format_error, Toast.LENGTH_SHORT).show();
+            login.setClickable(true);
+            return;
+        }
+        if (checklayout.getVisibility() == View.VISIBLE) {
+            if (!CheckUtil.checkNum(checkcode.getText().toString().trim(), checkNum)) {
+                Toast.makeText(this, R.string.verification_code_is_incorrect, Toast.LENGTH_SHORT).show();
+                initCheckNum();
+                checkcode.setText("");
+                return;
+            }
         }
         progress = DialogUtils.startProgressDialog(progress, LoginActivity.this, getResourceString(R.string.landing));
         progress.setCancelable(false);
@@ -165,9 +195,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             if (data.has("result")) {
                                 DialogUtils.dismissDialog(progress);
                                 if (data.getString("result") != null && data.getString("result").equals("failed")) {
-                                    Toast.makeText(LoginActivity.this, getResourceString(R.string.account_or_password_error), Toast.LENGTH_SHORT).show();
-                                    DialogUtils.dismissDialog(progress);
+                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.account_or_password_error), Toast.LENGTH_SHORT).show();
+                                    BaseApplication.clearToken();
+                                    login.setClickable(true);
                                     password.setText("");
+                                    //当密码错误5次以上，开始使用验证码
                                     errornum++;
                                     if (errornum >= 5) {
                                         checklayout.setVisibility(View.VISIBLE);
@@ -175,13 +207,58 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                 }
                             } else {
-                                Logger.e("登录", response.toString());
                                 SPUtils.put(LoginActivity.this, "username", username.getText().toString());
                                 profile = JsonUtils.objectFromJson(response.toString(), Profile.class);
+//                                if (profile != null && profile.getData() != null && profile.getData().getUser() != null && profile.getData().getUser().getId() != 0) {
+//                                    PushAgent.getInstance(LoginActivity.this).addAlias(String.valueOf(profile.getData().getUser().getId()), "student", new UTrack.ICallBack() {
+//                                        @Override
+//                                        public void onMessage(boolean b, String s) {
+//
+//                                        }
+//                                    });
+//                                    String deviceToken = PushAgent.getInstance(LoginActivity.this).getRegistrationId();
+//                                    if (!StringUtils.isNullOrBlanK(deviceToken)) {
+//                                        Map<String, String> m = new HashMap<>();
+//                                        m.put("user_id", String.valueOf(profile.getData().getUser().getId()));
+//                                        m.put("device_token", deviceToken);
+//                                        m.put("device_model", Build.MODEL);
+//                                        try {
+//                                            m.put("app_name", URLEncoder.encode(AppUtils.getAppName(LoginActivity.this), "UTF-8"));
+//                                        } catch (UnsupportedEncodingException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                        m.put("app_version", AppUtils.getVersionName(LoginActivity.this));
+//                                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlDeviceInfo, m), null,
+//                                                new VolleyListener(LoginActivity.this) {
+//
+//                                                    @Override
+//                                                    protected void onSuccess(JSONObject response) {
+//                                                    }
+//
+//                                                    @Override
+//                                                    protected void onError(JSONObject response) {
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    protected void onTokenOut() {
+//                                                        tokenOut();
+//                                                    }
+//
+//                                                }, new VolleyErrorListener() {
+//                                            @Override
+//                                            public void onErrorResponse(VolleyError volleyError) {
+//                                                super.onErrorResponse(volleyError);
+//                                            }
+//                                        });
+//                                        addToRequestQueue(request);
+//                                    }
+//                                }
                                 if (profile != null && !TextUtils.isEmpty(profile.getData().getRemember_token())) {
-//                                   跳转mainActivity时再setProfile
-//                                   BaseApplication.setProfile(profile);
-                                    checkUserInfo();
+                                    //登录成功且有个人信息  设置profile
+                                    BaseApplication.setProfile(profile);
+                                    SPUtils.put(LoginActivity.this, "username", username.getText().toString());
+                                    loginAccount();//登陆云信
                                 } else {
                                     //没有数据或token
                                 }
@@ -220,67 +297,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     /**
-     * 检查用户信息是否完整
-     */
-    private void checkUserInfo() {
-//
-//        DaYiJsonObjectRequest request1 = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + profile.getData().getUser().getId() + "/info", null, new VolleyListener(LoginActivity.this) {
-//            @Override
-//            protected void onTokenOut() {
-//                tokenOut();
-//            }
-//
-//            @Override
-//            protected void onSuccess(JSONObject response) {
-//                PersonalInformationBean bean = JsonUtils.objectFromJson(response.toString(), PersonalInformationBean.class);
-//                String name = bean.getData().getName();
-//                String grade = bean.getData().getGrade();
-//                if (StringUtils.isNullOrBlanK(name) || StringUtils.isNullOrBlanK(grade)) {
-//                    DialogUtils.dismissDialog(progress);
-//                    Intent intent = new Intent(LoginActivity.this, RegisterPerfectActivity.class);
-//                    Toast.makeText(LoginActivity.this, getResourceString(R.string.please_set_information), Toast.LENGTH_SHORT).show();
-//                    intent.putExtra("username", username.getText().toString().trim());
-//                    intent.putExtra("password", password.getText().toString().trim());
-//                    intent.putExtra("token", profile.getToken());
-//                    intent.putExtra("userId",profile.getData().getUser().getId());
-//                    startActivityForResult(intent, Constant.REGIST);
-//                } else {
-//                    Logger.e("登录", response.toString());
-//                    //登录成功且有个人信息  设置profile
-                    BaseApplication.setProfile(profile);
-                    SPUtils.put(LoginActivity.this, "username", username.getText().toString());
-                    loginAccount();//登陆云信
-//                }
-//
-//            }
-//
-//            @Override
-//            protected void onError(JSONObject response) {
-//                Toast.makeText(LoginActivity.this, getResourceString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-////                BaseApplication.clearToken();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-////                BaseApplication.clearToken();
-//            }
-//        }){
-//            /**
-//             * 由于没有登陆没有token，重写getHeaders方法 手动设置访问token
-//             * @return
-//             * @throws AuthFailureError
-//             */
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> map = new HashMap<>();
-//                map.put("Remember-Token", profile.getToken());
-//                return map;
-//            }
-//        };
-//        addToRequestQueue(request1);
-    }
-
-    /**
      * 登陆云信
      */
     private void loginAccount() {
@@ -300,21 +316,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     //缓存
                     UserInfoCache.getInstance().clear();
                     TeamDataCache.getInstance().clear();
-                    //                FriendDataCache.getInstance().clear();
 
                     UserInfoCache.getInstance().buildCache();
                     TeamDataCache.getInstance().buildCache();
-                    //好友维护,目前不需要
-                    //                FriendDataCache.getInstance().buildCache();
 
                     UserInfoCache.getInstance().registerObservers(true);
                     TeamDataCache.getInstance().registerObservers(true);
-//                                                FriendDataCache.getInstance().registerObservers(true);
-//
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    DialogUtils.dismissDialog(progress);
-//                    finish();
+//                  FriendDataCache.getInstance().registerObservers(true);
                 }
 
                 @Override
@@ -351,15 +359,80 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 刷新验证码
      */
     private void initCheckNum() {
+        login.setClickable(true);
         checkNum = CheckUtil.getCheckNum();
         checkview.setCheckNum(checkNum);
-        checkview.invaliChenkNum();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Constant.REGIST) {
+//        if ((requestCode == Constant.REGIST_1||requestCode == Constant.REGIST_2) && resultCode == Constant.RESPONSE) {
+        if (requestCode == Constant.REGIST) {
             finish();
         }
+    }
+
+    /**
+     * 微信註冊
+     *
+     * @param code 微信登錄嗎
+     */
+    @Subscribe
+    public void onEvent(String code) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("code", code);
+//        map.put("client_cate", "teacher_live");
+//        map.put("client_type", "app");
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlLogin + "/wechat", map), null, new VolleyListener(LoginActivity.this) {
+//            @Override
+//            protected void onTokenOut() {
+//                tokenOut();
+//            }
+//
+//            @Override
+//            protected void onSuccess(JSONObject response) {
+//                try {
+//                    if (response.has("data")) {
+//                        if (response.getJSONObject("data").has("remember_token")) {//返回登錄信息
+//                            Profile data = JsonUtils.objectFromJson(response.toString(), Profile.class);
+//                            if (data != null && data.getData() != null && !StringUtils.isNullOrBlanK(data.getData().getRemember_token())) {
+//                                BaseApplication.setProfile(data);
+//                                SPUtils.put(LoginActivity.this, "username", username.getText().toString());
+//                                loginAccount();//登陆云信
+//                            } else {
+//                                //没有数据或没有token
+//                            }
+//
+//                        } else {
+//                            String openid = response.getJSONObject("data").getString("openid");
+//                            Intent intent = new Intent(LoginActivity.this, WeChatBindActivity.class);
+//                            intent.putExtra("openid", openid);
+//                            intent.putExtra("register_action",Constant.REGIST_1);
+//                            startActivityForResult(intent, Constant.REGIST_1);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(JSONObject response) {
+//
+//            }
+//        }, new VolleyErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                super.onErrorResponse(volleyError);
+//                Logger.e(volleyError.getMessage());
+//            }
+//        });
+//        addToRequestQueue(request);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
