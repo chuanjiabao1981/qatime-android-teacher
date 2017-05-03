@@ -52,7 +52,7 @@ import cn.qatime.teacher.player.im.observer.UserInfoObservable;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
-import libraryextra.bean.TutorialClassBean;
+import libraryextra.bean.MyTutorialClassBean;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.ScreenUtils;
 import libraryextra.utils.StringUtils;
@@ -72,7 +72,7 @@ public class FragmentNews extends BaseFragment {
     private List<RecentContact> loadedRecents;
     private UserInfoObservable.UserInfoObserver userInfoObserver;
     private UserInfoObservable userInfoObservable;
-    private TutorialClassBean courses;
+    private MyTutorialClassBean courses;
     //    private boolean shouldPost = false;//是否需要向messageactivity发推流地址
 
     @Nullable
@@ -91,7 +91,7 @@ public class FragmentNews extends BaseFragment {
                     protected void onSuccess(JSONObject response) {
                         try {
                             Logger.e(response.toString());
-                            courses = JsonUtils.objectFromJson(response.toString(), TutorialClassBean.class);
+                            courses = JsonUtils.objectFromJson(response.toString(), MyTutorialClassBean.class);
 //                            if (shouldPost) {
 //                                if (!StringUtils.isNullOrBlanK(sessionId)) {
 //                                    if (courses != null && courses.getData() != null) {
@@ -270,7 +270,7 @@ public class FragmentNews extends BaseFragment {
     private void onRecentContactsLoaded() {
         items.clear();
         if (courses != null && courses.getData() != null) {
-            for (TutorialClassBean.Data data : courses.getData()) {
+            for (MyTutorialClassBean.Data data : courses.getData()) {
                 for (RecentContact item : loadedRecents) {
                     if (data.getChat_team_id().equals(item.getContactId())) {
                         Team team = TeamDataCache.getInstance().getTeamById(item.getContactId());
@@ -470,7 +470,7 @@ public class FragmentNews extends BaseFragment {
                     bean = items.get(index);
                     boolean haveData = false;
                     if (courses != null && courses.getData() != null) {
-                        for (TutorialClassBean.Data data : courses.getData()) {
+                        for (MyTutorialClassBean.Data data : courses.getData()) {
                             if (data.getChat_team_id().equals(bean.getContactId())) {
                                 haveData = true;
                             }
@@ -482,7 +482,7 @@ public class FragmentNews extends BaseFragment {
                     items.remove(index);
                 } else {
                     if (courses != null && courses.getData() != null) {
-                        for (TutorialClassBean.Data data : courses.getData()) {
+                        for (MyTutorialClassBean.Data data : courses.getData()) {
                             if (data.getChat_team_id().equals(msg.getContactId())) {
                                 bean.setName(data.getName());
                                 bean.setPull_address(data.getPull_address());

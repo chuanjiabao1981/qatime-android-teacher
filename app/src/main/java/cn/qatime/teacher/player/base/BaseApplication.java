@@ -17,6 +17,7 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.NimStrings;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
@@ -42,6 +43,7 @@ public class BaseApplication extends Application {
     private static BaseApplication context;
     private static RequestQueue Queue;
     public static boolean newVersion;
+    private static Object cashAccount;
 
     public static RequestQueue getRequestQueue() {
         if (Queue == null) {
@@ -310,15 +312,17 @@ public class BaseApplication extends Application {
     }
 //
     public static void clearToken() {
-//        if (profile != null && profile.getData() != null) {
-//            profile.getData().setRemember_token("");
-//            if (profile.getData().getUser() != null && profile.getData().getUser().getChat_account() != null) {
-//                profile.getData().getUser().getChat_account().setAccid("");
-//                profile.getData().getUser().getChat_account().setToken("");
-//            }
-//            SPUtils.putObject(context, "profile", profile);
-//            LoginSyncDataStatusObserver.getInstance().reset();
-//        }
+        if (profile != null && profile.getData() != null) {
+            profile.getData().setRemember_token("");
+            if (profile.getData().getUser() != null && profile.getData().getUser().getChat_account() != null) {
+                profile.getData().getUser().getChat_account().setAccid("");
+                profile.getData().getUser().getChat_account().setToken("");
+            }
+            cashAccount = null;
+            SPUtils.putObject(context, "profile", profile);
+            LoginSyncDataStatusObserver.getInstance().reset();
+            NIMClient.getService(AuthService.class).logout();
+        }
     }
 
     /**

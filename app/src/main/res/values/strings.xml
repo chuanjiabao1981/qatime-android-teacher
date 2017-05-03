@@ -414,4 +414,7 @@
     <string name="teach_type">类型</string>
     <string name="subject">科目</string>
     <string name="area">地区</string>
+    <string name="enter">直接进入</string>
+    <string name="other_method_of_login">其他方式登录</string>
+    <string name="password_format_error">密码格式不正确</string>
 </resources>

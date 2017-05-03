@@ -117,7 +117,6 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(SystemSettingActivity.this, MainActivity.class);
                 intent.putExtra("sign", "exit_login");
                 startActivity(intent);
-//                finish();
                 break;
             case R.id.notify_setting:
 
