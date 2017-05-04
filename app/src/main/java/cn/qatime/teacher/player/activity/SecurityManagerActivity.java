@@ -3,7 +3,9 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +19,6 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.bean.PersonalInformationBean;
 import libraryextra.utils.JsonUtils;
@@ -31,6 +32,8 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
     private LinearLayout bindEmail;
     private TextView email;
     private LinearLayout changePassword;
+    private LinearLayout changePayPassword;
+    private AlertDialog alertDialog;
 
     private void assignViews() {
         bindPhoneNumber = (LinearLayout) findViewById(R.id.bind_phone_number);
@@ -38,7 +41,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         email = (TextView) findViewById(R.id.email);
         phoneNumberM = (TextView) findViewById(R.id.phone_number_m);
         changePassword = (LinearLayout) findViewById(R.id.change_password);
-
+        changePayPassword = (LinearLayout) findViewById(R.id.change_pay_password);
     }
 
     @Override
@@ -111,6 +114,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         bindPhoneNumber.setOnClickListener(this);
         bindEmail.setOnClickListener(this);
         changePassword.setOnClickListener(this);
+        changePayPassword.setOnClickListener(this);
     }
 
     @Override
@@ -124,7 +128,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
             case R.id.bind_phone_number://绑定手机
                 Intent intent = new Intent(this, VerifyPhoneActivity.class);
                 intent.putExtra("next", "phone");
-                startActivityForResult(intent, Constant.REQUEST_EXIT_LOGIN);
+                startActivity(intent);
                 break;
             case R.id.bind_email://绑定邮箱
                 intent = new Intent(this, VerifyPhoneActivity.class);
@@ -133,16 +137,52 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.change_password://修改密码
                 intent = new Intent(this, ChangePasswordActivity.class);
-                startActivityForResult(intent, Constant.REQUEST_EXIT_LOGIN);
+                startActivity(intent);
+                break;
+            case R.id.change_pay_password://修改支付密码
+//                dialogNotify();
                 break;
         }
     }
+    private void dialogNotify() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        View view = View.inflate(this, R.layout.dialog_cancel_or_confirm, null);
+        TextView text = (TextView) view.findViewById(R.id.text);
+        text.setText(R.string.change_pay_password_notify);
+        Button cancel = (Button) view.findViewById(R.id.cancel);
+        Button confirm = (Button) view.findViewById(R.id.confirm);
+        confirm.setText(R.string.continue_anyway);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                changePayPSW();
+            }
+        });
+        alertDialog.show();
+        alertDialog.setContentView(view);
+    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REQUEST_EXIT_LOGIN && resultCode == Constant.RESPONSE_EXIT_LOGIN) {
-            setResult(Constant.RESPONSE_EXIT_LOGIN);
-            finish();
+    private void changePayPSW() {
+//        PayPopView payPopView = new PayPopView("","",getWindow());
+//        payPopView.showPop();
+        if (BaseApplication.getCashAccount() != null && BaseApplication.getCashAccount().getData() != null) {
+            if (BaseApplication.getCashAccount().getData().isHas_password()) {
+                startActivity(new Intent(this, PayPSWVerifyActivity.class));
+            } else {
+                startActivity(new Intent(this, PayPSWForgetActivity.class));
+            }
+        } else {
+            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+            Logger.e("未获取到支付密码状态");
         }
     }
 }

@@ -39,8 +39,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     private EditText password;
     private EditText newPassword;
     private EditText confirmNewPassword;
-    private TextView matchPwd1;
-    private TextView matchPwd2;
     private Button buttonOver;
     private String password1;
     private String password2;
@@ -53,20 +51,17 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
         newPassword = (EditText) findViewById(R.id.new_password);
         confirmNewPassword = (EditText) findViewById(R.id.confirm_new_password);
         buttonOver = (Button) findViewById(R.id.button_over);
-        matchPwd1 = (TextView) findViewById(R.id.match_pwd1);
-        matchPwd2 = (TextView) findViewById(R.id.match_pwd2);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
         initView();
     }
 
     @Override
     public int getContentView() {
-        return 0;
+        return R.layout.activity_change_password;
     }
 
     private void initView() {
@@ -85,8 +80,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 password2 = newPassword.getText().toString().trim();
-                matchPwd2.setVisibility(View.INVISIBLE);
-                matchPwd1.setVisibility(StringUtils.isGoodPWD(password2) ? View.VISIBLE:View.INVISIBLE);
             }
 
             @Override
@@ -103,7 +96,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 password3 = confirmNewPassword.getText().toString().trim();
-                matchPwd2.setVisibility(password3.equals(password2) ? View.VISIBLE:View.INVISIBLE);
             }
 
             @Override
@@ -152,12 +144,9 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
                         Toast.makeText(ChangePasswordActivity.this, getResourceString(R.string.change_password_success), Toast.LENGTH_SHORT).show();
-                        BaseApplication.clearToken();
-                        setResult(Constant.RESPONSE_EXIT_LOGIN);
-                        Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
                         intent.putExtra("sign", "exit_login");
                         startActivity(intent);
-                        finish();
                     }
 
                     @Override
