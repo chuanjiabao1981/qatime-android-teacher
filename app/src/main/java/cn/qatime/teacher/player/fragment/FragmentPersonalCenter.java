@@ -39,6 +39,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private TextView balance;
     private ImageView headSculpture;
     DecimalFormat df = new DecimalFormat("#.00");
+    private TextView nickName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,12 +55,14 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         manage = view.findViewById(R.id.manage);
         headSculpture = (ImageView) view.findViewById(R.id.head_sculpture);
         name = (TextView) view.findViewById(R.id.name);
+        nickName = (TextView) view.findViewById(R.id.nick_name);
         balance = (TextView) view.findViewById(R.id.balance);
         information = view.findViewById(R.id.information);
         if (BaseApplication.getProfile().getData() != null && BaseApplication.getProfile().getData().getUser() != null) {
-            Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.personal_information_head).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
+            Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
         }
         name.setText(BaseApplication.getProfile().getData().getUser().getName());
+        nickName.setText("昵称:"+BaseApplication.getProfile().getData().getUser().getNick_name());
         initData();
 
         classTable.setOnClickListener(this);
