@@ -81,7 +81,7 @@ public class FragmentClassTableClosed extends BaseFragment {
                 helper.setText(R.id.titles, item.getCourse_name()).
                         setText(R.id.status, getStatus(item.getStatus())).
                         setText(R.id.time, "上课时间 " + item.getClass_date() + " " + item.getLive_time()).
-                        setText(R.id.grade, getResourceString(R.string.item_subject) + item.getSubject());
+                        setText(R.id.grade, "科目" + item.getSubject());
             }
         };
         listView.setAdapter(adapter);

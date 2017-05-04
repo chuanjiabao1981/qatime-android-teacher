@@ -7,7 +7,7 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import org.json.JSONObject;
 
 import cn.qatime.teacher.player.base.BaseApplication;
-import libraryextra.utils.SPUtils;
+import cn.qatime.teacher.player.utils.SPUtils;
 
 /**
  * Created by hzxuwen on 2015/4/13.
@@ -162,5 +162,15 @@ public class UserPreferences {
 
     static SharedPreferences getSharedPreferences() {
         return SPUtils.getSharedPreferences(BaseApplication.getAccount());
+    }
+
+    public static boolean isEarPhoneModeEnable() {
+        return getBoolean(KEY_EARPHONE_MODE, true);
+    }
+
+    private final static String KEY_EARPHONE_MODE = "KEY_EARPHONE_MODE";
+
+    public static void setEarPhoneModeEnable(boolean on) {
+        saveBoolean(KEY_EARPHONE_MODE, on);
     }
 }

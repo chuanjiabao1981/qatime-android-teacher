@@ -179,6 +179,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@drawable/text_selector_white_red</item>
     </style>
+
     <style name="edit_layout_style">//边框
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -187,6 +188,7 @@
         <item name="android:paddingRight">32dp</item>
         <item name="android:orientation">vertical</item>
     </style>
+
     <style name="button_full_width_style">//跨整个屏幕的按钮
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
@@ -197,5 +199,17 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/button_bg_selector_red_with_stork</item>
         <item name="android:textColor">@drawable/text_selector_white_red</item>
+    </style>
+
+    <style name="scroll_view" parent="@android:style/Widget.ScrollView">
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar_handle_holo_dark</item>
+        <item name="android:scrollbarThumbHorizontal">@drawable/scrollbar_handle_holo_dark</item>
+    </style>
+
+    <style name="recycler_view" parent="scroll_view">
+        <item name="android:fadingEdge">none</item>
+        <item name="android:focusable">false</item>
+        <item name="android:overScrollMode">ifContentScrolls</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
     </style>
 </resources>

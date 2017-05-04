@@ -1,4 +1,16 @@
 <resources>
+
+    <!-- 语音 -->
+    <string name="record_audio">按住 说话</string>
+    <string name="record_audio_end">松开  结束</string>
+    <string name="sdcard_not_exist_error">请插入SD卡</string>
+    <string name="recording_error">录音失败，请重试</string>
+    <string name="recording_init_failed">初始化录音失败</string>
+    <string name="recording_cancel">手指上滑，取消发送</string>
+    <string name="recording_too_short">录音时间太短</string>
+    <string name="timer_default">00:00</string>
+    <string name="recording_cancel_tip">松开手指，取消发送</string>
+
     <!--//刷新-->
     <string name="app_name">答疑时间教师端</string>
     <string name="pull_to_refresh">下拉刷新</string>
@@ -417,4 +429,15 @@
     <string name="enter">直接进入</string>
     <string name="other_method_of_login">其他方式登录</string>
     <string name="password_format_error">密码格式不正确</string>
+    <string name="trans_voice_failed">语音转化失败</string>
+    <string name="load_failed">加载失败，请点我重试</string>
+    <string name="load_end">没有更多数据</string>
+    <string name="unsupport_title">无法显示该内容</string>
+    <string name="unsupport_desc">客户端版本不支持该内容</string>
+    <string name="picker_image_error">获取图片出错</string>
+    <string name="download_picture_fail">图片下载失败</string>
+    <string name="save_to_device">保存到手机</string>
+    <string name="picture_save_to">图片已保存到手机%s下</string>
+    <string name="picture_save_fail">图片保存失败</string>
+    <string name="voice_to_text">转文字</string>
 </resources>

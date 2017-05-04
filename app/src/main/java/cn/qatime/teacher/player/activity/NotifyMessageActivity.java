@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
-import libraryextra.utils.SPUtils;
+import cn.qatime.teacher.player.utils.SPUtils;
 
 /**
  * Created by lenovo on 2016/8/22.
