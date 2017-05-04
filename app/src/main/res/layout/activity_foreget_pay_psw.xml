@@ -6,23 +6,8 @@
 
     <include layout="@layout/layout_backbar" />
 
-    <LinearLayout style="@style/edit_layout_style">
-
-        <EditText
-            android:id="@+id/input_new_email"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_input"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_input_email"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:textColor="#ff333333"
-            android:textColorHint="#999"
-            android:textSize="14sp" />
-
+    <LinearLayout
+        style="@style/edit_layout_style">
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -33,23 +18,32 @@
             android:gravity="center">
 
             <EditText
+                android:id="@+id/password"
+                style="@style/activity_edit_text_style"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <EditText
                 android:id="@+id/code"
                 style="@style/activity_edit_text_style"
-                android:hint="输入收到的校验码"
                 android:inputType="number" />
 
             <TextView
                 android:id="@+id/text_getcode"
                 style="@style/button_style_with_edit"
-                android:enabled="false"
-                android:text="@string/getcode"
-                android:textColor="@drawable/text_selector_white_red" />
-
+                android:text="@string/getcode" />
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_over"
+        android:id="@+id/button_next"
         style="@style/button_full_width_style"
-        android:text="@string/over" />
+        android:text="@string/next" />
 </LinearLayout>

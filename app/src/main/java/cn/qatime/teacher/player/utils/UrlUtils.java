@@ -34,6 +34,10 @@ public class UrlUtils {
     public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
     //账户充值
     public static String urlpayment = baseUrl + "api/v1/payment/users/";
+    //獲取支付结果
+    public static String urlPayResult = baseUrl + "api/v1/payment/orders/";
+    //资产账户
+    public static String cashAccounts = baseUrl + "/api/v1/payment/cash_accounts/";
 
     public static String getUrl(String function, Map<String, String> params) {
         String url = function + "?" + Map2String(params);

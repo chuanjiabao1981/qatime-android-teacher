@@ -25,7 +25,8 @@
                 android:layout_height="18.0dip"
                 android:gravity="center_vertical"
                 android:text="@string/remedial_class_message"
-                style="@style/tab_text_color_select" />
+                android:textSize="14.0sp"
+                android:textColor="#333333" />
         </LinearLayout>
 
         <LinearLayout
@@ -40,7 +41,8 @@
                 android:layout_height="18.0dip"
                 android:gravity="center_vertical"
                 android:text="@string/system_message"
-                style="@style/tab_text_color_normal" />
+                android:textSize="14.0sp"
+                android:textColor="#999999" />
         </LinearLayout>
 
 

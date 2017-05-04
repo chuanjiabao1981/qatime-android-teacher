@@ -33,6 +33,7 @@ import cn.qatime.teacher.player.im.cache.UserInfoCache;
 import cn.qatime.teacher.player.utils.SPUtils;
 import cn.qatime.teacher.player.utils.StorageUtil;
 import cn.qatime.teacher.player.utils.UrlUtils;
+import libraryextra.bean.CashAccountBean;
 import libraryextra.bean.Profile;
 import libraryextra.utils.AppUtils;
 import libraryextra.utils.StringUtils;
@@ -44,12 +45,36 @@ public class BaseApplication extends Application {
     private static BaseApplication context;
     private static RequestQueue Queue;
     public static boolean newVersion;
+    /**
+     * 是否进行聊天消息通知栏提醒
+     */
+    public static boolean chatMessageNotifyStatus;
+
+    public static boolean isChatMessageNotifyStatus() {
+        return chatMessageNotifyStatus;
+    }
+
+    public static void setChatMessageNotifyStatus(boolean chatMessageNotifyStatus) {
+        BaseApplication.chatMessageNotifyStatus = chatMessageNotifyStatus;
+    }
+
+
+    private static CashAccountBean cashAccount;
+    private boolean shakeStatus;
+    private boolean voiceStatus;
 
     public static RequestQueue getRequestQueue() {
         if (Queue == null) {
             Queue = Volley.newRequestQueue(context);
         }
         return Queue;
+    }
+
+    public static CashAccountBean getCashAccount() {
+        return cashAccount;
+    }
+    public static void setCashAccount(CashAccountBean cashAccount) {
+        BaseApplication.cashAccount = cashAccount;
     }
 
     @Override
@@ -61,6 +86,9 @@ public class BaseApplication extends Application {
                 .hideThreadInfo()             // default it is shown
                 .setLogLevel(true ? LogLevel.FULL : LogLevel.NONE);  // default : LogLevel.FULL
         profile = SPUtils.getObject(this, "profile", Profile.class);
+        shakeStatus = (boolean) SPUtils.get(this, "shake_status", true);
+        voiceStatus = (boolean) SPUtils.get(this, "voice_status", true);
+        chatMessageNotifyStatus = (boolean) SPUtils.get(this, "notify_status", true);
 //        initUmengPush();
         initYunxin();
         StorageUtil.init(context, null);
@@ -193,6 +221,15 @@ public class BaseApplication extends Application {
         /** 云信集成end*/
     }
 
+    public static void setOptions(boolean voiceStatus, boolean shakeStatus) {
+//        PushAgent.getInstance(context).setNotificationPlayVibrate(voiceStatus ? MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE : MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
+//        PushAgent.getInstance(context).setNotificationPlaySound(shakeStatus ? MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE : MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
+        StatusBarNotificationConfig config = new StatusBarNotificationConfig();
+        config.ring = voiceStatus;
+        config.vibrate = shakeStatus;
+        NIMClient.updateStatusBarNotificationConfig(config);
+    }
+
     // 如果返回值为 null，则全部使用默认参数。
     private SDKOptions options() {
         SDKOptions options = new SDKOptions();
@@ -209,7 +246,8 @@ public class BaseApplication extends Application {
         // 通知铃声的uri字符串
         config.notificationSound = "android.resource://cn.qatime.player/raw/msg";
         options.statusBarNotificationConfig = config;
-        config.vibrate = true;
+        config.ring = voiceStatus;
+        config.vibrate = shakeStatus;
 
         UserPreferences.setStatusConfig(config);
         // 配置保存图片，文件，log 等数据的目录
@@ -320,6 +358,7 @@ public class BaseApplication extends Application {
                 profile.getData().getUser().getChat_account().setAccid("");
                 profile.getData().getUser().getChat_account().setToken("");
             }
+            cashAccount = null;
             SPUtils.putObject(context, "profile", profile);
             LoginSyncDataStatusObserver.getInstance().reset();
             NIMClient.getService(AuthService.class).logout();
@@ -393,4 +432,6 @@ public class BaseApplication extends Application {
     public static UserInfoProvider getUserInfoProvide() {
         return userInfoProvider;
     }
+
+
 }

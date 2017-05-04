@@ -143,7 +143,7 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
                 break;
 
             case R.id.withdraw_cash:
-                Intent intent = new Intent(this, WithdrawCash1Activity.class);
+                Intent intent = new Intent(this, WithdrawCashActivity.class);
                 intent.putExtra("balance", balance.getText().toString());
                 startActivityForResult(intent, Constant.REQUEST);
                 break;

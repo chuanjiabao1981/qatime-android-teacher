@@ -173,6 +173,7 @@
         <activity
             android:name=".activity.SecurityManagerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SystemSettingActivity"
@@ -187,7 +188,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.WithdrawCash1Activity"
+            android:name=".activity.WithdrawCashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity

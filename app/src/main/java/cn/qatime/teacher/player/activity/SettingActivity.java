@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
-import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.base.BaseApplication;
 
 /**
  * @author Tianhaoranly
@@ -25,7 +25,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         security = (LinearLayout) findViewById(R.id.security);
         setting = (LinearLayout) findViewById(R.id.setting);
         newVersion = (TextView) findViewById(R.id.new_version);
-
+        newVersion.setVisibility(BaseApplication.newVersion ? View.VISIBLE : View.INVISIBLE);
         security.setOnClickListener(this);
         setting.setOnClickListener(this);
     }
@@ -38,7 +38,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("设置中心");
+        setTitle("设置");
         assignViews();
     }
 
@@ -47,7 +47,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.security:// 安全管理
                 Intent intent = new Intent(this, SecurityManagerActivity.class);
-                startActivityForResult(intent, Constant.REQUEST_EXIT_LOGIN);
+                startActivity(intent);
                 break;
             case R.id.setting:// 设置
                 intent = new Intent(this, SystemSettingActivity.class);

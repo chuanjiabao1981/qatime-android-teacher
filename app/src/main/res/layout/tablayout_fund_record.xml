@@ -25,7 +25,8 @@
                 android:layout_height="18.0dip"
                 android:gravity="center_vertical"
                 android:text="@string/withdraw_cash_record"
-                style="@style/tab_text_color_normal" />
+                android:textSize="14.0sp"
+                android:textColor="#999999" />
         </LinearLayout>
 
         <LinearLayout
@@ -40,7 +41,8 @@
                 android:layout_height="18.0dip"
                 android:gravity="center_vertical"
                 android:text="@string/income_record"
-                style="@style/tab_text_color_normal" />
+                android:textSize="14.0sp"
+                android:textColor="#999999" />
         </LinearLayout>
 
     </LinearLayout>
