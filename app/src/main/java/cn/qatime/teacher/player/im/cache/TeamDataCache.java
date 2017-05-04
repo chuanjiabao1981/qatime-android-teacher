@@ -374,9 +374,6 @@ public class TeamDataCache {
      * @return
      */
     public String getTeamMemberDisplayName(String tid, String account) {
-        if (account.equals(BaseApplication.getAccount())) {
-            return "我";
-        }
 
         return getDisplayNameWithoutMe(tid, account);
     }

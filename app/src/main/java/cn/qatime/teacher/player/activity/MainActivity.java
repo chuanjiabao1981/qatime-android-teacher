@@ -88,18 +88,19 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (!StringUtils.isNullOrBlanK(intent.getStringExtra("out")) || (!StringUtils.isNullOrBlanK(intent.getStringExtra("sign")))) {
+            Intent start = new Intent(this, LoginActivity.class);
             if (!StringUtils.isNullOrBlanK(intent.getStringExtra("sign"))) {
-                Intent start = new Intent(this, LoginActivity.class);
                 start.putExtra("sign", intent.getStringExtra("sign"));
-                startActivity(start);
             }
+            startActivity(start);
             finish();
-        }else {
+        } else {
             //云信通知消息
             setIntent(intent);
             parseIntent();
         }
     }
+
     private void parseIntent() {
         Intent intent = getIntent();
         /**     * 解析通知栏发来的云信消息     */

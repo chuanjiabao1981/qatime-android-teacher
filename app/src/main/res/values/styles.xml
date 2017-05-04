@@ -168,4 +168,15 @@
         <item name="android:background">@drawable/dialog_button_background_selector</item>
         <item name="android:layout_height">36dp</item>
     </style>
+    <style name="scroll_view" parent="@android:style/Widget.ScrollView">
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar_handle_holo_dark</item>
+        <item name="android:scrollbarThumbHorizontal">@drawable/scrollbar_handle_holo_dark</item>
+    </style>
+
+    <style name="recycler_view" parent="scroll_view">
+        <item name="android:fadingEdge">none</item>
+        <item name="android:focusable">false</item>
+        <item name="android:overScrollMode">ifContentScrolls</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+    </style>
 </resources>

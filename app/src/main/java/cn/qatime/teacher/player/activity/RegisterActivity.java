@@ -66,11 +66,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         next = (Button) findViewById(R.id.next);
         agreement = (TextView) findViewById(R.id.agreement);
 
-        phone.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_phone_number)));
-        code.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_input_verification_code)));
-        password.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_input_password)));
-        repassword.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_confirm_password)));
-        registercode.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_qatime_register_code)));
+        phone.setHint(StringUtils.getSpannedString(this, R.string.hint_phone_number));
+        code.setHint(StringUtils.getSpannedString(this, R.string.hint_input_verification_code));
+        password.setHint(StringUtils.getSpannedString(this, R.string.hint_input_password));
+        repassword.setHint(StringUtils.getSpannedString(this, R.string.hint_confirm_password));
+        registercode.setHint(StringUtils.getSpannedString(this, R.string.hint_qatime_register_code));
 
         getcode.setOnClickListener(this);
         next.setOnClickListener(this);

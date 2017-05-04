@@ -36,16 +36,10 @@ public class UrlUtils {
     public static String urlpayment = baseUrl + "api/v1/payment/users/";
 
     public static String getUrl(String function, Map<String, String> params) {
-        String url;
-        url = function + "?" + Map2String(params);
-        url.trim();
+        String url = function + "?" + Map2String(params);
         if (url.endsWith("&")) {
-            url.trim().substring(0, url.length() - 1);
+            url = url.substring(0, url.length() - 1);
         }
-        if (url.endsWith("&")) {
-            url.substring(0, url.length() - 1);
-        }
-//        LogUtils.e("请求地址------    " + url);
         return url;
     }
 

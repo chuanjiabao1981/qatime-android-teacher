@@ -31,12 +31,12 @@ import cn.qatime.teacher.player.config.UserPreferences;
 import cn.qatime.teacher.player.im.cache.TeamDataCache;
 import cn.qatime.teacher.player.im.cache.UserInfoCache;
 import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.utils.SPUtils;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.bean.Profile;
 import libraryextra.utils.CheckUtil;
 import libraryextra.utils.DialogUtils;
 import libraryextra.utils.JsonUtils;
-import libraryextra.utils.SPUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyListener;
 import libraryextra.view.CheckView;
@@ -353,7 +353,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void initCheckNum() {
         checkNum = CheckUtil.getCheckNum();
         checkview.setCheckNum(checkNum);
-        checkview.invaliChenkNum();
     }
 
     @Override

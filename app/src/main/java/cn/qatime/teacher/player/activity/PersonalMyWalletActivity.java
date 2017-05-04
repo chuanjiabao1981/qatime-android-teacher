@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.utils.Constant;
-import libraryextra.utils.SPUtils;
+import cn.qatime.teacher.player.utils.SPUtils;
 
 /**
  * @author Tianhaoranly

@@ -52,7 +52,7 @@ public class ClassTableActivity extends BaseActivity {
             public void change(int lastPosition, int position, View lastTabView, View currentTabView) {
                 ((TextView) lastTabView.findViewById(tab_text[lastPosition])).setTextColor(0xff999999);
                 ((TextView) currentTabView.findViewById(tab_text[position])).setTextColor(0xff333333);
-                ((BaseFragment)fragBaseFragments.get(position)).onShow();
+                ((BaseFragment) fragBaseFragments.get(position)).onShow();
             }
         });
         fragmentlayout.setAdapter(fragBaseFragments, R.layout.tablayout_class_timetable, 0x0911);
