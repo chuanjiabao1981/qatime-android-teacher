@@ -38,7 +38,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private TextView name;
     private TextView balance;
     private ImageView headSculpture;
-    DecimalFormat df = new DecimalFormat("#.00");
+    //    DecimalFormat df = new DecimalFormat("#.00");
     private TextView nickName;
 
     @Override
@@ -62,8 +62,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
             Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
         }
         name.setText(BaseApplication.getProfile().getData().getUser().getName());
-        nickName.setText("昵称:"+BaseApplication.getProfile().getData().getUser().getNick_name());
-        initData();
+        nickName.setText("昵称:" + BaseApplication.getProfile().getData().getUser().getNick_name());
 
         classTable.setOnClickListener(this);
         myTutorship.setOnClickListener(this);
@@ -71,53 +70,22 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         manage.setOnClickListener(this);
         information.setOnClickListener(this);
     }
-    private void initData() {
-//        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(getActivity()){
-//
-//            @Override
-//            protected void onTokenOut() {
-//                tokenOut();
-//            }
-//
-//            @Override
-//            protected void onSuccess(JSONObject response) {
-//                try {
-//                    String price = df.format(Double.valueOf(response.getJSONObject("data").getString("balance")));
-//                    if (price.startsWith(".")) {
-//                        price = "0" + price;
-//                    }
-//                    balance.setText(price);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(JSONObject response) {
-//                Toast.makeText(getActivity(),  getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(getActivity(), getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-//            }
-//        }));
-    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.class_table:
-                getActivity().startActivity(new Intent(getActivity(),ClassTableActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), ClassTableActivity.class));
                 break;
             case R.id.my_tutorship:
                 break;
             case R.id.setting:
-                Intent intent = new Intent(getActivity(),SettingActivity.class);
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case R.id.manage:
                 intent = new Intent(getActivity(), PersonalMyWalletActivity.class);
-                startActivityForResult(intent,Constant.REQUEST);
+                startActivityForResult(intent, Constant.REQUEST);
                 break;
             case R.id.information:
                 intent = new Intent(getActivity(), PersonalInformationActivity.class);
