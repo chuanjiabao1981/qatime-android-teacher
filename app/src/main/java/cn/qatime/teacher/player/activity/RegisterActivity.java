@@ -152,7 +152,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.next:
-                next();
+                Intent intent = new Intent(RegisterActivity.this, RegisterPerfectActivity.class);
+                startActivity(intent);
+//                next();
                 break;
             case R.id.agreement:
                 //// TODO: 2016/8/24 点击协议查看
@@ -248,6 +250,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     Toast.makeText(RegisterActivity.this, getResourceString(R.string.please_set_information), Toast.LENGTH_SHORT).show();
                     Logger.e("注册成功" + response);
                     //下一步跳转
+                    // TODO: 2017/5/5 登陆
                     Intent intent = new Intent(RegisterActivity.this, RegisterPerfectActivity.class);
                     intent.putExtra("username", phone.getText().toString().trim());
                     intent.putExtra("password", password.getText().toString().trim());

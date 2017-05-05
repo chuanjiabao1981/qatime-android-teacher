@@ -24,6 +24,8 @@ public class UrlUtils {
     public static String urlRegister = baseUrl + "api/v1/user/register";
     //个人信息
     public static String urlPersonalInformation = baseUrl + "api/v1/teachers/";
+    //基础信息
+    public static String urlAppconstantInformation = baseUrl + "api/v1/app_constant";
     //找回密码
     public static String urlfindPassword = baseUrl + "api/v1/password";
     //我的辅导班列表
