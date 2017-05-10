@@ -300,7 +300,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
                         Intent data = new Intent(RegisterPerfectActivity.this, MainActivity.class);
                         startActivity(data);
 //                        }
-                        setResult(Constant.RESPONSE);
+                        setResult(Constant.REGIST);
                         finish();
                     }
 
