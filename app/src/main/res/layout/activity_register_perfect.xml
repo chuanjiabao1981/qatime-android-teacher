@@ -144,6 +144,7 @@
                     android:background="@drawable/shape_input"
                     android:hint="请详细介绍下自己"
                     android:minLines="3"
+                    android:maxLength="300"
                     android:gravity="top"
                     android:padding="12dp"
                     android:textColor="#ff333333"
@@ -156,6 +157,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="30dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -167,6 +170,7 @@
                 <TextView
                     android:id="@+id/complete"
                     style="@style/button_style"
+                    android:enabled="false"
                     android:layout_marginLeft="5dp"
                     android:text="立即进入" />
             </LinearLayout>

@@ -19,12 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +35,12 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
+import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.utils.SPUtils;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.AppUtils;
 import libraryextra.utils.DownFileUtil;
+import libraryextra.utils.FileUtil;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -50,7 +56,18 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        GetGradeslist();//加载年纪列表
+        File file = new File(Constant.CACHEPATH);
+        if (!file.mkdirs()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        GetGradeslist();//加载年纪列表
+        GetSchoolslist();
+        getProviceslist();
+        getCitylist();
         checkUpdate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -212,31 +229,120 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
 
 
     //年级列表
-//    public void GetGradeslist() {
-//
-//        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlAppconstantInformation + "/grades", null,
-//                new VolleyListener(this) {
-//                    @Override
-//                    protected void onSuccess(JSONObject response) {
-//                        boolean value = FileUtil.writeFile(new ByteArrayInputStream(response.toString().getBytes()), getFilesDir().getAbsolutePath() + "/grade.txt", true);
-//                        SPUtils.put(StartActivity.this, "grade", value);
-//                    }
-//
-//                    @Override
-//                    protected void onError(JSONObject response) {
-//
-//                    }
-//
-//                    @Override
-//                    protected void onTokenOut() {
-//                        tokenOut();
-//                    }
-//                }, new VolleyErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                super.onErrorResponse(volleyError);
-//            }
-//        });
-//        addToRequestQueue(request);
-//    }
+    public void GetGradeslist() {
+
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlAppconstantInformation + "/grades", null,
+                new VolleyListener(this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        boolean value = FileUtil.writeFile(new ByteArrayInputStream(response.toString().getBytes()), getFilesDir().getAbsolutePath() + "/grade.txt", true);
+                        SPUtils.put(StartActivity.this, "grade", value);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(request);
+    }
+
+    //省份列表
+    public void getProviceslist() {
+
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlAppconstantInformation + "/provinces", null,
+                new VolleyListener(this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        boolean value = FileUtil.writeFile(new ByteArrayInputStream(response.toString().getBytes()), getFilesDir().getAbsolutePath() + "/provinces.txt", true);
+                        SPUtils.put(StartActivity.this, "provinces", value);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(request);
+    }
+
+    //城市列表
+    public void getCitylist() {
+
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlAppconstantInformation + "/cities", null,
+                new VolleyListener(this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        boolean value = FileUtil.writeFile(new ByteArrayInputStream(response.toString().getBytes()), getFilesDir().getAbsolutePath() + "/cities.txt", true);
+                        SPUtils.put(StartActivity.this, "cities", value);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(request);
+    }
+
+    //学校列表
+    public void GetSchoolslist() {
+
+        JsonObjectRequest request = new JsonObjectRequest(UrlUtils.urlAppconstantInformation + "/schools", null,
+                new VolleyListener(StartActivity.this) {
+
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        boolean value = FileUtil.writeFile(new ByteArrayInputStream(response.toString().getBytes()), getFilesDir().getAbsolutePath() + "/school.txt", true);
+                        SPUtils.put(StartActivity.this, "school", value);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(request);
+    }
 }
