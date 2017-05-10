@@ -22,6 +22,8 @@ public class UrlUtils {
     public static String urlGetCode = baseUrl + "api/v1/captcha";
     //注册
     public static String urlRegister = baseUrl + "api/v1/user/register";
+    //检测
+    public static String urlUserCheck = baseUrl + "api/v1/user/check";
     //个人信息
     public static String urlPersonalInformation = baseUrl + "api/v1/teachers/";
     //基础信息
