@@ -3,8 +3,6 @@ package cn.qatime.teacher.player.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,39 +69,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
         password.setHint(StringUtils.getSpannedString(this, R.string.hint_input_current_password));
         newPassword.setHint(StringUtils.getSpannedString(this, R.string.hint_input_new_password));
         confirmNewPassword.setHint(StringUtils.getSpannedString(this, R.string.hint_confirm_new_password));
-        newPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                password2 = newPassword.getText().toString().trim();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        confirmNewPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                password3 = confirmNewPassword.getText().toString().trim();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
         forgetPassword.setOnClickListener(this);
         buttonOver.setOnClickListener(this);
     }
@@ -111,8 +76,8 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         password1 = password.getText().toString().trim();
-//        password2 = newPassword.getText().toString().trim();
-//        password3 = confirmNewPassword.getText().toString().trim();
+        password2 = newPassword.getText().toString().trim();
+        password3 = confirmNewPassword.getText().toString().trim();
         switch (v.getId()) {
             case R.id.forget_password:
                 Intent intent = new Intent(this, ForgetPasswordActivity.class);

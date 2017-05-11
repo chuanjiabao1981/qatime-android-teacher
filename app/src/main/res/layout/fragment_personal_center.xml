@@ -69,6 +69,7 @@
             android:src="@mipmap/personal_change_information" />
 
         <LinearLayout
+            android:id="@+id/manage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/head_sculpture"
@@ -80,11 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="3dp"
-                android:text="￥0.00"
+                android:text="0.00"
                 android:textColor="#fff" />
 
             <TextView
-                android:id="@+id/manage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=">"

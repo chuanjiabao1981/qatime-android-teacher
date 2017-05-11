@@ -13,11 +13,13 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
+import cn.qatime.teacher.player.bean.BusEvent;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.bean.PersonalInformationBean;
@@ -34,6 +36,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
     private LinearLayout changePassword;
     private LinearLayout changePayPassword;
     private AlertDialog alertDialog;
+    private TextView payPswText;
 
     private void assignViews() {
         bindPhoneNumber = (LinearLayout) findViewById(R.id.bind_phone_number);
@@ -42,6 +45,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         phoneNumberM = (TextView) findViewById(R.id.phone_number_m);
         changePassword = (LinearLayout) findViewById(R.id.change_password);
         changePayPassword = (LinearLayout) findViewById(R.id.change_pay_password);
+        payPswText = (TextView) findViewById(R.id.pay_psw);
     }
 
     @Override
@@ -49,6 +53,21 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         initView();
         initData();
+    }
+
+    @Subscribe
+    public void onEvent(BusEvent event) {
+        if (event == BusEvent.ON_REFRESH_CASH_ACCOUNT) {
+            long changeAt = BaseApplication.getCashAccount().getData().getPassword_set_at();
+
+            int diff = 24 - (int) ((System.currentTimeMillis() / 1000 - changeAt) / 3600);
+            if (diff <= 24 && diff > 0) {
+                payPswText.setText(getString(R.string.new_pay_password_invalid, diff));
+                payPswText.setTextColor(0xff666666);
+            } else {
+                payPswText.setText("");
+            }
+        }
     }
 
     @Override
@@ -86,11 +105,26 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
     }
 
     private void setValue(PersonalInformationBean bean) {
+        if (BaseApplication.getCashAccount() != null && BaseApplication.getCashAccount().getData() != null) {
+            if (BaseApplication.getCashAccount().getData().isHas_password()) {
+                long changeAt = BaseApplication.getCashAccount().getData().getPassword_set_at();
 
+                int diff = 24 - (int) ((System.currentTimeMillis() / 1000 - changeAt) / 3600);
+                if (diff <= 24 && diff > 0) {
+                    payPswText.setText(getString(R.string.new_pay_password_invalid, diff));
+                    payPswText.setTextColor(0xff666666);
+                } else {
+                    payPswText.setText("");
+                }
+            } else {
+                payPswText.setText(getResourceString(R.string.not_set));
+                payPswText.setTextColor(Color.RED);
+            }
+        }
         String email = bean.getData().getEmail();
         if (email != null) {
             this.email.setText("" + email);
-            this.email.setTextColor(0xff333333);
+            this.email.setTextColor(0xff666666);
         } else {
             this.email.setText(getResourceString(R.string.not_bind));
             this.email.setTextColor(Color.RED);
@@ -99,7 +133,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         String loginMobile = bean.getData().getLogin_mobile();
         if (loginMobile != null) {
             phoneNumberM.setText("" + loginMobile);
-            phoneNumberM.setTextColor(0xff333333);
+            phoneNumberM.setTextColor(0xff666666);
         } else {
             phoneNumberM.setText(getResourceString(R.string.not_bind));
             phoneNumberM.setTextColor(Color.RED);
@@ -140,7 +174,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
                 startActivity(intent);
                 break;
             case R.id.change_pay_password://修改支付密码
-//                dialogNotify();
+                dialogNotify();
                 break;
         }
     }

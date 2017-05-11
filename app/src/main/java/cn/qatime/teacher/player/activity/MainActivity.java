@@ -16,6 +16,8 @@ import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.orhanobut.logger.Logger;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,10 +25,12 @@ import java.util.ArrayList;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
+import cn.qatime.teacher.player.bean.BusEvent;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.fragment.FragmentMessage;
 import cn.qatime.teacher.player.fragment.FragmentPersonalCenter;
 import cn.qatime.teacher.player.utils.UrlUtils;
+import libraryextra.bean.CashAccountBean;
 import libraryextra.bean.PersonalInformationBean;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
@@ -49,6 +53,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         checkUserInfo();
         initView();
     }
@@ -117,6 +122,8 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void initView() {
+        refreshCashAccount();
+
         //重置
         fragBaseFragments.clear();
         if (fragmentlayout != null) {
@@ -214,4 +221,43 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
+    @Subscribe
+    public void onEvent(BusEvent event) {
+        if (event == BusEvent.REFRESH_CASH_ACCOUNT) {
+            refreshCashAccount();
+        }
+    }
+
+    private void refreshCashAccount() {
+            addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(MainActivity.this) {
+
+                @Override
+                protected void onTokenOut() {
+
+                }
+
+                @Override
+                protected void onSuccess(JSONObject response) {
+                    CashAccountBean cashAccount = JsonUtils.objectFromJson(response.toString(), CashAccountBean.class);
+                    BaseApplication.setCashAccount(cashAccount);
+                    EventBus.getDefault().post(BusEvent.ON_REFRESH_CASH_ACCOUNT);
+                }
+
+                @Override
+                protected void onError(JSONObject response) {
+                    Toast.makeText(MainActivity.this, getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(MainActivity.this, getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+            }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
