@@ -22,8 +22,12 @@ public class UrlUtils {
     public static String urlGetCode = baseUrl + "api/v1/captcha";
     //注册
     public static String urlRegister = baseUrl + "api/v1/user/register";
+    //检测
+    public static String urlUserCheck = baseUrl + "api/v1/user/check";
     //个人信息
     public static String urlPersonalInformation = baseUrl + "api/v1/teachers/";
+    //基础信息
+    public static String urlAppconstantInformation = baseUrl + "api/v1/app_constant";
     //找回密码
     public static String urlfindPassword = baseUrl + "api/v1/password";
     //我的辅导班列表
@@ -34,6 +38,10 @@ public class UrlUtils {
     public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
     //账户充值
     public static String urlpayment = baseUrl + "api/v1/payment/users/";
+    //獲取支付结果
+    public static String urlPayResult = baseUrl + "api/v1/payment/orders/";
+    //资产账户
+    public static String cashAccounts = baseUrl + "/api/v1/payment/cash_accounts/";
 
     public static String getUrl(String function, Map<String, String> params) {
         String url = function + "?" + Map2String(params);

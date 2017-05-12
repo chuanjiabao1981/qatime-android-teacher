@@ -23,7 +23,6 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
@@ -131,7 +130,7 @@ public class VerifyPhoneActivity extends BaseActivity implements View.OnClickLis
                             String next = getIntent().getStringExtra("next");
                             if ("phone".equals(next)) {
                                 Intent intent = new Intent(VerifyPhoneActivity.this, BindPhoneActivity.class);
-                                startActivityForResult(intent, Constant.REQUEST_EXIT_LOGIN);
+                                startActivity(intent);
                             } else if ("email".equals(next)) {
                                 Intent intent = new Intent(VerifyPhoneActivity.this, BindEmailActivity.class);
                                 startActivity(intent);
@@ -174,14 +173,6 @@ public class VerifyPhoneActivity extends BaseActivity implements View.OnClickLis
         public void onTick(long millisUntilFinished) {// 计时过程
             textGetcode.setEnabled(false);//防止重复点击
             textGetcode.setText(millisUntilFinished / 1000 + getResourceString(R.string.time_after_acquisition));
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REQUEST_EXIT_LOGIN && resultCode == Constant.RESPONSE_EXIT_LOGIN) {
-            setResult(Constant.RESPONSE_EXIT_LOGIN);
-            finish();
         }
     }
 }

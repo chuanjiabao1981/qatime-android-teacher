@@ -30,6 +30,7 @@ import java.util.Map;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
+import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.config.UserPreferences;
 import cn.qatime.teacher.player.im.cache.TeamDataCache;
 import cn.qatime.teacher.player.im.cache.UserInfoCache;
@@ -41,6 +42,7 @@ import libraryextra.utils.CheckUtil;
 import libraryextra.utils.DialogUtils;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
+import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 import libraryextra.view.CheckView;
 import libraryextra.view.CustomProgressDialog;
@@ -59,11 +61,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button login;
     private CustomProgressDialog progress;
     private Profile profile;
-//    private IWXAPI api;
+
+    //    private IWXAPI api;
     @Override
     public int getContentView() {
         return R.layout.activity_login;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +94,94 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginerror.setOnClickListener(this);
         checkview.setOnClickListener(this);
 
+        username.setOnClickListener(this);
+        password.setOnClickListener(this);
+
+
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    password.setText("");
+                }else {
+                    if(StringUtils.isNullOrBlanK(username.getText().toString().trim())){
+                        Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlUserCheck + "?account=" + username.getText().toString().trim(), null, new VolleyListener(LoginActivity.this) {
+                        @Override
+                        protected void onTokenOut() {
+
+                        }
+
+                        @Override
+                        protected void onSuccess(JSONObject response) {
+                            try {
+                                if (response.getBoolean("data")) {
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        protected void onError(JSONObject response) {
+                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+                        }
+                    }, new VolleyErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    addToRequestQueue(request);
+                }
+            }
+        });
+
+//        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(hasFocus){
+//                    if(StringUtils.isNullOrBlanK(username.getText().toString().trim())){
+//                        Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlUserCheck + "?account=" + username.getText().toString().trim(), null, new VolleyListener(LoginActivity.this) {
+//                        @Override
+//                        protected void onTokenOut() {
+//
+//                        }
+//
+//                        @Override
+//                        protected void onSuccess(JSONObject response) {
+//                            try {
+//                                if (response.getBoolean("data")) {
+//                                } else {
+//                                    Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//
+//                        @Override
+//                        protected void onError(JSONObject response) {
+//                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+//                        }
+//                    }, new VolleyErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//                    addToRequestQueue(request);
+//                }
+//            }
+//        });
+
         if (!StringUtils.isNullOrBlanK(SPUtils.get(LoginActivity.this, "username", ""))) {
             username.setText(SPUtils.get(LoginActivity.this, "username", "").toString());
         }
@@ -100,8 +192,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }
     }
-
-
 
 
     @Override
@@ -116,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
 //                intent.putExtra("register_action",Constant.REGIST_1);
 //                startActivityForResult(intent, Constant.REGIST_1);
-                startActivityForResult(intent,Constant.REGIST);
+                startActivityForResult(intent, Constant.REGIST);
                 break;
             case R.id.login_error://忘记密码
                 intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
@@ -367,7 +457,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        if ((requestCode == Constant.REGIST_1||requestCode == Constant.REGIST_2) && resultCode == Constant.RESPONSE) {
-        if (requestCode == Constant.REGIST) {
+        if (requestCode == Constant.REGIST && resultCode == Constant.REGIST) {
             finish();
         }
     }
