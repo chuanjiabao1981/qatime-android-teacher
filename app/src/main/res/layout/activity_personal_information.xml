@@ -273,6 +273,35 @@
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/region_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/region" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/region"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text=""
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

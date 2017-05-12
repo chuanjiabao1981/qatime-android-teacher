@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.text.DecimalFormat;
-
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.ClassTableActivity;
 import cn.qatime.teacher.player.activity.PersonalInformationActivity;
@@ -22,6 +20,7 @@ import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.utils.Constant;
 import libraryextra.transformation.GlideCircleTransform;
+import libraryextra.utils.StringUtils;
 
 /**
  * @author lungtify
@@ -93,4 +92,14 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constant.REQUEST && resultCode == Constant.RESPONSE) {
+            Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.personal_information_head).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
+            name.setText(StringUtils.isNullOrBlanK(BaseApplication.getProfile().getData().getUser().getName()) ? "无" : BaseApplication.getProfile().getData().getUser().getName());
+            nickName.setText("昵称：" + (StringUtils.isNullOrBlanK(BaseApplication.getProfile().getData().getUser().getNick_name()) ? "无" : BaseApplication.getProfile().getData().getUser().getNick_name()));
+        }
+    }
+
 }
