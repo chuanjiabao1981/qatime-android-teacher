@@ -70,7 +70,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
     }
 
     public void backClick(View v) {
-        this.finish();
+        onBackPressed();
     }
 
     /**

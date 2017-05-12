@@ -242,6 +242,26 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
             case R.id.grade:
                 showGradePickerDialog();
                 break;
+            case R.id.birthday_view://生日
+                try {
+                    MDatePickerDialog dataDialog = new MDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            select = (year + "-" + ((monthOfYear + 1) >= 10 ? String.valueOf((monthOfYear + 1)) : ("0" + (monthOfYear + 1))) + "-" + ((dayOfMonth) >= 10 ? String.valueOf((dayOfMonth)) : ("0" + (dayOfMonth))));
+                            try {
+                                birthday.setText(format.format(parse.parse(select)));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+
+                            }
+                        }
+                    }, parse.parse(select).getYear() + 1900, parse.parse(select).getMonth() , parse.parse(select).getDate());
+                    dataDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                    dataDialog.show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+				}
+				break;
             case R.id.subject:
                 if (gradeWheel == null) {
                     Toast.makeText(this, "请先选择年级", Toast.LENGTH_SHORT).show();

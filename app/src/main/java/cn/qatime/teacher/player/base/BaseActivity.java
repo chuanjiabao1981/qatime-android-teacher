@@ -66,13 +66,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.right_text)).setText(text);
             findViewById(R.id.right_text).setOnClickListener(listener);
         }
-
     }
 
     public void backClick(View v) {
-        this.finish();
+        onBackPressed();
     }
-
 
     /**
      * 设备已在其他地方登陆

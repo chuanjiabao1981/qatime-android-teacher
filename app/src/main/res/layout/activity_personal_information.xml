@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/layout_backbar" />
@@ -16,12 +18,12 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
                 android:id="@+id/head_sculpture"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:src="@mipmap/personal_information_head" />
 
             <View
@@ -43,12 +45,20 @@
                     android:layout_height="1px"
                     android:layout_weight="1" />
 
-                <TextView
+                <EditText
                     android:id="@+id/nick_name"
+                    style="@style/setting_text_style"
                     android:layout_marginRight="12dp"
-                    style="@style/setting_text_style" />
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="昵称"
+                    android:minWidth="50dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
 
-            </LinearLayout> <View
+            </LinearLayout>
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#dfdddd" />
@@ -67,10 +77,15 @@
                     android:layout_height="1px"
                     android:layout_weight="1" />
 
-                <TextView
+                <EditText
                     android:id="@+id/name"
+                    style="@style/setting_text_style"
                     android:layout_marginRight="12dp"
-                    style="@style/setting_text_style" />
+                    android:background="@null"
+                    android:gravity="right"
+                    android:minWidth="50dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -80,6 +95,7 @@
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/sex_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -95,9 +111,10 @@
 
                 <TextView
                     android:id="@+id/sex"
-                    android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
-                    android:text="@string/male" />
+                    android:layout_marginRight="12dp"
+                    android:text="@string/male"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -107,13 +124,14 @@
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/birthday_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/birthday" />
 
                 <View
@@ -124,9 +142,10 @@
                 <TextView
                     android:id="@+id/birthday"
                     android:layout_width="wrap_content"
-                    android:layout_marginRight="12dp"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:layout_marginRight="12dp"
+                    android:text=""
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -136,13 +155,14 @@
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/teaching_years_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/teaching_years" />
 
                 <View
@@ -152,23 +172,27 @@
 
                 <TextView
                     android:id="@+id/teaching_years"
-                    android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
-                    android:text="5-10年" />
+                    android:layout_marginRight="12dp"
+                    android:text="5-10年"
+                    android:textSize="13sp" />
 
-            </LinearLayout>  <View
+            </LinearLayout>
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/category_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/teach_type" />
 
                 <View
@@ -178,23 +202,27 @@
 
                 <TextView
                     android:id="@+id/category"
-                    android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
-                    android:text="高中" />
+                    android:layout_marginRight="12dp"
+                    android:text="高中"
+                    android:textSize="13sp" />
 
-            </LinearLayout>  <View
+            </LinearLayout>
+
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#dfdddd" />
 
             <LinearLayout
+                android:id="@+id/subject_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/subject" />
 
                 <View
@@ -204,10 +232,10 @@
 
                 <TextView
                     android:id="@+id/subject"
-                    android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
-                    android:text="体育" />
-
+                    android:layout_marginRight="12dp"
+                    android:text="语文"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <View
@@ -215,15 +243,15 @@
                 android:layout_height="1px"
                 android:background="#dfdddd" />
 
-
             <LinearLayout
+                android:id="@+id/school_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/school" />
 
                 <View
@@ -233,10 +261,10 @@
 
                 <TextView
                     android:id="@+id/school"
-                    android:layout_marginRight="12dp"
                     style="@style/setting_text_style"
-                    android:text="" />
-
+                    android:layout_marginRight="12dp"
+                    android:text=""
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <View
@@ -250,24 +278,27 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_marginRight="24dp"
                     style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
                     android:text="@string/profiles" />
 
-                <TextView
+                <EditText
                     android:id="@+id/describe"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="left|top"
+                    android:maxLines="3"
+                    android:minLines="3"
                     android:paddingLeft="3dp"
-                    android:text="" />
-
+                    android:scrollbars="vertical"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#dfdddd" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
