@@ -341,7 +341,7 @@
     <string name="new_email">输入新的邮箱</string>
     <string name="new_parent_phone">家长新手机号</string>
     <string name="notify_classes">课程提醒</string>
-    <string name="notify_message">消息提醒</string>
+    <string name="notify_message">通知设置</string>
     <string name="notify_setting">提醒设置</string>
     <string name="over">完成</string>
     <string name="parent_phone_number">家长手机</string>
