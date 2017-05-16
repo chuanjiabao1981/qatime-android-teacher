@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.ClassTableActivity;
 import cn.qatime.teacher.player.activity.PersonalInformationActivity;
+import cn.qatime.teacher.player.activity.PersonalMyTutorshipActivity;
 import cn.qatime.teacher.player.activity.PersonalMyWalletActivity;
 import cn.qatime.teacher.player.activity.SettingActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
@@ -77,6 +78,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 getActivity().startActivity(new Intent(getActivity(), ClassTableActivity.class));
                 break;
             case R.id.my_tutorship:
+                getActivity().startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
                 break;
             case R.id.setting:
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
