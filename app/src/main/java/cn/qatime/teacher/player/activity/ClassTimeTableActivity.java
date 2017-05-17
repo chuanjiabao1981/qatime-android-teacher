@@ -1,6 +1,5 @@
 package cn.qatime.teacher.player.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,13 +42,13 @@ import libraryextra.view.MonthDateView;
 
 public class ClassTimeTableActivity extends BaseActivity implements View.OnClickListener {
     private PullToRefreshListView listView;
-    private List<ClassTimeTableBean.DataEntity> totalList = new ArrayList<>();
-    private CommonAdapter<ClassTimeTableBean.DataEntity.LessonsEntity> adapter;
+    private List<ClassTimeTableBean.DataBean> totalList = new ArrayList<>();
+    private CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean> adapter;
     private List<Integer> alertList = new ArrayList<>();
     private MonthDateView monthDateView;
     private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     private String date = parse.format(new Date());
-    private List<ClassTimeTableBean.DataEntity.LessonsEntity> itemList = new ArrayList<>();
+    private List<ClassTimeTableBean.DataBean.LessonsBean> itemList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,22 +128,37 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
     private void initview() {
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
-        listView.getRefreshableView().setDividerHeight(0);
         listView.getLoadingLayoutProxy(true, false).setPullLabel(getResources().getString(R.string.pull_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setPullLabel(getResources().getString(R.string.pull_to_load));
         listView.getLoadingLayoutProxy(true, false).setRefreshingLabel(getResources().getString(R.string.refreshing));
         listView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getResources().getString(R.string.loading));
         listView.getLoadingLayoutProxy(true, false).setReleaseLabel(getResources().getString(R.string.release_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResources().getString(R.string.release_to_load));
-
-        adapter = new CommonAdapter<ClassTimeTableBean.DataEntity.LessonsEntity>(this, itemList, R.layout.item_class_time_table) {
+        listView.setEmptyView(View.inflate(ClassTimeTableActivity.this, R.layout.empty_view, null));
+        adapter = new CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean>(this, itemList, R.layout.item_class_time_table) {
             @Override
-            public void convert(ViewHolder helper, final ClassTimeTableBean.DataEntity.LessonsEntity item, int position) {
-                Glide.with(ClassTimeTableActivity.this).load(item.getCourse_publicize()).centerCrop().crossFade().dontAnimate().into((ImageView) helper.getView(R.id.image));
-                helper.setText(R.id.titles, item.getCourse_name()).
-                        setText(R.id.status, getStatus(item.getStatus())).
-                        setText(R.id.time, "上课时间 " + item.getClass_date() + " " + item.getLive_time()).
-                        setText(R.id.grade, getResourceString(R.string.item_subject) + item.getSubject());
+            public void convert(ViewHolder helper, final ClassTimeTableBean.DataBean.LessonsBean item, int position) {
+                Glide.with(ClassTimeTableActivity.this).load(item.getCourse_publicize()).placeholder(R.mipmap.error_header_rect).centerCrop().crossFade().dontAnimate().into((ImageView) helper.getView(R.id.image));
+////                helper.setText(R.id.course, item.getCourse_name());
+                helper.setText(R.id.classname, item.getName());
+                try {
+                    Date date = parse.parse(item.getClass_date());
+                    helper.setText(R.id.class_date, getMonth(date.getMonth()) + "-" + getDay(date.getDate()) + "  ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                helper.setText(R.id.status, getStatus(item.getStatus()));
+                helper.setText(R.id.live_time, item.getLive_time());
+                helper.setText(R.id.grade, item.getGrade());
+                helper.setText(R.id.subject, item.getSubject());
+                helper.setText(R.id.teacher, "/" + item.getTeacher_name());
+                if ("LiveStudio::Lesson".equals(itemList.get(position).getModal_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xffff4856);
+                    helper.setText(R.id.modal_type, "直播课");
+                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position).getModal_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xff4856ff);
+                    helper.setText(R.id.modal_type, "一对一");
+                }
             }
         };
         listView.setAdapter(adapter);
@@ -158,7 +173,7 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
         ImageView ivLeft = (ImageView) findViewById(R.id.iv_left);
         ImageView ivRight = (ImageView) findViewById(R.id.iv_right);
         monthDateView = (MonthDateView) findViewById(R.id.monthDateView);
-        monthDateView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dp2px(this, 25) * 7));
+        monthDateView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, DensityUtils.dp2px(this, 35) * 6));
         TextView tvDate = (TextView) findViewById(R.id.date_text);
         View tvToday = findViewById(R.id.date_operator_ll);
         monthDateView.setTextView(tvDate, null);
@@ -170,6 +185,14 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
             public void onClickOnDate() {
                 getDate();
                 filterList();
+            }
+        });
+        monthDateView.setOnCalendarPageChangeListener(new MonthDateView.OnCalendarPageChangeListener() {
+            @Override
+            public void onPageChange(int type) {
+                cancelAll(this);//旧请求取消
+                getDate();
+                initData();
             }
         });
     }
@@ -198,6 +221,22 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
                 initData();
                 break;
         }
+    }
+
+
+    private String getDay(int day) {
+        if (day < 10) {
+            return "0" + day;
+        }
+        return String.valueOf(day);
+    }
+
+    private String getMonth(int month) {
+        month += 1;
+        if (month < 10) {
+            return "0" + month;
+        }
+        return String.valueOf(month);
     }
 
     private String getStatus(String status) {
