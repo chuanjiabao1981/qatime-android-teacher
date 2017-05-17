@@ -237,6 +237,16 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".activity.PersonalMyVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".activity.VideoCoursesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 
 </manifest>
