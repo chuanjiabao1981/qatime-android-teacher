@@ -240,18 +240,20 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
     }
 
     private String getStatus(String status) {
-        if (status.equals("teaching")) {//直播中
-            return getResources().getString(R.string.class_teaching);
-        } else if (status.equals("paused")) {
-            return getResources().getString(R.string.class_teaching);
+        if (status.equals("missed")) {//待补课
+            return getResourceString(R.string.class_wait);
         } else if (status.equals("init")) {//未开始
-            return getResources().getString(R.string.class_init);
+            return getResourceString(R.string.class_init);
         } else if (status.equals("ready")) {//待开课
-            return getResources().getString(R.string.class_ready);
-        } else if (status.equals("paused_inner")) {//暂停中
-            return getResources().getString(R.string.class_paused_inner);
+            return getResourceString(R.string.class_ready);
+        } else if (status.equals("teaching")) {//直播中
+            return getResourceString(R.string.class_teaching);
+        } else if (status.equals("closed")) {//已直播
+            return getResourceString(R.string.class_closed);
+        } else if (status.equals("paused")) {//直播中
+            return getResourceString(R.string.class_teaching);
         } else {
-            return getResources().getString(R.string.class_over);//已结束
+            return getResourceString(R.string.class_over);//已结束
         }
     }
 }
