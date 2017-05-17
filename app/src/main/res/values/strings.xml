@@ -165,7 +165,6 @@
     <string name="teacher_detail">教师资料</string>
     <string name="course_list">课程列表</string>
     <!--//课程详情-->
-    <string name="student_number">学习人数</string>
     <string name="Join_the_audition">加入试听</string>
     <string name="Joined_the_audition">已加入试听</string>
     <string name="purchase_now">立即购买</string>
@@ -324,7 +323,7 @@
     <string name="hint_input_current_password">输入当前登录密码</string>
     <string name="hint_input_email">请输入完整邮箱地址</string>
     <string name="hint_input_new_phone">输入新手机号码（仅支持大陆地区11位）</string>
-        <string name="hint_opinion">请在此输入您的宝贵意见和建议，它能够帮助我们有效的改进产品，使其更满足您的需要。</string>
+    <string name="hint_opinion">请在此输入您的宝贵意见和建议，它能够帮助我们有效的改进产品，使其更满足您的需要。</string>
     <string name="input_current_password">输入当前密码</string>
     <string name="input_new_password">输入新的密码</string>
     <string name="learn_1">01 创建辅导</string>
@@ -457,4 +456,17 @@
     <string name="change_pay_password_notify">新设置或修改后将在24小时内不能使用支付密码，是否继续</string>
     <string name="continue_anyway">继续</string>
     <string name="notify_mode">通知方式</string>
+    <string name="remedial_detail">课程介绍</string>
+    <string name="course_arrangement">上课安排</string>
+    <string name="student_number">报名人数 %1$d</string>
+    <string name="ready_to_start">[即将开课]</string>
+    <string name="progress_live">[进度%1$d/%2$d]</string>
+    <string name="audition_over">试听结束</string>
+    <string name="teaching">开课中</string>
+    <string name="completed">已结束</string>
+    <string name="lesson_count">共%1$d课</string>
+    <string name="no_desc">暂无简介</string>
+    <string name="class_missed">待补课</string>
+    <string name="class_closed">已直播</string>
+    <string name="not_available"> 暂无</string>
 </resources>

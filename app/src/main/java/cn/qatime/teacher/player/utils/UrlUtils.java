@@ -18,6 +18,8 @@ public class UrlUtils {
     public static String appKey = isDebug ? "2a24ca70e580cab2bef58b1e62478f9f" : "4fe3a3fba0a40a00daf011049a29d995";
     //登录
     public static String urlLogin = baseUrl + "api/v1/sessions";
+    //辅导班
+    public static String urlRemedialClass = baseUrl + "api/v1/live_studio/courses";
     //获取验证码
     public static String urlGetCode = baseUrl + "api/v1/captcha";
     //注册
