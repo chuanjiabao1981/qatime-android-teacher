@@ -54,6 +54,15 @@
                     android:text=" 报名立减"
                     android:textColor="#109f10"
                     android:textSize="11dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/identification_light"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:visibility="invisible"
+                    android:textColor="#109f10"
+                    android:textSize="11dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -93,11 +102,6 @@
                     android:textSize="12sp" />
                 <!--已报人数-->
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#ccc" />
         </LinearLayout>
 
         <libraryextra.view.SimpleViewPagerIndicator

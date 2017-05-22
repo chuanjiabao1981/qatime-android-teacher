@@ -53,6 +53,7 @@ public class MyVideoBean {
         private String status;
         private String subject;
         private String suit_crowd;
+        private String teacher_percentage;
         private int taste_count;
         private TeacherBean teacher;
         private String teacher_name;
@@ -60,6 +61,14 @@ public class MyVideoBean {
         private int video_lessons_count;
         private List<String> tag_list;
         private List<VideoLessonsBean> video_lessons;
+
+        public String getTeacher_percentage() {
+            return teacher_percentage;
+        }
+
+        public void setTeacher_percentage(String teacher_percentage) {
+            this.teacher_percentage = teacher_percentage;
+        }
 
         public int getBuy_tickets_count() {
             return buy_tickets_count;
