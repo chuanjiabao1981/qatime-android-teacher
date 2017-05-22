@@ -13,10 +13,6 @@ import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
-import java.text.DecimalFormat;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.ClassTableActivity;
@@ -53,7 +49,8 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private TextView nickName;
     private View cashAccountSafe;
     private View close;
-    private boolean flag = false;//是否提示过未设置支付密码
+    private boolean closed = false;//是否提示过未设置支付密码
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal_center, container, false);
@@ -61,11 +58,6 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         initView(view);
         initCashAccountSafe();
         return view;
-    }
-    @Subscribe
-    public void onEvent(BusEvent event) {
-        if (BusEvent.ON_REFRESH_CASH_ACCOUNT == event && !flag)
-            initCashAccountSafe();
     }
 
     @Override
@@ -81,10 +73,12 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 cashAccountSafe.setVisibility(View.VISIBLE);
                 cashAccountSafe.setOnClickListener(this);
                 close.setOnClickListener(this);
-                flag = true;
+            }else{
+                cashAccountSafe.setVisibility(View.GONE);
             }
         }
     }
+
     private void initView(View view) {
         classTable = view.findViewById(R.id.class_table);
         myTutorship = view.findViewById(R.id.my_tutorship);
@@ -102,8 +96,8 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         }
         name.setText(BaseApplication.getProfile().getData().getUser().getName());
         nickName.setText("昵称:" + BaseApplication.getProfile().getData().getUser().getNick_name());
-        if (BaseApplication.getCashAccount()!=null) {
-            balance.setText("￥"+BaseApplication.getCashAccount().getData().getBalance());
+        if (BaseApplication.getCashAccount() != null) {
+            balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
         }
 
         classTable.setOnClickListener(this);
@@ -118,18 +112,15 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     @Subscribe
     public void onEvent(BusEvent event) {
         if (event == BusEvent.ON_REFRESH_CASH_ACCOUNT) {
-            if (BaseApplication.getCashAccount()!=null) {
-                balance.setText("￥"+BaseApplication.getCashAccount().getData().getBalance());
+            if (BaseApplication.getCashAccount() != null) {
+                balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
+            }
+            if (!closed) {
+                initCashAccountSafe();
             }
         }
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     public void onClick(View view) {
@@ -141,7 +132,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 getActivity().startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
                 break;
             case R.id.my_video:
-              startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
+                startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
                 break;
             case R.id.setting:
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
@@ -160,6 +151,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.close:
+                closed = true;
                 cashAccountSafe.setVisibility(View.GONE);
                 break;
         }
