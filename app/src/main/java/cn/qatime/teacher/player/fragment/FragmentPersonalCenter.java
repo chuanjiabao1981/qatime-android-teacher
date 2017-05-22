@@ -11,8 +11,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.ClassTableActivity;
+import cn.qatime.teacher.player.activity.PayPSWForgetActivity;
 import cn.qatime.teacher.player.activity.PersonalInformationActivity;
 import cn.qatime.teacher.player.activity.PersonalMyTutorshipActivity;
 import cn.qatime.teacher.player.activity.PersonalMyVideoActivity;
@@ -20,7 +24,9 @@ import cn.qatime.teacher.player.activity.PersonalMyWalletActivity;
 import cn.qatime.teacher.player.activity.SettingActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
+import cn.qatime.teacher.player.bean.BusEvent;
 import cn.qatime.teacher.player.utils.Constant;
+import libraryextra.bean.CashAccountBean;
 import libraryextra.transformation.GlideCircleTransform;
 import libraryextra.utils.StringUtils;
 
@@ -41,12 +47,36 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private ImageView headSculpture;
     //    DecimalFormat df = new DecimalFormat("#.00");
     private TextView nickName;
+    private View cashAccountSafe;
+    private View close;
+    private boolean closed = false;//是否提示过未设置支付密码
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal_center, container, false);
+        EventBus.getDefault().register(this);
         initView(view);
+        initCashAccountSafe();
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    private void initCashAccountSafe() {
+        CashAccountBean cashAccount = BaseApplication.getCashAccount();
+        if (cashAccount != null && cashAccount.getData() != null) {
+            if (!cashAccount.getData().isHas_password()) {
+                cashAccountSafe.setVisibility(View.VISIBLE);
+                cashAccountSafe.setOnClickListener(this);
+                close.setOnClickListener(this);
+            }else{
+                cashAccountSafe.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void initView(View view) {
@@ -58,12 +88,17 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         name = (TextView) view.findViewById(R.id.name);
         nickName = (TextView) view.findViewById(R.id.nick_name);
         balance = (TextView) view.findViewById(R.id.balance);
+        cashAccountSafe = view.findViewById(R.id.cash_account_safe);
+        close = view.findViewById(R.id.close);
         information = view.findViewById(R.id.information);
         if (BaseApplication.getProfile().getData() != null && BaseApplication.getProfile().getData().getUser() != null) {
             Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
         }
         name.setText(BaseApplication.getProfile().getData().getUser().getName());
         nickName.setText("昵称:" + BaseApplication.getProfile().getData().getUser().getNick_name());
+        if (BaseApplication.getCashAccount() != null) {
+            balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
+        }
 
         classTable.setOnClickListener(this);
         myTutorship.setOnClickListener(this);
@@ -72,6 +107,20 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         information.setOnClickListener(this);
         view.findViewById(R.id.my_video).setOnClickListener(this);
     }
+
+
+    @Subscribe
+    public void onEvent(BusEvent event) {
+        if (event == BusEvent.ON_REFRESH_CASH_ACCOUNT) {
+            if (BaseApplication.getCashAccount() != null) {
+                balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
+            }
+            if (!closed) {
+                initCashAccountSafe();
+            }
+        }
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -83,7 +132,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 getActivity().startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
                 break;
             case R.id.my_video:
-              startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
+                startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
                 break;
             case R.id.setting:
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
@@ -96,6 +145,14 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
             case R.id.information:
                 intent = new Intent(getActivity(), PersonalInformationActivity.class);
                 startActivityForResult(intent, Constant.REQUEST);
+                break;
+            case R.id.cash_account_safe:
+                intent = new Intent(getActivity(), PayPSWForgetActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.close:
+                closed = true;
+                cashAccountSafe.setVisibility(View.GONE);
                 break;
         }
     }
