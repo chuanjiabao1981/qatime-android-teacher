@@ -57,8 +57,7 @@
         android:layout_height="wrap_content"
         android:background="#fff"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="horizontal">
 
         <TextView
             style="@style/setting_text_style"
