@@ -9,6 +9,7 @@ import android.os.Environment;
  */
 public class Constant {
 
+    public static String APP_ID = "wx8f258dac1e788a61";//微信appid
     public static String phoneNumber = "400-838-8010";
     public static final String CACHEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qatime/teacher";
 

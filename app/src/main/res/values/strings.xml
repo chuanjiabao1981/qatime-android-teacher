@@ -472,4 +472,12 @@
     <string name="not_set">未设置</string>
     <string name="new_pay_password_invalid">新密码%1$d小时后可用</string>
     <string name="bind_wechat">绑定微信</string>
+    <string name="bind_cancel">取消绑定</string>
+    <string name="bind_rightnow">马上绑定</string>
+    <string name="wechat_not_installed">操作失败，尚未安装微信</string>
+    <string name="wechat_not_support">操作失败，不支持的微信客户端</string>
+    <string name="login_failed_wechat_not_installed">登录失败，请使用手机号登录</string>
+    <string name="login_failed_wechat_not_support">登录失败，不支持的微信客户端</string>
+    <string name="cancel_bind_weixin_notify">取消绑定后将不能使用提现到微信功能，是否继续</string>
+    <string name="bind_error">绑定失败</string>
 </resources>
