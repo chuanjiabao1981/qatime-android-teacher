@@ -494,7 +494,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REGIST && resultCode == Constant.REGIST) {
+        if (requestCode == Constant.REGIST && resultCode == Constant.RESPONSE) {
             setResult(resultCode);
             finish();
         }

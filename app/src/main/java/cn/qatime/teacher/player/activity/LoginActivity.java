@@ -457,7 +457,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        if ((requestCode == Constant.REGIST_1||requestCode == Constant.REGIST_2) && resultCode == Constant.RESPONSE) {
-        if (requestCode == Constant.REGIST && resultCode == Constant.REGIST) {
+        if (requestCode == Constant.REGIST && resultCode == Constant.RESPONSE) {
             finish();
         }
     }

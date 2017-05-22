@@ -161,7 +161,6 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
 
     private void notifySubject(int position) {
         subjectList.clear();
-        subjectList.add("全部");
         subjectList.add("语文");
         subjectList.add("数学");
         subjectList.add("英语");
@@ -233,10 +232,10 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
         Intent intent;
         switch (v.getId()) {
             case R.id.edit_more:
-                intent = new Intent(RegisterPerfectActivity.this, PersonalInformationChangeActivity.class);
+                intent = new Intent(RegisterPerfectActivity.this, PersonalInformationActivity.class);
 //                int register_action = getIntent().getIntExtra("register_action", Constant.REGIST_1);
-//                intent.putExtra("register_action", register_action);
 //                startActivityForResult(intent, register_action);
+                intent.putExtra("register_action", Constant.REGIST);
                 startActivityForResult(intent, Constant.REGIST);
                 break;
             case R.id.grade:
@@ -267,7 +266,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.complete://完成
                 int userId = BaseApplication.getUserId();
-                String url = UrlUtils.urlPersonalInformation + userId + "/profile";
+                String url = UrlUtils.urlPersonalInformation + userId;
                 UpLoadUtil util = new UpLoadUtil(url) {
                     @Override
                     public void httpStart() {
@@ -351,7 +350,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
             gradeWheel.setOffset(1);
 
             gradeWheel.setItems(gradesList);
-            gradeWheel.setSeletion(gradesList.indexOf(textGrade.getText()));
+            gradeWheel.setSeletion(gradesList.indexOf(textGrade.getText().toString().trim()));
             gradeWheel.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
@@ -382,7 +381,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
         subjectWheel.setOffset(1);
 
         subjectWheel.setItems(subjectList);
-        subjectWheel.setSeletion(subjectList.indexOf(subject.getText()));
+        subjectWheel.setSeletion(subjectList.indexOf(subject.getText().toString().trim()));
         subjectWheel.setonItemClickListener(new WheelView.OnItemClickListener() {
             @Override
             public void onItemClick() {
@@ -410,7 +409,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
             yearsWheel.setOffset(1);
 
             yearsWheel.setItems(yearsList);
-            yearsWheel.setSeletion(yearsList.indexOf(teachingYears.getText()));
+            yearsWheel.setSeletion(yearsList.indexOf(teachingYears.getText().toString().trim()));
             yearsWheel.setonItemClickListener(new WheelView.OnItemClickListener() {
                 @Override
                 public void onItemClick() {
@@ -481,6 +480,11 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
             if (schoolData != null) {
                 school.setText(schoolData.getName());
             }
+        }else if(requestCode == Constant.REGIST&&resultCode==Constant.RESPONSE){
+            Intent intent = new Intent(RegisterPerfectActivity.this, MainActivity.class);
+            startActivity(intent);
+            setResult(resultCode);
+            finish();
         }
 //        else if (requestCode == Constant.REGIST_1 && resultCode == Constant.RESPONSE) {//只有信息修改成功以后才会走到这
 //            Intent intent = new Intent(RegisterPerfectActivity.this, MainActivity.class);

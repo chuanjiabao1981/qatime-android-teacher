@@ -9,82 +9,118 @@ import java.util.List;
  * @Description
  */
 public class ClassTimeTableBean implements Serializable {
-
-
-    /**
-     * status : 1
-     * data : [{"date":"2016-08-08","lessons":[{"id":15,"name":"第一节","status":"finished","class_date":"2016-08-08","live_time":"6:30~8:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":15,"name":"第一节","status":"finished","class_date":"2016-08-08","live_time":"6:30~8:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":16,"name":"第二节","status":"finished","class_date":"2016-08-08","live_time":"21:00~22:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":16,"name":"第二节","status":"finished","class_date":"2016-08-08","live_time":"21:00~22:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-09","lessons":[{"id":17,"name":"第三节","status":"finished","class_date":"2016-08-09","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":17,"name":"第三节","status":"finished","class_date":"2016-08-09","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":18,"name":"第四节","status":"finished","class_date":"2016-08-09","live_time":"14:00~16:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":18,"name":"第四节","status":"finished","class_date":"2016-08-09","live_time":"14:00~16:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-10","lessons":[{"id":19,"name":"第五节","status":"ready","class_date":"2016-08-10","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":19,"name":"第五节","status":"ready","class_date":"2016-08-10","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":20,"name":"第六节","status":"ready","class_date":"2016-08-10","live_time":"14:00~16:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":20,"name":"第六节","status":"ready","class_date":"2016-08-10","live_time":"14:00~16:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-11","lessons":[{"id":21,"name":"第七节","status":"ready","class_date":"2016-08-11","live_time":"8:00~10:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":21,"name":"第七节","status":"ready","class_date":"2016-08-11","live_time":"8:00~10:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":22,"name":"第八节","status":"ready","class_date":"2016-08-11","live_time":"16:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":22,"name":"第八节","status":"ready","class_date":"2016-08-11","live_time":"16:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-12","lessons":[{"id":23,"name":"第九节","status":"ready","class_date":"2016-08-12","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":23,"name":"第九节","status":"ready","class_date":"2016-08-12","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":24,"name":"第十节","status":"ready","class_date":"2016-08-12","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":24,"name":"第十节","status":"ready","class_date":"2016-08-12","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":52,"name":"adfasdfasdfasdfsad","status":"init","class_date":"2016-08-12","live_time":"0:30~2:00","course_name":"高考冲刺班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_f335bd3eb0a2bec09aaab740668a3248.png","subject":"生物","pull_address":"","teacher_name":"luke"}]},{"date":"2016-08-13","lessons":[{"id":25,"name":"第十一节","status":"ready","class_date":"2016-08-13","live_time":"8:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":25,"name":"第十一节","status":"ready","class_date":"2016-08-13","live_time":"8:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":26,"name":"第十二节","status":"ready","class_date":"2016-08-13","live_time":"16:00~20:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":26,"name":"第十二节","status":"ready","class_date":"2016-08-13","live_time":"16:00~20:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":50,"name":"第三课 氕氘氚和卤气","status":"ready","class_date":"2016-08-13","live_time":"1:00~6:30","course_name":"初二化学重点、难点、易错点、考点综合讲解辅导班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_05db4f303a24d0180d173eb31e2e5051.jpeg","subject":"化学","pull_address":"","teacher_name":"luke"},{"id":50,"name":"第三课 氕氘氚和卤气","status":"ready","class_date":"2016-08-13","live_time":"1:00~6:30","course_name":"初二化学重点、难点、易错点、考点综合讲解辅导班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_05db4f303a24d0180d173eb31e2e5051.jpeg","subject":"化学","pull_address":"","teacher_name":"luke"},{"id":51,"name":"dadfasdfafsdafssdasdsdf","status":"ready","class_date":"2016-08-13","live_time":"2:00~3:30","course_name":"高考冲刺班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_bcbaf42e2cd72e59ee8378fd504dbcb5.png","subject":"物理","pull_address":"","teacher_name":"luke"},{"id":53,"name":"adsfdsfasdf","status":"ready","class_date":"2016-08-13","live_time":"1:00~2:30","course_name":"高考冲刺班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_b949d1f8c297404d2fd4338955df8583.png","subject":"物理","pull_address":"","teacher_name":"luke"}]},{"date":"2016-08-14","lessons":[{"id":27,"name":"第十三节","status":"ready","class_date":"2016-08-14","live_time":"8:00~10:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":27,"name":"第十三节","status":"ready","class_date":"2016-08-14","live_time":"8:00~10:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":28,"name":"第十四节","status":"ready","class_date":"2016-08-14","live_time":"16:00~21:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":28,"name":"第十四节","status":"ready","class_date":"2016-08-14","live_time":"16:00~21:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-15","lessons":[{"id":29,"name":"第十五节","status":"ready","class_date":"2016-08-15","live_time":"9:00~12:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":29,"name":"第十五节","status":"ready","class_date":"2016-08-15","live_time":"9:00~12:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":30,"name":"第十六节","status":"ready","class_date":"2016-08-15","live_time":"14:00~18:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":30,"name":"第十六节","status":"ready","class_date":"2016-08-15","live_time":"14:00~18:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-16","lessons":[{"id":31,"name":"第十七节","status":"ready","class_date":"2016-08-16","live_time":"8:00~10:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":31,"name":"第十七节","status":"ready","class_date":"2016-08-16","live_time":"8:00~10:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":32,"name":"第十八节","status":"ready","class_date":"2016-08-16","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":32,"name":"第十八节","status":"ready","class_date":"2016-08-16","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-17","lessons":[{"id":33,"name":"第十九节","status":"ready","class_date":"2016-08-17","live_time":"10:00~12:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":33,"name":"第十九节","status":"ready","class_date":"2016-08-17","live_time":"10:00~12:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":34,"name":"第二十节","status":"ready","class_date":"2016-08-17","live_time":"10:00~14:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":34,"name":"第二十节","status":"ready","class_date":"2016-08-17","live_time":"10:00~14:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-18","lessons":[{"id":35,"name":"第二十一节","status":"ready","class_date":"2016-08-18","live_time":"9:00~11:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":35,"name":"第二十一节","status":"ready","class_date":"2016-08-18","live_time":"9:00~11:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":36,"name":"第二十二节","status":"ready","class_date":"2016-08-18","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":36,"name":"第二十二节","status":"ready","class_date":"2016-08-18","live_time":"14:00~18:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-19","lessons":[{"id":37,"name":"第二十三节","status":"ready","class_date":"2016-08-19","live_time":"8:00~10:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":37,"name":"第二十三节","status":"ready","class_date":"2016-08-19","live_time":"8:00~10:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":38,"name":"第二十四节","status":"ready","class_date":"2016-08-19","live_time":"14:00~15:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":38,"name":"第二十四节","status":"ready","class_date":"2016-08-19","live_time":"14:00~15:30","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-20","lessons":[{"id":39,"name":"第二十五节","status":"ready","class_date":"2016-08-20","live_time":"9:30~11:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":39,"name":"第二十五节","status":"ready","class_date":"2016-08-20","live_time":"9:30~11:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":40,"name":"第二十六节","status":"ready","class_date":"2016-08-20","live_time":"15:00~17:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":40,"name":"第二十六节","status":"ready","class_date":"2016-08-20","live_time":"15:00~17:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-21","lessons":[{"id":41,"name":"第二十七节","status":"ready","class_date":"2016-08-21","live_time":"9:30~11:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":41,"name":"第二十七节","status":"ready","class_date":"2016-08-21","live_time":"9:30~11:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":42,"name":"第二十八节","status":"ready","class_date":"2016-08-21","live_time":"14:30~21:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":42,"name":"第二十八节","status":"ready","class_date":"2016-08-21","live_time":"14:30~21:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-22","lessons":[{"id":43,"name":"第二十九节","status":"ready","class_date":"2016-08-22","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":43,"name":"第二十九节","status":"ready","class_date":"2016-08-22","live_time":"10:00~12:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":44,"name":"第三十节","status":"ready","class_date":"2016-08-22","live_time":"14:00~19:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":44,"name":"第三十节","status":"ready","class_date":"2016-08-22","live_time":"14:00~19:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]},{"date":"2016-08-01","lessons":[{"id":49,"name":"第二课 铁钙镁铝四元素的主要特性（难点）","status":"init","class_date":"2016-08-01","live_time":"2:00~2:30","course_name":"初二化学重点、难点、易错点、考点综合讲解辅导班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_05db4f303a24d0180d173eb31e2e5051.jpeg","subject":"化学","pull_address":"","teacher_name":"luke"},{"id":49,"name":"第二课 铁钙镁铝四元素的主要特性（难点）","status":"init","class_date":"2016-08-01","live_time":"2:00~2:30","course_name":"初二化学重点、难点、易错点、考点综合讲解辅导班","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_05db4f303a24d0180d173eb31e2e5051.jpeg","subject":"化学","pull_address":"","teacher_name":"luke"}]},{"date":"2016-08-31","lessons":[{"id":58,"name":"122123","status":"init","class_date":"2016-08-31","live_time":"3:00~3:30","course_name":"王小龙 800*500","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_41364c5b954a58bb2b0379ee672d71ed.png","subject":"数学","pull_address":"","teacher_name":"luke"},{"id":58,"name":"122123","status":"init","class_date":"2016-08-31","live_time":"3:00~3:30","course_name":"王小龙 800*500","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_41364c5b954a58bb2b0379ee672d71ed.png","subject":"数学","pull_address":"","teacher_name":"luke"},{"id":59,"name":"122123","status":"init","class_date":"2016-08-31","live_time":"2:00~6:00","course_name":"王小龙  新图片","course_publicize":"http://qatime-testing.oss-cn-beijing.aliyuncs.com/courses/publicize/list_1fef98d0b40a237f808d931043c9b763.png","subject":"物理","pull_address":"","teacher_name":"luke"}]}]
-     */
-
     private int status;
-    private List<DataEntity> data;
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public void setData(List<DataEntity> data) {
-        this.data = data;
-    }
+    private List<DataBean> data;
 
     public int getStatus() {
         return status;
     }
 
-    public List<DataEntity> getData() {
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<DataBean> getData() {
         return data;
     }
 
-    public class DataEntity implements Serializable {
-        /**
-         * date : 2016-08-08
-         * lessons : [{"id":15,"name":"第一节","status":"finished","class_date":"2016-08-08","live_time":"6:30~8:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":15,"name":"第一节","status":"finished","class_date":"2016-08-08","live_time":"6:30~8:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":16,"name":"第二节","status":"finished","class_date":"2016-08-08","live_time":"21:00~22:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"},{"id":16,"name":"第二节","status":"finished","class_date":"2016-08-08","live_time":"21:00~22:00","course_name":"测试一下辅导班","course_publicize":"http://testing.qatime.cn/imgs/no_img.png","subject":"数学","pull_address":"","teacher_name":"辛帅锋"}]
-         */
+    public void setData(List<DataBean> data) {
+        this.data = data;
+    }
+
+    public static class DataBean {
 
         private String date;
-        private List<LessonsEntity> lessons;
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public void setLessons(List<LessonsEntity> lessons) {
-            this.lessons = lessons;
-        }
+        private List<LessonsBean> lessons;
 
         public String getDate() {
             return date;
         }
 
-        public List<LessonsEntity> getLessons() {
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public List<LessonsBean> getLessons() {
             return lessons;
         }
 
-        public class LessonsEntity implements Serializable {
-            /**
-             * id : 15
-             * name : 第一节
-             * status : finished
-             * class_date : 2016-08-08
-             * live_time : 6:30~8:00
-             * course_name : 测试一下辅导班
-             * course_publicize : http://testing.qatime.cn/imgs/no_img.png
-             * subject : 数学
-             * pull_address :
-             * teacher_name : 辛帅锋
-             */
+        public void setLessons(List<LessonsBean> lessons) {
+            this.lessons = lessons;
+        }
 
-            private int id;
-            private String name;
-            private String status;
+        public static class LessonsBean {
+
+            private String board;
+            private String board_pull_stream;
+            private String camera;
+            private String camera_pull_stream;
+            private String chat_team_id;
             private String class_date;
-            private String live_time;
+            private String course_id;
             private String course_name;
             private String course_publicize;
-            private String subject;
+            private String grade;
+            private int id;
+            private int left_replay_times;
+            private String lesson_name;
+            private String live_time;
+            private String modal_type;
+            private String name;
+            private int product_id;
             private String pull_address;
+            private boolean replayable;
+            private String status;
+            private String subject;
             private String teacher_name;
-            private String course_id;
+
+            public String getBoard() {
+                return board;
+            }
+
+            public void setBoard(String board) {
+                this.board = board;
+            }
+
+            public String getBoard_pull_stream() {
+                return board_pull_stream;
+            }
+
+            public void setBoard_pull_stream(String board_pull_stream) {
+                this.board_pull_stream = board_pull_stream;
+            }
+
+            public String getCamera() {
+                return camera;
+            }
+
+            public void setCamera(String camera) {
+                this.camera = camera;
+            }
+
+            public String getCamera_pull_stream() {
+                return camera_pull_stream;
+            }
+
+            public void setCamera_pull_stream(String camera_pull_stream) {
+                this.camera_pull_stream = camera_pull_stream;
+            }
+
+            public String getChat_team_id() {
+                return chat_team_id;
+            }
+
+            public void setChat_team_id(String chat_team_id) {
+                this.chat_team_id = chat_team_id;
+            }
+
+            public String getClass_date() {
+                return class_date;
+            }
+
+            public void setClass_date(String class_date) {
+                this.class_date = class_date;
+            }
 
             public String getCourse_id() {
                 return course_id;
@@ -94,84 +130,125 @@ public class ClassTimeTableBean implements Serializable {
                 this.course_id = course_id;
             }
 
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public void setStatus(String status) {
-                this.status = status;
-            }
-
-            public void setClass_date(String class_date) {
-                this.class_date = class_date;
-            }
-
-            public void setLive_time(String live_time) {
-                this.live_time = live_time;
+            public String getCourse_name() {
+                return course_name;
             }
 
             public void setCourse_name(String course_name) {
                 this.course_name = course_name;
             }
 
+            public String getCourse_publicize() {
+                return course_publicize;
+            }
+
             public void setCourse_publicize(String course_publicize) {
                 this.course_publicize = course_publicize;
             }
 
-            public void setSubject(String subject) {
-                this.subject = subject;
+            public String getGrade() {
+                return grade;
             }
 
-            public void setPull_address(String pull_address) {
-                this.pull_address = pull_address;
-            }
-
-            public void setTeacher_name(String teacher_name) {
-                this.teacher_name = teacher_name;
+            public void setGrade(String grade) {
+                this.grade = grade;
             }
 
             public int getId() {
                 return id;
             }
 
-            public String getName() {
-                return name;
+            public void setId(int id) {
+                this.id = id;
             }
 
-            public String getStatus() {
-                return status;
+            public int getLeft_replay_times() {
+                return left_replay_times;
             }
 
-            public String getClass_date() {
-                return class_date;
+            public void setLeft_replay_times(int left_replay_times) {
+                this.left_replay_times = left_replay_times;
+            }
+
+            public String getLesson_name() {
+                return lesson_name;
+            }
+
+            public void setLesson_name(String lesson_name) {
+                this.lesson_name = lesson_name;
             }
 
             public String getLive_time() {
                 return live_time;
             }
 
-            public String getCourse_name() {
-                return course_name;
+            public void setLive_time(String live_time) {
+                this.live_time = live_time;
             }
 
-            public String getCourse_publicize() {
-                return course_publicize;
+            public String getModal_type() {
+                return modal_type;
             }
 
-            public String getSubject() {
-                return subject;
+            public void setModal_type(String modal_type) {
+                this.modal_type = modal_type;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+
+            public int getProduct_id() {
+                return product_id;
+            }
+
+            public void setProduct_id(int product_id) {
+                this.product_id = product_id;
             }
 
             public String getPull_address() {
                 return pull_address;
             }
 
+            public void setPull_address(String pull_address) {
+                this.pull_address = pull_address;
+            }
+
+            public boolean isReplayable() {
+                return replayable;
+            }
+
+            public void setReplayable(boolean replayable) {
+                this.replayable = replayable;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
             public String getTeacher_name() {
                 return teacher_name;
+            }
+
+            public void setTeacher_name(String teacher_name) {
+                this.teacher_name = teacher_name;
             }
         }
     }

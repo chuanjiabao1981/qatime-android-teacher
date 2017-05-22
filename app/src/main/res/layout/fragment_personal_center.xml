@@ -92,6 +92,38 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/cash_account_safe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffe4"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/warning" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="3dp"
+            android:text="尚未设置支付密码，点击设置"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@mipmap/close" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -192,6 +224,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/my_video"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -429,8 +462,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                custom:layout_widthPercent="66.67%w"
-                android:background="#dfdddd" />
+                android:background="#dfdddd"
+                custom:layout_widthPercent="66.67%w" />
         </com.zhy.android.percent.support.PercentLinearLayout>
     </ScrollView>
 

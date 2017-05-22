@@ -2,6 +2,7 @@ package cn.qatime.teacher.player.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
@@ -56,6 +57,12 @@ public class ClassTableActivity extends BaseActivity {
             }
         });
         fragmentlayout.setAdapter(fragBaseFragments, R.layout.tablayout_class_timetable, 0x0911);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fragmentlayout.setCurrenItem(0);
+            }
+        }, 200);
     }
 
     @Override

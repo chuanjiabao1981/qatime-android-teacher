@@ -160,8 +160,7 @@ public class FragmentSystemNews extends BaseFragment {
                 super.onErrorResponse(volleyError);
             }
         });
-        //TODO 用户无权限
-//        addToRequestQueue(request);
+        addToRequestQueue(request);
     }
 
 }
