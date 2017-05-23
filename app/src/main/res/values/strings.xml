@@ -433,7 +433,7 @@
     <string name="transfer_accounts">转账</string>
     <string name="withdraw_cash_manner">提现方式</string>
     <string name="withdraw_num">提现金额</string>
-    <string name="withdraw_num_hint">请输入提现金额</string>
+    <string name="withdraw_num_hint">请输入提现金额(￥%1$s可用)</string>
     <string name="recharge_confirm">交易确认</string>
     <string name="nick_name">昵称</string>
     <string name="teaching_years">教龄</string>
@@ -480,4 +480,15 @@
     <string name="login_failed_wechat_not_support">登录失败，不支持的微信客户端</string>
     <string name="cancel_bind_weixin_notify">取消绑定后将不能使用提现到微信功能，是否继续</string>
     <string name="bind_error">绑定失败</string>
+    <string name="amount_not_allow">金额不支持</string>
+    <string name="user_withdraw">用户提现</string>
+    <string name="try_again">重试</string>
+    <string name="apply_withdraw_error">提现系统繁忙，请稍候再试</string>
+    <string name="bank_card">银行卡</string>
+    <string name="alipay">支付宝</string>
+    <string name="confirm_cancel_withdraw">是否放弃此提现？</string>
+    <string name="withdraw_cancel_success">提现取消成功</string>
+    <string name="under_review">审核中</string>
+    <string name="review_success">审核通过</string>
+    <string name="review_failed">审核失败</string>
 </resources>

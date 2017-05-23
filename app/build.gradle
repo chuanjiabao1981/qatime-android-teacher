@@ -15,7 +15,7 @@ android {
         config {
             keyAlias 'teacher'
             keyPassword '32147896'
-            storeFile file('C:/Users/lenovo/Desktop/qatime_t.jks')
+            storeFile file('C:/Users/lenovo/Desktop/qatime.jks')
             storePassword '32147896'
         }
     }

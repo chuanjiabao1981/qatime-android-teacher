@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +51,8 @@ public class AboutUsActivity extends BaseActivity {
                 View view = View.inflate(AboutUsActivity.this, R.layout.dialog_cancel_or_confirm, null);
                 TextView text = (TextView) view.findViewById(R.id.text);
                 text.setText(getResourceString(R.string.call_customer_service_phone) + Constant.phoneNumber);
-                Button cancel = (Button) view.findViewById(R.id.cancel);
-                Button confirm = (Button) view.findViewById(R.id.confirm);
+                TextView cancel = (TextView) view.findViewById(R.id.cancel);
+                TextView confirm = (TextView) view.findViewById(R.id.confirm);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
