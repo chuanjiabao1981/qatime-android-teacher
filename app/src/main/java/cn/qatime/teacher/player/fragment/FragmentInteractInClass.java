@@ -1,11 +1,13 @@
 package cn.qatime.teacher.player.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.activity.InteractCourseDetailActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
@@ -87,14 +90,14 @@ public class FragmentInteractInClass extends BaseFragment {
                 initData(2);
             }
         });
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), RemedialClassDetailActivity.class);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), InteractCourseDetailActivity.class);
 //                intent.putExtra("id", list.get(position - 1).getId());
-//                startActivity(intent);
-//            }
-//        });
+                startActivity(intent);
+            }
+        });
     }
 
     public void onShow() {

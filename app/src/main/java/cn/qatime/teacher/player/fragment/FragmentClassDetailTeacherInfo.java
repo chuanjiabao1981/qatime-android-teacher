@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.activity.TeacherDataActivity;
 import cn.qatime.teacher.player.base.BaseFragment;
 import libraryextra.bean.RemedialClassDetailBean;
 import libraryextra.bean.SchoolBean;
@@ -70,8 +71,6 @@ public class FragmentClassDetailTeacherInfo extends BaseFragment {
 
     public void setData(final RemedialClassDetailBean data) {
         if (data.getData() != null && data.getData().getTeacher() != null) {
-//            sex.setText(getSex(data.getData().getTeacher().getGender()));
-//            sex.setTextColor(getSexColor(data.getData().getTeacher().getGender()));
             sex.setImageResource("male".equals(data.getData().getTeacher().getGender()) ? R.mipmap.male : R.mipmap.female);
             name.setText(data.getData().getTeacher().getName());
             if (!StringUtils.isNullOrBlanK(data.getData().getTeacher().getTeaching_years())) {
@@ -114,24 +113,5 @@ public class FragmentClassDetailTeacherInfo extends BaseFragment {
         }
 
     }
-
-    private int getSexColor(String gender) {
-        if ("male".equals(gender)) {
-            return 0xff00ccff;
-        } else if ("female".equals(gender)) {
-            return 0xffff9966;
-        }
-        return 0xffff9966;
-    }
-
-    private String getSex(String gender) {
-        if ("male".equals(gender)) {
-            return "♂";
-        } else if ("female".equals(gender)) {
-            return "♀";
-        }
-        return "";
-    }
-
 
 }

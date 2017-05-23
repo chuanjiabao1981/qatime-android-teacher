@@ -469,4 +469,7 @@
     <string name="class_missed">待补课</string>
     <string name="class_closed">已直播</string>
     <string name="not_available"> 暂无</string>
+    <string name="teach_age">教龄</string>
+    <string name="teachers_detail">教师组资料</string>
+    <string name="no_course_announcements">暂无公告</string>
 </resources>

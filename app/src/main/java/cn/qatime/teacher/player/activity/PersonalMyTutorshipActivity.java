@@ -57,6 +57,7 @@ public class PersonalMyTutorshipActivity extends BaseFragmentActivity {
         });
         fragmentlayout.setAdapter(fragBaseFragments, R.layout.tableout_personal_my_tutor, 0x0311);
         fragmentlayout.getViewPager().setOffscreenPageLimit(3);
+        ((BaseFragment) fragBaseFragments.get(0)).onShow();
     }
 
 }

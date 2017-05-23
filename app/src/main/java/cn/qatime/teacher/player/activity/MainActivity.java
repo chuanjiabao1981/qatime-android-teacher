@@ -68,31 +68,33 @@ public class MainActivity extends BaseFragmentActivity {
             @Override
             protected void onSuccess(JSONObject response) {
                 PersonalInformationBean bean = JsonUtils.objectFromJson(response.toString(), PersonalInformationBean.class);
-                Logger.e(bean.toString());
-                int school = bean.getData().getSchool();
-                String url = bean.getData().getAvatar_url();
-                String name = bean.getData().getName();
-                String category = bean.getData().getCategory();
-                String subject = bean.getData().getSubject();
-                String province = bean.getData().getProvince();
-                String city = bean.getData().getCity();
-                String teaching_years = bean.getData().getTeaching_years();
-                String desc = bean.getData().getDesc();
-                if (school == 0 ||
-                        StringUtils.isNullOrBlanK(url) ||
-                        StringUtils.isNullOrBlanK(name) ||
-                        StringUtils.isNullOrBlanK(category) ||
-                        StringUtils.isNullOrBlanK(subject) ||
-                        StringUtils.isNullOrBlanK(province) ||
-                        StringUtils.isNullOrBlanK(city) ||
-                        StringUtils.isNullOrBlanK(teaching_years) ||
-                        StringUtils.isNullOrBlanK(desc)
-                        ) {
+//                Logger.e(bean.toString());
+                if (bean != null && bean.getData() != null) {
+                    int school = bean.getData().getSchool();
+                    String url = bean.getData().getAvatar_url();
+                    String name = bean.getData().getName();
+                    String category = bean.getData().getCategory();
+                    String subject = bean.getData().getSubject();
+                    String province = bean.getData().getProvince();
+                    String city = bean.getData().getCity();
+                    String teaching_years = bean.getData().getTeaching_years();
+                    String desc = bean.getData().getDesc();
+                    if (school == 0 ||
+                            StringUtils.isNullOrBlanK(url) ||
+                            StringUtils.isNullOrBlanK(name) ||
+                            StringUtils.isNullOrBlanK(category) ||
+                            StringUtils.isNullOrBlanK(subject) ||
+                            StringUtils.isNullOrBlanK(province) ||
+                            StringUtils.isNullOrBlanK(city) ||
+                            StringUtils.isNullOrBlanK(teaching_years) ||
+                            StringUtils.isNullOrBlanK(desc)
+                            ) {
 
-                    Toast.makeText(MainActivity.this, getResourceString(R.string.please_set_information), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, RegisterPerfectActivity.class);
-                    startActivity(intent);
-                    finish();
+                        Toast.makeText(MainActivity.this, getResourceString(R.string.please_set_information), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, RegisterPerfectActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
 

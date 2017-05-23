@@ -35,7 +35,6 @@ public class FragmentClassDetailClassInfo extends BaseFragment {
     TextView subject;
     TextView grade;
     TextView totalclass;
-    TextView classType;
     RemedialClassDetailBean data;
     private SimpleDateFormat parse1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SimpleDateFormat parse2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -64,7 +63,6 @@ public class FragmentClassDetailClassInfo extends BaseFragment {
         classStartTime = (TextView) view.findViewById(R.id.class_start_time);
         classEndTime = (TextView) view.findViewById(R.id.class_end_time);
         totalclass = (TextView) view.findViewById(R.id.total_class);
-        classType = (TextView) view.findViewById(R.id.class_type);
         describe = (WebView) view.findViewById(R.id.describe);
         learningTips = (WebView) view.findViewById(R.id.learning_tips);
         flowLayout = (LinearLayout) view.findViewById(R.id.flow_layout);

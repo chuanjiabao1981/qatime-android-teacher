@@ -1,6 +1,6 @@
 package cn.qatime.teacher.player.activity;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.fragment.FragmentClassDetailClassInfo;
@@ -32,7 +33,7 @@ import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 import libraryextra.view.SimpleViewPagerIndicator;
 
-public class RemedialClassDetailActivity extends BaseFragmentActivity {
+public class RemedialClassDetailActivity extends BaseFragmentActivity implements View.OnClickListener {
     private int id;
     private String[] mTitles;
     private SimpleViewPagerIndicator mIndicator;
@@ -46,7 +47,6 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity {
     TextView studentnumber;
     private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     DecimalFormat df = new DecimalFormat("#.00");
-    private AlertDialog alertDialog;
     private TextView transferPrice;
     private TextView refundAnyTime;
     private TextView freeTaste;
@@ -69,8 +69,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity {
             Toast.makeText(this, getResources().getString(R.string.no_tutorial_classes_ID), Toast.LENGTH_SHORT).show();
             return;
         }
-//        initData();
-
+        initData();
     }
 
     @Override
@@ -99,6 +98,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity {
         price = (TextView) findViewById(R.id.price);
         transferPrice = (TextView) findViewById(R.id.transfer_price);
         studentnumber = (TextView) findViewById(R.id.student_number);
+        findViewById(R.id.announcement).setOnClickListener(this);
 
         mIndicator = (SimpleViewPagerIndicator) findViewById(R.id.id_stickynavlayout_indicator);
         mViewPager = (ViewPager) findViewById(R.id.id_stickynavlayout_viewpager);
@@ -143,7 +143,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity {
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id, null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlMyRemedialClass + BaseApplication.getUserId() + "/courses/" + id, null,
                 new VolleyListener(RemedialClassDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
@@ -256,5 +256,16 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity {
             return getString(R.string.completed);
         }
         return getString(R.string.recruiting);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.announcement:
+                Intent intent = new Intent(RemedialClassDetailActivity.this, AnnouncementListActivity.class);
+                intent.putExtra("id", data.getData().getId());
+                startActivity(intent);
+                break;
+        }
     }
 }
