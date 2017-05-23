@@ -33,6 +33,7 @@ public class Constant {
     public static int RESPONSE_SCHOOL_SELECT = 0x1017;
 
     public static class CourseStatus {
+        public static String finished = "finished";
         public static String rejected = "rejected";//审核被拒绝
         public static String init = "init";//招生中
         public static String published = "published";//招生中
