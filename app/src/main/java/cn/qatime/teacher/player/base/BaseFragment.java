@@ -47,6 +47,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void onShow() {
+        hd.postDelayed(runnable, 200);
     }
 
     /**

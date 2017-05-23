@@ -30,10 +30,10 @@ public class Constant {
     public static int REQUEST_REGION_SELECT = 0x1014;
     public static int RESPONSE_REGION_SELECT = 0x1015;
     public static int REQUEST_SCHOOL_SELECT = 0x1016;
-    public static int  RESPONSE_SCHOOL_SELECT = 0x1017;
-
+    public static int RESPONSE_SCHOOL_SELECT = 0x1017;
 
     public static class CourseStatus {
+        public static String finished = "finished";
         public static String rejected = "rejected";//审核被拒绝
         public static String init = "init";//招生中
         public static String published = "published";//招生中

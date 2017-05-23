@@ -18,6 +18,7 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.activity.ClassTableActivity;
 import cn.qatime.teacher.player.activity.PayPSWForgetActivity;
 import cn.qatime.teacher.player.activity.PersonalInformationActivity;
+import cn.qatime.teacher.player.activity.PersonalMyInteractActivity;
 import cn.qatime.teacher.player.activity.PersonalMyTutorshipActivity;
 import cn.qatime.teacher.player.activity.PersonalMyVideoActivity;
 import cn.qatime.teacher.player.activity.PersonalMyWalletActivity;
@@ -38,6 +39,7 @@ import libraryextra.utils.StringUtils;
 public class FragmentPersonalCenter extends BaseFragment implements View.OnClickListener {
 
     private View classTable;
+    private View myInteract;
     private View myTutorship;
     private View setting;
     private View manage;
@@ -73,7 +75,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 cashAccountSafe.setVisibility(View.VISIBLE);
                 cashAccountSafe.setOnClickListener(this);
                 close.setOnClickListener(this);
-            }else{
+            } else {
                 cashAccountSafe.setVisibility(View.GONE);
             }
         }
@@ -82,6 +84,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private void initView(View view) {
         classTable = view.findViewById(R.id.class_table);
         myTutorship = view.findViewById(R.id.my_tutorship);
+        myInteract = view.findViewById(R.id.my_interact);
         setting = view.findViewById(R.id.setting);
         manage = view.findViewById(R.id.manage);
         headSculpture = (ImageView) view.findViewById(R.id.head_sculpture);
@@ -102,6 +105,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
 
         classTable.setOnClickListener(this);
         myTutorship.setOnClickListener(this);
+        myInteract.setOnClickListener(this);
         setting.setOnClickListener(this);
         manage.setOnClickListener(this);
         information.setOnClickListener(this);
@@ -130,6 +134,9 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 break;
             case R.id.my_tutorship:
                 getActivity().startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
+                break;
+            case R.id.my_interact:
+                getActivity().startActivity(new Intent(getActivity(), PersonalMyInteractActivity.class));
                 break;
             case R.id.my_video:
                 startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));

@@ -164,7 +164,6 @@
     <string name="teacher_detail">教师资料</string>
     <string name="course_list">课程列表</string>
     <!--//课程详情-->
-    <string name="student_number">学习人数</string>
     <string name="Join_the_audition">加入试听</string>
     <string name="Joined_the_audition">已加入试听</string>
     <string name="purchase_now">立即购买</string>
@@ -458,6 +457,16 @@
     <string name="change_pay_password_notify">新设置或修改后将在2小时内不能使用支付密码，是否继续</string>
     <string name="continue_anyway">继续</string>
     <string name="notify_mode">通知方式</string>
+    <string name="course_arrangement">上课安排</string>
+    <string name="student_number">报名人数 %1$d</string>
+    <string name="ready_to_start">[即将开课]</string>
+    <string name="progress_live">[进度%1$d/%2$d]</string>
+    <string name="audition_over">试听结束</string>
+    <string name="teaching">开课中</string>
+    <string name="class_missed">待补课</string>
+    <string name="teach_age">教龄</string>
+    <string name="teachers_detail">教师组资料</string>
+    <string name="no_course_announcements">暂无公告</string>
     <string name="my_video">我的视频课</string>
     <string name="unpublished">未发布</string>
     <string name="rejected">审核被拒</string>

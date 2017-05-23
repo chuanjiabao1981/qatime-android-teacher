@@ -356,21 +356,6 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
                         content.getText().toString().trim() // 文本内容
                 );
 
-//                if (context.getClass().equals(NEVideoPlayerActivity.class)) {
-//                    if (((NEVideoPlayerActivity) context).limitMessage.size() >= 1) {
-//                        if (message.getTime() - ((NEVideoPlayerActivity) context).limitMessage.get(0).getTime() < 2000) {
-//                            Toast.makeText(context, context.getResources().getString(R.string.please_talk_later), Toast.LENGTH_SHORT).show();
-//                            return;
-//                        } else {
-//                            ((NEVideoPlayerActivity) context).limitMessage.add(message);
-//                            if (((NEVideoPlayerActivity) context).limitMessage.size() > 1) {
-//                                ((NEVideoPlayerActivity) context).limitMessage.remove(0);
-//                            }
-//                        }
-//                    } else {
-//                        ((NEVideoPlayerActivity) context).limitMessage.add(message);
-//                    }
-//                }
                 if (listener != null) {
                     listener.ChatMessage(message);
                 }
@@ -523,12 +508,8 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
         context.getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        started = audioMessageHelper.startRecord();
+        audioMessageHelper.startRecord();
         cancelled = false;
-        if (!started) {
-            Toast.makeText(context, R.string.recording_init_failed, Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (!touched) {
             return;
@@ -655,6 +636,16 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
 
     @Override
     public void onRecordStart(File file, RecordType recordType) {
+        started = true;
+        if (!touched) {
+            return;
+        }
+
+        audioRecord.setText(R.string.record_audio_end);
+        audioRecord.setBackgroundResource(R.drawable.shape_input_radius);
+
+        updateTimerTip(RecorderState.NORMAL); // 初始化语音动画状态
+        playAudioRecordAnim();
     }
 
     @Override
@@ -665,7 +656,9 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
 
     @Override
     public void onRecordFail() {
-        Logger.e("onRecordFail");
+        if (started) {
+            Toast.makeText(context, R.string.recording_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
