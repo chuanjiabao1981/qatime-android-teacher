@@ -141,11 +141,10 @@
 
                 <TextView
                     android:id="@+id/birthday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/setting_text_style"
                     android:layout_marginRight="12dp"
-                    android:text=""
-                    android:textSize="13sp" />
+                    android:text="5-10年"
+                    android:textSize="13sp"  />
 
             </LinearLayout>
 
