@@ -9,7 +9,8 @@ import android.os.Environment;
  */
 public class Constant {
 
-
+    public static String APP_ID = "wx8f258dac1e788a61";//微信appid
+    public static String phoneNumber = "400-838-8010";
     public static final String CACHEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qatime/teacher";
 
     public static int REQUEST = 0;
@@ -23,4 +24,20 @@ public class Constant {
     public static int RESPONSE_PICTURE_SELECT = 0x1007;
     public static int RESPONSE_HEAD_SCULPTURE = 0x1008;
     public static int REGIST = 0x1009;
+    public static int RESPONSE_CITY_SELECT = 0x1011;
+    public static int CHANGE_PAY_PSW = 0x1012;
+    public static final int QRCODE_SUCCESS = 0x1013;
+    public static int REQUEST_REGION_SELECT = 0x1014;
+    public static int RESPONSE_REGION_SELECT = 0x1015;
+    public static int REQUEST_SCHOOL_SELECT = 0x1016;
+    public static int RESPONSE_SCHOOL_SELECT = 0x1017;
+
+    public static class CourseStatus {
+        public static String finished = "finished";
+        public static String rejected = "rejected";//审核被拒绝
+        public static String init = "init";//招生中
+        public static String published = "published";//招生中
+        public static String teaching = "teaching";//已开课
+        public static String completed = "completed";//已完成
+    }
 }

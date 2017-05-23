@@ -3,7 +3,22 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion '25.0.1'
-
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        config {
+            keyAlias 'teacher'
+            keyPassword '32147896'
+            storeFile file('C:/Users/lenovo/Desktop/qatime.jks')
+            storePassword '32147896'
+        }
+    }
     defaultConfig {
         applicationId "cn.qatime.teacher.player"
         minSdkVersion 15
@@ -15,11 +30,12 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.config
+            signingConfig signingConfigs.config
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     sourceSets {

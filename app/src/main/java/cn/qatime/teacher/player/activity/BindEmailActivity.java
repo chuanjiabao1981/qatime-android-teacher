@@ -4,6 +4,8 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +39,6 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
     private TextView textGetcode;
     private Button buttonOver;
     private EditText inputNewEmail;
-    private EditText confirmNewEmail;
     private EditText code;
 
 
@@ -46,8 +47,29 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
         code = (EditText) findViewById(R.id.code);
         textGetcode = (TextView) findViewById(R.id.text_getcode);
         inputNewEmail = (EditText) findViewById(R.id.input_new_email);
-        confirmNewEmail = (EditText) findViewById(R.id.confirm_new_email);
         buttonOver = (Button) findViewById(R.id.button_over);
+
+
+        inputNewEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtils.isEmail(inputNewEmail.getText().toString().trim())) {
+                    textGetcode.setEnabled(true);
+                } else {
+                    textGetcode.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -68,7 +90,6 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
         assignViews();
 
         inputNewEmail.setHint(StringUtils.getSpannedString(this, R.string.hint_input_email));
-        confirmNewEmail.setHint(StringUtils.getSpannedString(this, R.string.hint_input_again));
         code.setHint(StringUtils.getSpannedString(this, R.string.hint_input_code));
 
         textGetcode.setOnClickListener(this);
@@ -78,16 +99,11 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         final String email1 = inputNewEmail.getText().toString().trim();
-        String email2 = confirmNewEmail.getText().toString().trim();
 
         switch (v.getId()) {
             case R.id.text_getcode:
                 if (!StringUtils.isEmail(email1)) { //邮箱
                     Toast.makeText(this, getResources().getString(R.string.email_wrong), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!email1.equals(email2)) {
-                    Toast.makeText(this, getResources().getString(R.string.email_confirm_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Map<String, String> map = new HashMap<>();
@@ -127,10 +143,6 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                     Toast.makeText(this, getResources().getString(R.string.email_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!email1.equals(email2)) {
-                    Toast.makeText(this, getResources().getString(R.string.email_confirm_wrong), Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (StringUtils.isNullOrBlanK(code.getText().toString())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
                     return;
@@ -158,19 +170,17 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                         Intent intent = new Intent(BindEmailActivity.this, SecurityManagerActivity.class);
                         startActivity(intent);
 
-
                     }
 
                     @Override
                     protected void onError(JSONObject response) {
                         try {
                             JSONObject error = response.getJSONObject("error");
-                            if (error.getString("msg").contains("与确认值不匹配")) {
+                            if (error.getString("msg").contains("Captcha confirmation")) {
                                 Toast.makeText(BindEmailActivity.this, getResourceString(R.string.code_error), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(BindEmailActivity.this, getResourceString(R.string.email_already_bind), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BindEmailActivity.this, getResourceString(R.string.phone_already_bind), Toast.LENGTH_SHORT).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -3,6 +3,7 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,7 +27,6 @@ import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.AppUtils;
 import libraryextra.utils.DataCleanUtils;
-import libraryextra.utils.DensityUtils;
 import libraryextra.utils.DownFileUtil;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyListener;
@@ -37,7 +37,6 @@ import libraryextra.utils.VolleyListener;
  * @Description
  */
 public class SystemSettingActivity extends BaseActivity implements View.OnClickListener {
-    private LinearLayout learningProcess;
     private LinearLayout notifySetting;
     private LinearLayout checkUpdate;
     private TextView version;
@@ -50,16 +49,16 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
     private android.app.AlertDialog alertDialog;
     private String apkUrl;
     private String downLoadLinks;
+    private View updateView;
 
     private void assignViews() {
-        learningProcess = (LinearLayout) findViewById(R.id.learning_process);
         notifySetting = (LinearLayout) findViewById(R.id.notify_setting);
         checkUpdate = (LinearLayout) findViewById(R.id.check_update);
         version = (TextView) findViewById(R.id.version);
         cleanCache = (LinearLayout) findViewById(R.id.clean_cache);
         cacheSize = (TextView) findViewById(R.id.cache_size);
         feedback = (LinearLayout) findViewById(R.id.feedback);
-        about = (LinearLayout) findViewById(R.id.about);
+        about = (LinearLayout) findViewById(R.id.about_us);
         exit = (Button) findViewById(R.id.exit);
     }
 
@@ -88,7 +87,6 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
         notifySetting.setOnClickListener(this);
         checkUpdate.setOnClickListener(this);
         cleanCache.setOnClickListener(this);
-        learningProcess.setOnClickListener(this);
         feedback.setOnClickListener(this);
         about.setOnClickListener(this);
 
@@ -117,17 +115,14 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent(SystemSettingActivity.this, MainActivity.class);
                 intent.putExtra("sign", "exit_login");
                 startActivity(intent);
-//                finish();
                 break;
             case R.id.notify_setting:
-
-                intent = new Intent(SystemSettingActivity.this, NotifySettingActivity.class);
+                intent = new Intent(SystemSettingActivity.this, NotifyMessageActivity.class);
                 startActivity(intent);
                 break;
             case R.id.check_update:
-                //TODO 检查版本，进行更新
                 Map<String, String> map = new HashMap<>();
-                map.put("category", "student_client");
+                map.put("category", "teacher_live");
                 map.put("platform", "android");
                 map.put("version", AppUtils.getVersionName(this));
 //                map.put("version", "0.0.1");
@@ -142,28 +137,34 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
                         if (response.isNull("data")) {
                             Toast.makeText(SystemSettingActivity.this, getResourceString(R.string.is_newest_version), Toast.LENGTH_SHORT).show();
                         } else {
-                            //TODO 获取更新信信息0
                             Logger.e(response.toString());
                             android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SystemSettingActivity.this);
-                            final View view = View.inflate(SystemSettingActivity.this, R.layout.dialog_check_update, null);
-                            Button down = (Button) view.findViewById(R.id.download);
-                            View x = view.findViewById(R.id.image_x);
-                            TextView newVersion = (TextView) view.findViewById(R.id.new_version);
-                            TextView desc = (TextView) view.findViewById(R.id.desc);
-                            desc.setMaxHeight(DensityUtils.dp2px(SystemSettingActivity.this, 300));
+                            updateView = View.inflate(SystemSettingActivity.this, R.layout.dialog_check_update, null);
+                            Button down = (Button) updateView.findViewById(R.id.download);
+                            View x = updateView.findViewById(R.id.image_x);
+                            TextView newVersion = (TextView) updateView.findViewById(R.id.new_version);
+                            TextView desc = (TextView) updateView.findViewById(R.id.desc);
+                            desc.setMovementMethod(ScrollingMovementMethod.getInstance());
                             try {
                                 x.setOnClickListener(SystemSettingActivity.this);
+                                //boolean updateEnforce = response.getJSONObject("data").getBoolean("enforce");
+//                                if (!updateEnforce) {
+//                                    TextView pleaseUpdate = (TextView) updateView.findViewById(R.id.please_update);
+//                                    pleaseUpdate.setVisibility(View.VISIBLE);
+//                                    x.setVisibility(View.GONE);
+//                                }
                                 String descStr = response.getJSONObject("data").getString("description");
-                                desc.setText(StringUtils.isNullOrBlanK(descStr) ? getResourceString(R.string.performance_optimization) : descStr);
+                                desc.setText(StringUtils.isNullOrBlanK(descStr) ? "\n" : descStr);
                                 downLoadLinks = response.getJSONObject("data").getString("download_links");
-                                newVersion.setText("V" + response.getJSONObject("data").getString("version"));
+                                newVersion.setText("(V" + response.getJSONObject("data").getString("version")+")");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             down.setOnClickListener(SystemSettingActivity.this);
                             alertDialog = builder.create();
                             alertDialog.show();
-                            alertDialog.setContentView(view);
+                            alertDialog.setContentView(updateView);
+                            alertDialog.setCancelable(false);
                             alertDialog.setCanceledOnTouchOutside(false);
                             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
                         }
@@ -186,15 +187,11 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
                 DataCleanUtils.clearAllCache(this);
                 setCache();
                 break;
-            case R.id.learning_process:
-                intent = new Intent(SystemSettingActivity.this, TeachingProcessActivity.class);
-                startActivity(intent);
-                break;
             case R.id.feedback:
                 intent = new Intent(SystemSettingActivity.this, FeedBackActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.about:
+            case R.id.about_us:
                 Logger.e("about click");
                 intent = new Intent(SystemSettingActivity.this, AboutUsActivity.class);
                 startActivity(intent);
@@ -203,10 +200,10 @@ public class SystemSettingActivity extends BaseActivity implements View.OnClickL
                 alertDialog.dismiss();
                 //TODO 更新版本
                 Toast.makeText(SystemSettingActivity.this, getResourceString(R.string.start_download), Toast.LENGTH_SHORT).show();
-                DownFileUtil downFileUtil = new DownFileUtil(this, downLoadLinks, "qatime.apk", "", "qatime.apk") {
+                DownFileUtil downFileUtil = new DownFileUtil(this, downLoadLinks, "qatime_teacher.apk", "", "qatime_teacher.apk") {
                     @Override
                     public void downOK() {
-                        DownFileUtil.insertAPK("", getApplicationContext());
+                        DownFileUtil.insertAPK("qatime_teacher.apk", getApplicationContext());
                     }
 
                     @Override

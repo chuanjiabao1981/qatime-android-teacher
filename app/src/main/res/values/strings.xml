@@ -160,12 +160,10 @@
     <string name="pay_confirm">支付确认</string>
     <string name="commodity_name">商品名称</string>
     <string name="commodity_detail">商品详情</string>
-    <string name="pay_remind">请您在24小时内完成支付，否则订单会自动取消。</string>
     <!--//详情-->
     <string name="teacher_detail">教师资料</string>
     <string name="course_list">课程列表</string>
     <!--//课程详情-->
-    <string name="student_number">学习人数</string>
     <string name="Join_the_audition">加入试听</string>
     <string name="Joined_the_audition">已加入试听</string>
     <string name="purchase_now">立即购买</string>
@@ -237,8 +235,10 @@
     <string name="class_teaching">直播中</string>
     <string name="class_init">未开始</string>
     <string name="class_ready">待上课</string>
+    <string name="class_wait">待补课</string>
     <string name="class_paused_inner">暂停中</string>
-    <string name="class_over">已直播</string>
+    <string name="class_over">已结束</string>
+    <string name="class_closed">已直播</string>
     <!--//订单支付-->
     <string name="use">使用</string>
     <string name="fail_pay">不能支付</string>
@@ -341,7 +341,7 @@
     <string name="new_email">输入新的邮箱</string>
     <string name="new_parent_phone">家长新手机号</string>
     <string name="notify_classes">课程提醒</string>
-    <string name="notify_message">消息提醒</string>
+    <string name="notify_message">通知设置</string>
     <string name="notify_setting">提醒设置</string>
     <string name="over">完成</string>
     <string name="parent_phone_number">家长手机</string>
@@ -372,6 +372,7 @@
     <string name="bind_email">绑定邮箱</string>
     <string name="bind_phone_number">绑定手机</string>
     <string name="change_password">修改密码</string>
+    <string name="login_password">登陆密码</string>
     <string name="check_update">检查更新</string>
     <string name="class_1">第一课</string>
     <string name="class_2">第二课</string>
@@ -382,6 +383,18 @@
     <string name="item_to_start_main">距开课</string>
     <string name="not_bind">未绑定</string>
     <string name="password_error">密码错误</string>
+    <string name="change_new_pay_password">设置新支付密码</string>
+    <string name="confirm_new_pay_password">确认新支付密码</string>
+    <string name="change_pay_password_success">支付密码修改成功</string>
+    <string name="verify_pay_password">验证支付密码</string>
+    <string name="pay_password_not_set">暂未设置过支付密码</string>
+    <string name="pay_password_not_enough_time">新支付密码未满2小时，暂不能使用</string>
+    <string name="pay_password_too_many_mistake">密码错误次数过多，暂不能使用</string>
+    <string name="pay_server_error">支付系统繁忙，请稍后再试</string>
+    <string name="token_error">授权token无效</string>
+    <string name="verify_owner">验证身份</string>
+    <string name="hint_input_login_password">输入账户登录密码</string>
+    <string name="pay_password_error">支付密码输入不正确</string>
     <string name="call_customer_service_phone">是否拨打客服电话</string>
     <string name="bind_email_success">修改绑定邮箱成功</string>
     <string name="email_already_bind">邮箱已经被使用</string>
@@ -426,6 +439,9 @@
     <string name="teach_type">类型</string>
     <string name="subject">科目</string>
     <string name="area">地区</string>
+    <string name="enter">直接进入</string>
+    <string name="other_method_of_login">其他方式登录</string>
+    <string name="password_format_error">密码格式不正确</string>
     <string name="trans_voice_failed">语音转化失败</string>
     <string name="load_failed">加载失败，请点我重试</string>
     <string name="load_end">没有更多数据</string>
@@ -437,4 +453,40 @@
     <string name="picture_save_to">图片已保存到手机%s下</string>
     <string name="picture_save_fail">图片保存失败</string>
     <string name="voice_to_text">转文字</string>
+    <string name="pay_password">支付密码</string>
+    <string name="change_pay_password_notify">新设置或修改后将在2小时内不能使用支付密码，是否继续</string>
+    <string name="continue_anyway">继续</string>
+    <string name="notify_mode">通知方式</string>
+    <string name="course_arrangement">上课安排</string>
+    <string name="student_number">报名人数 %1$d</string>
+    <string name="ready_to_start">[即将开课]</string>
+    <string name="progress_live">[进度%1$d/%2$d]</string>
+    <string name="audition_over">试听结束</string>
+    <string name="teaching">开课中</string>
+    <string name="class_missed">待补课</string>
+    <string name="teach_age">教龄</string>
+    <string name="teachers_detail">教师组资料</string>
+    <string name="no_course_announcements">暂无公告</string>
+    <string name="my_video">我的视频课</string>
+    <string name="unpublished">未发布</string>
+    <string name="rejected">审核被拒</string>
+    <string name="init">初始化</string>
+    <string name="confirmed">审核通过</string>
+    <string name="completed">已创建</string>
+    <string name="published">已发布</string>
+    <string name="remedial_detail">课程介绍</string>
+    <string name="not_available">暂无</string>
+    <string name="no_desc">暂无简介</string>
+    <string name="lesson_count">共%1$d课</string>
+    <string name="not_set">未设置</string>
+    <string name="new_pay_password_invalid">新密码%1$d小时后可用</string>
+    <string name="bind_wechat">绑定微信</string>
+    <string name="bind_cancel">取消绑定</string>
+    <string name="bind_rightnow">马上绑定</string>
+    <string name="wechat_not_installed">操作失败，尚未安装微信</string>
+    <string name="wechat_not_support">操作失败，不支持的微信客户端</string>
+    <string name="login_failed_wechat_not_installed">登录失败，请使用手机号登录</string>
+    <string name="login_failed_wechat_not_support">登录失败，不支持的微信客户端</string>
+    <string name="cancel_bind_weixin_notify">取消绑定后将不能使用提现到微信功能，是否继续</string>
+    <string name="bind_error">绑定失败</string>
 </resources>

@@ -7,6 +7,7 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.adapter.BaseMultiItemFetchLoadAdapter;
 import cn.qatime.teacher.player.im.helper.TeamNotificationHelper;
 
+
 public class MsgViewHolderNotification extends MsgViewHolderBase {
 
     public MsgViewHolderNotification(BaseMultiItemFetchLoadAdapter adapter) {

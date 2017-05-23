@@ -4,6 +4,8 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +26,6 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
@@ -45,13 +46,38 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
         code = (EditText) findViewById(R.id.code);
         textGetcode = (TextView) findViewById(R.id.text_getcode);
         buttonOver = (Button) findViewById(R.id.button_over);
+
+        targetPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtils.isPhone(targetPhone.getText().toString().trim())) {
+                    textGetcode.setEnabled(true);
+                } else {
+                    textGetcode.setEnabled(false);
+                    if(targetPhone.getText().toString().length()==11) {
+                        Toast.makeText(BindPhoneActivity.this, R.string.phone_number_is_incorrect, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        time = new TimeCount(60000, 1000);
+         time = new TimeCount(60000, 1000);
     }
 
     @Override
@@ -141,20 +167,16 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
                         Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.bind_phone_success), Toast.LENGTH_SHORT).show();
-                        BaseApplication.clearToken();
-                        setResult(Constant.RESPONSE_EXIT_LOGIN);
-                        Intent intent = new Intent(BindPhoneActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(BindPhoneActivity.this, MainActivity.class);
                         intent.putExtra("sign", "exit_login");
                         startActivity(intent);
-                        finish();
-
                     }
 
                     @Override
                     protected void onError(JSONObject response) {
                         try {
                             JSONObject error = response.getJSONObject("error");
-                            if (error.getString("msg").contains("与确认值不匹配")) {
+                            if (error.getString("msg").contains("Captcha confirmation")) {
                                 Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.code_error), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.phone_already_bind), Toast.LENGTH_SHORT).show();

@@ -3,6 +3,8 @@ package cn.qatime.teacher.player.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +14,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
@@ -23,7 +24,6 @@ import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
@@ -45,7 +45,6 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initView();
         setTitle(getResources().getString(R.string.find_password));
         time = new TimeCount(60000, 1000);
@@ -71,6 +70,29 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
         code.setHint(StringUtils.getSpannedString(this, R.string.hint_input_verification_code));
         newpass.setHint(StringUtils.getSpannedString(this, R.string.hint_password_forget));
         confirmNewpass.setHint(StringUtils.getSpannedString(this, R.string.confirm_new_password));
+        number.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtils.isPhone(number.getText().toString().trim())) {
+                    getcode.setEnabled(true);
+                } else {
+                    getcode.setEnabled(false);
+                    if(number.getText().toString().length()==11) {
+                        Toast.makeText(ForgetPasswordActivity.this, R.string.phone_number_is_incorrect, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
 
         getcode.setOnClickListener(this);
         submit.setOnClickListener(this);
@@ -81,6 +103,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
             number.setVisibility(View.GONE);
             phone = BaseApplication.getProfile().getData().getUser().getLogin_mobile() + "";
             currentPhone.setText(phone);
+            getcode.setEnabled(true);
         } else {
             number.setVisibility(View.VISIBLE);
             currentPhoneView.setVisibility(View.GONE);
@@ -109,7 +132,6 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        Logger.e("验证码发送成功" + phone + "---" + response.toString());
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_success), Toast.LENGTH_LONG).show();
                     }
 
@@ -118,7 +140,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_failed), Toast.LENGTH_LONG).show();
 
                     }
-                }, new VolleyErrorListener(){
+                }, new VolleyErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
@@ -129,17 +151,14 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
             case R.id.submit:
                 if (!StringUtils.isPhone(phone)) {//手机号不正确
                     Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
-
                     return;
                 }
                 if (StringUtils.isNullOrBlanK(code.getText().toString().trim())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
-
                     return;
                 }
                 if (StringUtils.isNullOrBlanK(newpass.getText().toString().trim())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.password_can_not_be_empty), Toast.LENGTH_SHORT).show();
-
                     return;
                 }
                 if (!StringUtils.isGoodPWD(newpass.getText().toString().trim())) {//密码格式不正确
@@ -167,14 +186,16 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
                         if (response.isNull("data")) {
                             Toast.makeText(ForgetPasswordActivity.this, getResourceString(R.string.phone_not_exist), Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e("找回成功");
-                            Toast.makeText(ForgetPasswordActivity.this, getResourceString(R.string.change_password_success), Toast.LENGTH_SHORT).show();
-                            BaseApplication.clearToken();
-                            setResult(Constant.RESPONSE_EXIT_LOGIN);
-                            Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
-                            intent.putExtra("sign", "exit_login");
-                            startActivity(intent);
-                            finish();
+                            if (statusLogin) {
+                                BaseApplication.clearToken();
+                                Toast.makeText(ForgetPasswordActivity.this, getResourceString(R.string.change_password_success), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
+                                intent.putExtra("sign", "exit_login");
+                                startActivity(intent);
+                            } else {
+                                finish();
+                            }
+
                         }
                     }
 
@@ -194,8 +215,8 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     }
 
 
-    class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
+    private class TimeCount extends CountDownTimer {
+        TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 

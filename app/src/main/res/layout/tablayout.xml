@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/tab_menu_height"
     android:layout_width="match_parent"
     android:background="@drawable/shape_menu_tab"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    style="@style/tab_menu_height">
+    android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="0dp"
         style="@style/tab_menu_height"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -24,12 +24,13 @@
             android:layout_height="18dp"
             android:gravity="center_vertical"
             android:text="@string/message"
-            style="@style/tab_menu_text_color_select" />
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
         style="@style/tab_menu_height"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -44,8 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:gravity="center_vertical"
-            android:text="@string/personal_center"
-            style="@style/tab_menu_text_color_normal" />
+            android:text="我的"
+            android:textSize="12sp"
+            android:textColor="#ff666666" />
     </LinearLayout>
 
 

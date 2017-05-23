@@ -10,19 +10,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.orhanobut.logger.Logger;
 
-import java.io.File;
-import java.io.IOException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
+import cn.qatime.teacher.player.bean.BusEvent;
+import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.fragment.FragmentMessage;
 import cn.qatime.teacher.player.fragment.FragmentPersonalCenter;
-import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.utils.UrlUtils;
+import libraryextra.bean.CashAccountBean;
+import libraryextra.bean.PersonalInformationBean;
+import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
+import libraryextra.utils.VolleyListener;
 import libraryextra.view.FragmentLayout;
 
 public class MainActivity extends BaseFragmentActivity {
@@ -41,15 +53,69 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        File file = new File(Constant.CACHEPATH);
-        if (!file.mkdirs()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        EventBus.getDefault().register(this);
+        checkUserInfo();
         initView();
+    }
+
+    /**
+     * 检查用户信息是否完整
+     */
+    private void checkUserInfo() {
+//        if (BaseApplication.isLogined()) {
+
+        DaYiJsonObjectRequest request1 = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + BaseApplication.getUserId() + "/info", null, new VolleyListener(MainActivity.this) {
+            @Override
+            protected void onTokenOut() {
+                tokenOut();
+            }
+
+            @Override
+            protected void onSuccess(JSONObject response) {
+                PersonalInformationBean bean = JsonUtils.objectFromJson(response.toString(), PersonalInformationBean.class);
+//                Logger.e(bean.toString());
+                if (bean != null && bean.getData() != null) {
+                    int school = bean.getData().getSchool();
+                    String url = bean.getData().getAvatar_url();
+                    String name = bean.getData().getName();
+                    String category = bean.getData().getCategory();
+                    String subject = bean.getData().getSubject();
+                    String province = bean.getData().getProvince();
+                    String city = bean.getData().getCity();
+                    String teaching_years = bean.getData().getTeaching_years();
+                    String desc = bean.getData().getDesc();
+                    if (school == 0 ||
+                            StringUtils.isNullOrBlanK(url) ||
+                            StringUtils.isNullOrBlanK(name) ||
+                            StringUtils.isNullOrBlanK(category) ||
+                            StringUtils.isNullOrBlanK(subject) ||
+                            StringUtils.isNullOrBlanK(province) ||
+                            StringUtils.isNullOrBlanK(city) ||
+                            StringUtils.isNullOrBlanK(teaching_years) ||
+                            StringUtils.isNullOrBlanK(desc)
+                            ) {
+
+                        Toast.makeText(MainActivity.this, getResourceString(R.string.please_set_information), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, RegisterPerfectActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            protected void onError(JSONObject response) {
+                Toast.makeText(MainActivity.this, getResourceString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+                BaseApplication.clearToken();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                BaseApplication.clearToken();
+            }
+        });
+        addToRequestQueue(request1);
+//        }
     }
 
     @Override
@@ -58,6 +124,8 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void initView() {
+        refreshCashAccount();
+
         //重置
         fragBaseFragments.clear();
         if (fragmentlayout != null) {
@@ -87,6 +155,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+//        checkUserInfo();
         if (!StringUtils.isNullOrBlanK(intent.getStringExtra("out")) || (!StringUtils.isNullOrBlanK(intent.getStringExtra("sign")))) {
             Intent start = new Intent(this, LoginActivity.class);
             if (!StringUtils.isNullOrBlanK(intent.getStringExtra("sign"))) {
@@ -154,4 +223,43 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
+    @Subscribe
+    public void onEvent(BusEvent event) {
+        if (event == BusEvent.REFRESH_CASH_ACCOUNT) {
+            refreshCashAccount();
+        }
+    }
+
+    private void refreshCashAccount() {
+            addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(MainActivity.this) {
+
+                @Override
+                protected void onTokenOut() {
+
+                }
+
+                @Override
+                protected void onSuccess(JSONObject response) {
+                    CashAccountBean cashAccount = JsonUtils.objectFromJson(response.toString(), CashAccountBean.class);
+                    BaseApplication.setCashAccount(cashAccount);
+                    EventBus.getDefault().post(BusEvent.ON_REFRESH_CASH_ACCOUNT);
+                }
+
+                @Override
+                protected void onError(JSONObject response) {
+                    Toast.makeText(MainActivity.this, getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(MainActivity.this, getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+            }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

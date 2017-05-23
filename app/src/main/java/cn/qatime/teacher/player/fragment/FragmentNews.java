@@ -48,7 +48,6 @@ import cn.qatime.teacher.player.im.observer.UserInfoObservable;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DateUtils;
-import libraryextra.utils.ScreenUtils;
 import libraryextra.utils.StringUtils;
 
 /**
@@ -72,7 +71,6 @@ public class FragmentNews extends BaseFragment {
         initView(view);
         return view;
     }
-
 
     private void initView(View view) {
         listView = (PullToRefreshListView) view.findViewById(R.id.list);

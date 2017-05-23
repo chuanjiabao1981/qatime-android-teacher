@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -24,7 +25,20 @@ import cn.qatime.teacher.player.R;
 public class BaseFragment extends Fragment {
     private RequestQueue Queue;
     protected boolean isLoad = false;
+    protected boolean initOver = false;
     private AlertDialog alertDialog;
+    private Handler hd = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (initOver) {
+                hd.removeCallbacks(this);
+                onShow();
+            } else {
+                hd.postDelayed(this, 200);
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +47,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void onShow() {
+        hd.postDelayed(runnable, 200);
     }
 
     /**
@@ -93,6 +108,7 @@ public class BaseFragment extends Fragment {
         }
         super.onDestroy();
     }
+
     public void cancelAll(final Object tag) {
         Queue.cancelAll(tag);
     }
@@ -103,5 +119,9 @@ public class BaseFragment extends Fragment {
 
     protected String getResourceString(int id) {
         return getResources().getString(id);
+    }
+
+    protected <T extends View> T findViewById(int resId) {
+        return (T) (getView().findViewById(resId));
     }
 }

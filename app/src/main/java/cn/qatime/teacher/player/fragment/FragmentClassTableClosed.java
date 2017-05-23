@@ -16,6 +16,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,11 +43,11 @@ import libraryextra.utils.VolleyListener;
  */
 public class FragmentClassTableClosed extends BaseFragment {
     private PullToRefreshListView listView;
-    private List<ClassTimeTableBean.DataEntity> totalList = new ArrayList<>();
-    private CommonAdapter<ClassTimeTableBean.DataEntity.LessonsEntity> adapter;
+    private List<ClassTimeTableBean.DataBean> totalList = new ArrayList<>();
+    private CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean> adapter;
     private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     private String date = parse.format(new Date());
-    private List<ClassTimeTableBean.DataEntity.LessonsEntity> itemList = new ArrayList<>();
+    private List<ClassTimeTableBean.DataBean.LessonsBean> itemList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,7 +65,6 @@ public class FragmentClassTableClosed extends BaseFragment {
     }
     private void initview(View view) {
         listView = (PullToRefreshListView) view.findViewById(R.id.list);
-        listView.getRefreshableView().setDividerHeight(0);
         listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         listView.getLoadingLayoutProxy(true, false).setPullLabel(getResourceString(R.string.pull_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setPullLabel(getResourceString(R.string.pull_to_load));
@@ -72,16 +72,32 @@ public class FragmentClassTableClosed extends BaseFragment {
         listView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getResourceString(R.string.loading));
         listView.getLoadingLayoutProxy(true, false).setReleaseLabel(getResourceString(R.string.release_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResourceString(R.string.release_to_load));
+        listView.setEmptyView(View.inflate(getActivity(),R.layout.empty_view,null));
 
-
-        adapter = new CommonAdapter<ClassTimeTableBean.DataEntity.LessonsEntity>(getActivity(), itemList, R.layout.item_class_time_table) {
+        adapter = new CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean>(getActivity(), itemList, R.layout.item_class_time_table) {
             @Override
-            public void convert(ViewHolder helper, final ClassTimeTableBean.DataEntity.LessonsEntity item, int position) {
-                Glide.with(getActivity()).load(item.getCourse_publicize()).centerCrop().crossFade().dontAnimate().into((ImageView) helper.getView(R.id.image));
-                helper.setText(R.id.titles, item.getCourse_name()).
-                        setText(R.id.status, getStatus(item.getStatus())).
-                        setText(R.id.time, "上课时间 " + item.getClass_date() + " " + item.getLive_time()).
-                        setText(R.id.grade, "科目" + item.getSubject());
+            public void convert(ViewHolder helper, final ClassTimeTableBean.DataBean.LessonsBean item, int position) {
+                Glide.with(getActivity()).load(item.getCourse_publicize()).placeholder(R.mipmap.error_header_rect).centerCrop().crossFade().dontAnimate().into((ImageView) helper.getView(R.id.image));
+////                helper.setText(R.id.course, item.getCourse_name());
+                helper.setText(R.id.classname, item.getName());
+                try {
+                    Date date = parse.parse(item.getClass_date());
+                    helper.setText(R.id.class_date, getMonth(date.getMonth()) + "-" + getDay(date.getDate()) + "  ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                helper.setText(R.id.status, getStatus(item.getStatus()));
+                helper.setText(R.id.live_time, item.getLive_time());
+                helper.setText(R.id.grade, item.getGrade());
+                helper.setText(R.id.subject, item.getSubject());
+                helper.setText(R.id.teacher, "/" + item.getTeacher_name());
+                if ("LiveStudio::Lesson".equals(itemList.get(position).getModal_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xffff4856);
+                    helper.setText(R.id.modal_type, "直播课");
+                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position).getModal_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xff4856ff);
+                    helper.setText(R.id.modal_type, "一对一");
+                }
             }
         };
         listView.setAdapter(adapter);
@@ -95,16 +111,18 @@ public class FragmentClassTableClosed extends BaseFragment {
     }
 
     private String getStatus(String status) {
-        if (status.equals("teaching")) {//直播中
-            return getResourceString(R.string.class_teaching);
-        } else if (status.equals("paused")) {
-            return getResourceString(R.string.class_teaching);
+        if (status.equals("missed")) {//待补课
+            return getResourceString(R.string.class_wait);
         } else if (status.equals("init")) {//未开始
             return getResourceString(R.string.class_init);
         } else if (status.equals("ready")) {//待开课
             return getResourceString(R.string.class_ready);
-        } else if (status.equals("paused_inner")) {//暂停中
-            return getResourceString(R.string.class_paused_inner);
+        } else if (status.equals("teaching")) {//直播中
+            return getResourceString(R.string.class_teaching);
+        } else if (status.equals("closed")) {//已直播
+            return getResourceString(R.string.class_closed);
+        } else if (status.equals("paused")) {//直播中
+            return getResourceString(R.string.class_teaching);
         } else {
             return getResourceString(R.string.class_over);//已结束
         }
@@ -155,7 +173,20 @@ public class FragmentClassTableClosed extends BaseFragment {
         });
         addToRequestQueue(request);
     }
+    private String getDay(int day) {
+        if (day < 10) {
+            return "0" + day;
+        }
+        return String.valueOf(day);
+    }
 
+    private String getMonth(int month) {
+        month += 1;
+        if (month < 10) {
+            return "0" + month;
+        }
+        return String.valueOf(month);
+    }
     private void filterList() {
         itemList.clear();
         for (int i = 0; i < totalList.size(); i++) {

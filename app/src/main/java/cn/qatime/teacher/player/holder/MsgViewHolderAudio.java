@@ -199,12 +199,8 @@ public class MsgViewHolderAudio extends MsgViewHolderBase {
         }
     }
 
-    protected boolean isMessagePlaying(MessageAudioControl audioControl, IMMessage message) {
-        if (audioControl.getPlayingAudio() != null && audioControl.getPlayingAudio().isTheSame(message)) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean isMessagePlaying(MessageAudioControl audioControl, IMMessage message) {
+        return audioControl.getPlayingAudio() != null && audioControl.getPlayingAudio().isTheSame(message);
     }
 
     private MessageAudioControl.AudioControlListener onPlayListener = new MessageAudioControl.AudioControlListener() {
