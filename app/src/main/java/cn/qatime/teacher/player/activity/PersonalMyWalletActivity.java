@@ -14,12 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.DecimalFormat;
 
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseActivity;
-import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.base.BaseApplication;
+import cn.qatime.teacher.player.bean.BusEvent;
 import cn.qatime.teacher.player.utils.SPUtils;
+import libraryextra.bean.CashAccountBean;
 
 /**
  * @author Tianhaoranly
@@ -39,7 +44,6 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
 
     private void assignViews() {
         balance = (TextView) findViewById(R.id.balance);
-        yuan = (TextView) findViewById(R.id.yuan);
         consumption = (TextView) findViewById(R.id.consumption);
         consumptionRecord = (LinearLayout) findViewById(R.id.consumption_record);
         withdrawRecord = (LinearLayout) findViewById(R.id.withdraw_record);
@@ -50,7 +54,7 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         setTitle(getResourceString(R.string.wallet_manager));
         assignViews();
         initData();
@@ -61,48 +65,32 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
         SPUtils.put(PersonalMyWalletActivity.this, "balance", balance.getText().toString());
     }
 
+    @Subscribe
+    public void onEvent(BusEvent event) {
+        if (event == BusEvent.ON_REFRESH_CASH_ACCOUNT)
+            initData();
+    }
+
+
     @Override
     public int getContentView() {
         return R.layout.activity_personal_my_wallet;
     }
 
     private void initData() {
-//        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(this) {
-//
-//            @Override
-//            protected void onTokenOut() {
-//                tokenOut();
-//            }
-//
-//            @Override
-//            protected void onSuccess(JSONObject response) {
-//                try {
-//                    String price = df.format(Double.valueOf(response.getJSONObject("data").getString("balance")));
-//                    if (price.startsWith(".")) {
-//                        price = "0" + price;
-//                    }
-//                    balance.setText(price);
-//                    String price1 = df.format(Double.valueOf(response.getJSONObject("data").getString("total_expenditure")));
-//                    if (price1.startsWith(".")) {
-//                        price1 = "0" + price1;
-//                    }
-//                    consumption.setText(price1);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(JSONObject response) {
-//                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.get_wallet_info_error), Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                Toast.makeText(PersonalMyWalletActivity.this, getResourceString(R.string.server_error), Toast.LENGTH_SHORT).show();
-//            }
-//        }));
-
+        CashAccountBean cashAccount = BaseApplication.getCashAccount();
+        if (cashAccount != null && cashAccount.getData() != null) {
+            String price = cashAccount.getData().getBalance();
+            if (price.startsWith(".")) {
+                price = "0" + price;
+            }
+            balance.setText("￥" + price);
+            String price1 = cashAccount.getData().getTotal_income();
+            if (price1.startsWith(".")) {
+                price1 = "0" + price1;
+            }
+            consumption.setText(getString(R.string.account_income) + price1);
+        }
     }
 
     @Override
@@ -144,8 +132,7 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
 
             case R.id.withdraw_cash:
                 Intent intent = new Intent(this, WithdrawCashActivity.class);
-                intent.putExtra("balance", balance.getText().toString());
-                startActivityForResult(intent, Constant.REQUEST);
+                startActivity(intent);
                 break;
 
             case R.id.withdraw_record:
@@ -161,14 +148,10 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        initData();
-    }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
