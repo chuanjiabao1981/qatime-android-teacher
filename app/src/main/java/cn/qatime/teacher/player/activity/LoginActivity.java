@@ -2,7 +2,9 @@ package cn.qatime.teacher.player.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,9 @@ import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.orhanobut.logger.Logger;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,7 +67,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private CustomProgressDialog progress;
     private Profile profile;
 
-    //    private IWXAPI api;
+    private IWXAPI api;
+
     @Override
     public int getContentView() {
         return R.layout.activity_login;
@@ -74,8 +80,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
 
         EventBus.getDefault().register(this);
-//        api = WXAPIFactory.createWXAPI(this, null);
-//        api.registerApp(Constant.APP_ID);
+        api = WXAPIFactory.createWXAPI(this, null);
+        api.registerApp(Constant.APP_ID);
 
         checklayout = findViewById(R.id.checklayout);
         checkview = (CheckView) findViewById(R.id.checkview);
@@ -96,15 +102,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         username.setOnClickListener(this);
         password.setOnClickListener(this);
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                password.setText("");
+            }
+        });
 
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    password.setText("");
-                }else {
-                    if(StringUtils.isNullOrBlanK(username.getText().toString().trim())){
+                if (!hasFocus) {
+                    if (StringUtils.isNullOrBlanK(username.getText().toString().trim())) {
                         Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -140,47 +159,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             }
         });
-
-//        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(hasFocus){
-//                    if(StringUtils.isNullOrBlanK(username.getText().toString().trim())){
-//                        Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlUserCheck + "?account=" + username.getText().toString().trim(), null, new VolleyListener(LoginActivity.this) {
-//                        @Override
-//                        protected void onTokenOut() {
-//
-//                        }
-//
-//                        @Override
-//                        protected void onSuccess(JSONObject response) {
-//                            try {
-//                                if (response.getBoolean("data")) {
-//                                } else {
-//                                    Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
-//                                }
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                        @Override
-//                        protected void onError(JSONObject response) {
-//                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
-//                        }
-//                    }, new VolleyErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//                    addToRequestQueue(request);
-//                }
-//            }
-//        });
 
         if (!StringUtils.isNullOrBlanK(SPUtils.get(LoginActivity.this, "username", ""))) {
             username.setText(SPUtils.get(LoginActivity.this, "username", "").toString());
@@ -220,18 +198,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(intent);
                 finish();
                 break;
-//            case R.id.wechat_login://微信登录
-//                if (!api.isWXAppInstalled()) {
-//                    Toast.makeText(this, R.string.login_failed_wechat_not_installed, Toast.LENGTH_SHORT).show();
-//                } else if (!api.isWXAppSupportAPI()) {
-//                    Toast.makeText(this, R.string.login_failed_wechat_not_support, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    SendAuth.Req req = new SendAuth.Req();
-//                    req.scope = "snsapi_userinfo";
-//                    req.state = "wechat_info";
-//                    api.sendReq(req);
-//                }
-//                break;
+            case R.id.wechat_login://微信登录
+                if (!api.isWXAppInstalled()) {
+                    Toast.makeText(this, R.string.login_failed_wechat_not_installed, Toast.LENGTH_SHORT).show();
+                } else if (!api.isWXAppSupportAPI()) {
+                    Toast.makeText(this, R.string.login_failed_wechat_not_support, Toast.LENGTH_SHORT).show();
+                } else {
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_info";
+                    api.sendReq(req);
+                }
+                break;
         }
     }
 
@@ -469,55 +447,55 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      */
     @Subscribe
     public void onEvent(String code) {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("code", code);
-//        map.put("client_cate", "teacher_live");
-//        map.put("client_type", "app");
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlLogin + "/wechat", map), null, new VolleyListener(LoginActivity.this) {
-//            @Override
-//            protected void onTokenOut() {
-//                tokenOut();
-//            }
-//
-//            @Override
-//            protected void onSuccess(JSONObject response) {
-//                try {
-//                    if (response.has("data")) {
-//                        if (response.getJSONObject("data").has("remember_token")) {//返回登錄信息
-//                            Profile data = JsonUtils.objectFromJson(response.toString(), Profile.class);
-//                            if (data != null && data.getData() != null && !StringUtils.isNullOrBlanK(data.getData().getRemember_token())) {
-//                                BaseApplication.setProfile(data);
-//                                SPUtils.put(LoginActivity.this, "username", username.getText().toString());
-//                                loginAccount();//登陆云信
-//                            } else {
-//                                //没有数据或没有token
-//                            }
-//
-//                        } else {
-//                            String openid = response.getJSONObject("data").getString("openid");
-//                            Intent intent = new Intent(LoginActivity.this, WeChatBindActivity.class);
-//                            intent.putExtra("openid", openid);
-//                            intent.putExtra("register_action",Constant.REGIST_1);
-//                            startActivityForResult(intent, Constant.REGIST_1);
-//                        }
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            protected void onError(JSONObject response) {
-//
-//            }
-//        }, new VolleyErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError volleyError) {
-//                super.onErrorResponse(volleyError);
-//                Logger.e(volleyError.getMessage());
-//            }
-//        });
-//        addToRequestQueue(request);
+        Map<String, String> map = new HashMap<>();
+        map.put("code", code);
+        map.put("client_cate", "teacher_live");
+        map.put("client_type", "app");
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlLogin + "/wechat", map), null, new VolleyListener(LoginActivity.this) {
+            @Override
+            protected void onTokenOut() {
+                tokenOut();
+            }
+
+            @Override
+            protected void onSuccess(JSONObject response) {
+                try {
+                    if (response.has("data")) {
+                        if (response.getJSONObject("data").has("remember_token")) {//返回登錄信息
+                            Profile data = JsonUtils.objectFromJson(response.toString(), Profile.class);
+                            if (data != null && data.getData() != null && !StringUtils.isNullOrBlanK(data.getData().getRemember_token())) {
+                                BaseApplication.setProfile(data);
+                                SPUtils.put(LoginActivity.this, "username", username.getText().toString());
+                                loginAccount();//登陆云信
+                            } else {
+                                //没有数据或没有token
+                            }
+
+                        } else {
+                            String openid = response.getJSONObject("data").getString("openid");
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            intent.putExtra("openid", openid);
+//                            intent.putExtra("register_action", Constant.REGIST);
+                            startActivityForResult(intent, Constant.REGIST);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onError(JSONObject response) {
+
+            }
+        }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+                Logger.e(volleyError.getMessage());
+            }
+        });
+        addToRequestQueue(request);
     }
 
     @Override

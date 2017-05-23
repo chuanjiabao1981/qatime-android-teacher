@@ -9,6 +9,7 @@ import android.os.Environment;
  */
 public class Constant {
 
+    public static String APP_ID = "wx8f258dac1e788a61";//微信appid
     public static String phoneNumber = "400-838-8010";
     public static final String CACHEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qatime/teacher";
 
@@ -32,9 +33,10 @@ public class Constant {
     public static int RESPONSE_SCHOOL_SELECT = 0x1017;
 
     public static class CourseStatus {
+        public static String rejected = "rejected";//审核被拒绝
+        public static String init = "init";//招生中
         public static String published = "published";//招生中
         public static String teaching = "teaching";//已开课
-        public static String finished = "finished";//已结束
         public static String completed = "completed";//已完成
     }
 }
