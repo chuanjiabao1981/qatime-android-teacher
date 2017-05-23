@@ -344,6 +344,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                         Logger.e("登录", response.toString());
                                         SPUtils.put(RegisterActivity.this, "username", phone.getText().toString());
                                         Profile profile = JsonUtils.objectFromJson(response.toString(), Profile.class);
+                                        String openid = getIntent().getStringExtra("openid");
+                                        if(StringUtils.isNullOrBlanK(openid)){
+                                            bindWechat(openid);
+                                        }
 //                                        if (profile != null && profile.getData() != null && profile.getData().getUser() != null && profile.getData().getUser().getId() != 0) {
 //                                            PushAgent.getInstance(RegisterActivity.this).addAlias(String.valueOf(profile.getData().getUser().getId()), "student", new UTrack.ICallBack() {
 //                                                @Override
@@ -490,6 +494,30 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 //        intent.putExtra("register_action",register_action);
 //        startActivityForResult(intent, register_action);
         startActivityForResult(intent, Constant.REGIST);
+    }
+
+    private void bindWechat(String openid){
+        //收到微信登錄code
+        Map<String, String> map = new HashMap<>();
+        map.put("openid", openid);
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST,
+                UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/wechat", map), null, new VolleyListener(RegisterActivity.this) {
+            @Override
+            protected void onTokenOut() {
+                tokenOut();
+            }
+
+            @Override
+            protected void onSuccess(JSONObject response) {
+                Logger.e("微信綁定" + response.toString());
+            }
+
+            @Override
+            protected void onError(JSONObject response) {
+                Toast.makeText(RegisterActivity.this, R.string.bind_error, Toast.LENGTH_SHORT).show();
+            }
+        }, new VolleyErrorListener());
+        addToRequestQueue(request);
     }
 
     @Override
