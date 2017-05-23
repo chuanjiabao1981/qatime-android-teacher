@@ -75,7 +75,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 cashAccountSafe.setVisibility(View.VISIBLE);
                 cashAccountSafe.setOnClickListener(this);
                 close.setOnClickListener(this);
-            }else{
+            } else {
                 cashAccountSafe.setVisibility(View.GONE);
             }
         }
@@ -137,6 +137,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                 break;
             case R.id.my_interact:
                 getActivity().startActivity(new Intent(getActivity(), PersonalMyInteractActivity.class));
+                break;
             case R.id.my_video:
                 startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
                 break;
