@@ -3,6 +3,8 @@ package cn.qatime.teacher.player.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,9 @@ import cn.qatime.teacher.player.activity.SettingActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.bean.BusEvent;
+import cn.qatime.teacher.player.holder.BaseViewHolder;
 import cn.qatime.teacher.player.utils.Constant;
+import cn.qatime.teacher.player.view.GridDivider;
 import libraryextra.bean.CashAccountBean;
 import libraryextra.transformation.GlideCircleTransform;
 import libraryextra.utils.StringUtils;
@@ -38,20 +42,20 @@ import libraryextra.utils.StringUtils;
  */
 public class FragmentPersonalCenter extends BaseFragment implements View.OnClickListener {
 
-    private View classTable;
-    private View myInteract;
-    private View myTutorship;
+
     private View setting;
     private View manage;
     private View information;
     private TextView name;
     private TextView balance;
     private ImageView headSculpture;
-    //    DecimalFormat df = new DecimalFormat("#.00");
     private TextView nickName;
     private View cashAccountSafe;
     private View close;
     private boolean closed = false;//是否提示过未设置支付密码
+    private RecyclerView recyclerView;
+    private String[] menuString = {"课程表", "直播课", "一对一", "视频课"};
+    private int[] menuRes = {R.mipmap.center_classs_table, R.mipmap.center_my_live, R.mipmap.center_my_interact, R.mipmap.center_my_video};
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,9 +86,6 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     }
 
     private void initView(View view) {
-        classTable = view.findViewById(R.id.class_table);
-        myTutorship = view.findViewById(R.id.my_tutorship);
-        myInteract = view.findViewById(R.id.my_interact);
         setting = view.findViewById(R.id.setting);
         manage = view.findViewById(R.id.manage);
         headSculpture = (ImageView) view.findViewById(R.id.head_sculpture);
@@ -94,6 +95,9 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         cashAccountSafe = view.findViewById(R.id.cash_account_safe);
         close = view.findViewById(R.id.close);
         information = view.findViewById(R.id.information);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        initRecyclerView();
+
         if (BaseApplication.getProfile().getData() != null && BaseApplication.getProfile().getData().getUser() != null) {
             Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
         }
@@ -103,15 +107,57 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
             balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
         }
 
-        classTable.setOnClickListener(this);
-        myTutorship.setOnClickListener(this);
-        myInteract.setOnClickListener(this);
         setting.setOnClickListener(this);
         manage.setOnClickListener(this);
         information.setOnClickListener(this);
-        view.findViewById(R.id.my_video).setOnClickListener(this);
     }
 
+    @Deprecated
+    private void initRecyclerView() {
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        layoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(new GridDivider(getActivity(), 3, 0xffeeeeee));
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter<BaseViewHolder> recyclerAdapter = new RecyclerView.Adapter<BaseViewHolder>() {
+            @Override
+            public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View item = View.inflate(getActivity(), R.layout.item_personal_center, null);
+                return new BaseViewHolder(item);
+            }
+
+            @Override
+            public void onBindViewHolder(BaseViewHolder holder, final int position) {
+                holder.setText(R.id.text, menuString[position]);
+                holder.setImageResource(R.id.image, menuRes[position]);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (position) {
+                            case 0:
+                                startActivity(new Intent(getActivity(), ClassTableActivity.class));
+                                break;
+                            case 1:
+                                startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
+                                break;
+                            case 2:
+                                startActivity(new Intent(getActivity(), PersonalMyInteractActivity.class));
+                                break;
+                            case 3:
+                                startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
+                                break;
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return menuString.length;
+            }
+        };
+        recyclerView.setAdapter(recyclerAdapter);
+    }
 
     @Subscribe
     public void onEvent(BusEvent event) {
@@ -129,18 +175,6 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.class_table:
-                getActivity().startActivity(new Intent(getActivity(), ClassTableActivity.class));
-                break;
-            case R.id.my_tutorship:
-                getActivity().startActivity(new Intent(getActivity(), PersonalMyTutorshipActivity.class));
-                break;
-            case R.id.my_interact:
-                getActivity().startActivity(new Intent(getActivity(), PersonalMyInteractActivity.class));
-                break;
-            case R.id.my_video:
-                startActivity(new Intent(getActivity(), PersonalMyVideoActivity.class));
-                break;
             case R.id.setting:
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(intent);
