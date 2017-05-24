@@ -246,9 +246,9 @@ public class WithdrawCashActivity extends BaseActivity implements View.OnClickLi
         map.put("amount", amount);
         map.put("pay_type", payType);
         map.put("ticket_token", ticket_tocken);
-        map.put("app_type", "student_app");
+        map.put("app_type", "teacher_app");
         map.put("access_code", code);
-        addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map), null, new VolleyListener(this) {
+        addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.urlpayment + BaseApplication.getUserId() + "/withdraws", map, null, new VolleyListener(this) {
             @Override
             protected void onTokenOut() {
                 tokenOut();

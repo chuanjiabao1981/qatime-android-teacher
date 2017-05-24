@@ -41,7 +41,7 @@ public class WithdrawResultActivity extends BaseActivity implements View.OnClick
         mode = (TextView) findViewById(R.id.mode);
         amount = (TextView) findViewById(R.id.amount);
 //        commission = (TextView) findViewById(R.id.commission);
-        amount.setText(getIntent().getStringExtra("amount"));
+        amount.setText("￥" + getIntent().getStringExtra("amount"));
         mode.setText(getPayType(getIntent().getStringExtra("pay_type")));
         id.setText(getIntent().getStringExtra("id"));
         SimpleDateFormat parseISO = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");

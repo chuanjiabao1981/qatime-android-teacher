@@ -413,7 +413,7 @@
     <string name="wallet_manager">财产管理</string>
     <string name="get_wallet_info_error">钱包信息获取失败</string>
     <string name="balance">余额</string>
-    <string name="account_income">累计收益￥</string>
+    <string name="account_income">累计收益  ￥</string>
     <string name="income_record">收益记录</string>
     <string name="withdraw_cash_record">提现记录</string>
     <string name="withdraw_cash">提现</string>

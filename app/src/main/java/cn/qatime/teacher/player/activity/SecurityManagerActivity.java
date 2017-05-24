@@ -321,6 +321,7 @@ public class SecurityManagerActivity extends BaseActivity implements View.OnClic
         //收到微信登錄code
         Map<String, String> map = new HashMap<>();
         map.put("code", code);
+        map.put("client_cate", "teacher_live");
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST,
                 UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/wechat", map), null, new VolleyListener(SecurityManagerActivity.this) {
             @Override
