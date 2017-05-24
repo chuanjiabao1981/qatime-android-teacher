@@ -14,7 +14,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,8 +42,8 @@ public class MainActivity extends BaseFragmentActivity {
     private int[] tab_img = {R.id.tab_img1, R.id.tab_img2};
     private int[] tab_text = {R.id.tab_text1, R.id.tab_text2};
     private int tabImages[][] = {
-            {R.mipmap.tab_message_1, R.mipmap.tab_message_2},
-            {R.mipmap.tab_person_1, R.mipmap.tab_person_2}};
+            {R.mipmap.tab_message1, R.mipmap.tab_message2},
+            {R.mipmap.tab_person1, R.mipmap.tab_person2}};
 
 
     FragmentLayout fragmentlayout;

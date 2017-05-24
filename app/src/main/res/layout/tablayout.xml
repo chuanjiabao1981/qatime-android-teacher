@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/tab_img1"
             style="@style/tab_menu_icon_size"
-            android:src="@mipmap/tab_message_1" />
+            android:src="@mipmap/tab_message1" />
 
         <TextView
             android:id="@+id/tab_text1"
@@ -38,7 +38,7 @@
         <ImageView
             android:id="@+id/tab_img2"
             style="@style/tab_menu_icon_size"
-            android:src="@mipmap/tab_person_2" />
+            android:src="@mipmap/tab_person2" />
 
         <TextView
             android:id="@+id/tab_text2"
