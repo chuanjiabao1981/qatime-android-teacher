@@ -103,4 +103,13 @@
             android:layout_height="match_parent" />
     </libraryextra.view.StickyNavLayout>
 
+    <TextView
+        android:id="@+id/announcement"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#fff"
+        android:gravity="center"
+        android:text="公 告"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 </LinearLayout>

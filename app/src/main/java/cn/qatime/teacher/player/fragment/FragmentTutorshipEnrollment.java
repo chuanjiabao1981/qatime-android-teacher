@@ -79,7 +79,7 @@ public class FragmentTutorshipEnrollment extends BaseFragment {
                 helper.setText(R.id.name, item.getName())
                         .setText(R.id.grade, item.getGrade())
                         .setText(R.id.price, "￥" + item.getCurrent_price())
-//                        .setText(R.id.progress,item.get)
+                        .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
 //                        .setText(R.id.number,item.get)
                         .setText(R.id.teaching_time, "距开课" + "天");
             }
@@ -129,7 +129,7 @@ public class FragmentTutorshipEnrollment extends BaseFragment {
         map.put("per_page", "10");
         map.put("status", "published");
 
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlMyRemedialClass + BaseApplication.getUserId() + "/courses", map), null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/courses", map), null,
                 new VolleyListener(getActivity()) {
                     @Override
                     protected void onSuccess(JSONObject response) {

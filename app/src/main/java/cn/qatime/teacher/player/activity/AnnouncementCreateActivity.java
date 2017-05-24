@@ -37,6 +37,7 @@ import libraryextra.utils.VolleyListener;
 public class AnnouncementCreateActivity extends BaseActivity implements View.OnClickListener {
     private EditText content;
     private int id;
+    private String baseUrl;
 
     private void assignViews() {
         content = (EditText) findViewById(R.id.content);
@@ -54,6 +55,14 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         id = getIntent().getIntExtra("id", 0);
+        String type = getIntent().getStringExtra("type");
+        if (!StringUtils.isNullOrBlanK(type)) {
+            if (type.equals(Constant.CoursesType.courses)) {
+                baseUrl = UrlUtils.urlRemedialClass + "/";
+            } else if (type.equals(Constant.CoursesType.interactive)) {
+                baseUrl = UrlUtils.urlInteractCourses;
+            }
+        }
         assignViews();
 
     }
@@ -75,7 +84,7 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlRemedialClass + "/" + id + "/announcements", map), null,
+            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(baseUrl + id + "/announcements", map), null,
                     new VolleyListener(AnnouncementCreateActivity.this) {
                         @Override
                         protected void onSuccess(JSONObject response) {

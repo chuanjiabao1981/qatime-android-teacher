@@ -143,7 +143,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlMyRemedialClass + BaseApplication.getUserId() + "/courses/" + id, null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/courses/" + id, null,
                 new VolleyListener(RemedialClassDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
@@ -264,6 +264,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
             case R.id.announcement:
                 Intent intent = new Intent(RemedialClassDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getId());
+                intent.putExtra("type", Constant.CoursesType.courses);
                 startActivity(intent);
                 break;
         }

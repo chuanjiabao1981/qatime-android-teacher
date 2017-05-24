@@ -23,6 +23,7 @@ import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.bean.Announcements;
 import libraryextra.utils.JsonUtils;
+import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 
@@ -36,6 +37,8 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
     private CommonAdapter<Announcements.DataBean.AnnouncementsBean> adapter;
     private int id;
     private List<Announcements.DataBean.AnnouncementsBean> items = new ArrayList<>();
+    private String baseUrl;
+    private String type;
 
     @Override
     public int getContentView() {
@@ -48,6 +51,14 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
         setTitle("公告");
         initView();
         id = getIntent().getIntExtra("id", 0);
+        type = getIntent().getStringExtra("type");
+        if (!StringUtils.isNullOrBlanK(type)) {
+            if (type.equals(Constant.CoursesType.courses)) {
+                baseUrl = UrlUtils.urlRemedialClass+"/";
+            } else if (type.equals(Constant.CoursesType.interactive)) {
+                baseUrl = UrlUtils.urlInteractCourses;
+            }
+        }
         initData();
     }
 
@@ -70,7 +81,7 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
 
     private void initData() {
         if (id != 0) {
-            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id + "/realtime", null,
+            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(baseUrl+ id + "/realtime", null,
                     new VolleyListener(AnnouncementListActivity.this) {
                         @Override
                         protected void onSuccess(JSONObject response) {
@@ -114,6 +125,7 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
     public void onClick(View v) {
         Intent intent = new Intent(AnnouncementListActivity.this, AnnouncementCreateActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("type", type);
         startActivityForResult(intent, Constant.REQUEST);
     }
 }

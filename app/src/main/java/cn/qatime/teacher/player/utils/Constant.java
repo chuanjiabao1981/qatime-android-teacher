@@ -40,4 +40,9 @@ public class Constant {
         public static String teaching = "teaching";//已开课
         public static String completed = "completed";//已完成
     }
+
+    public static class CoursesType {
+        public static String courses = "courses";//直播课
+        public static String interactive = "interactive";//一对一
+    }
 }

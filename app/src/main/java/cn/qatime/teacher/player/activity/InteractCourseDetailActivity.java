@@ -1,6 +1,6 @@
 package cn.qatime.teacher.player.activity;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,6 +22,7 @@ import cn.qatime.teacher.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.teacher.player.fragment.FragmentInteractDetailClassInfo;
 import cn.qatime.teacher.player.fragment.FragmentInteractDetailClassList;
 import cn.qatime.teacher.player.fragment.FragmentInteractDetailTeachersInfo;
+import cn.qatime.teacher.player.utils.Constant;
 import cn.qatime.teacher.player.utils.UrlUtils;
 import libraryextra.bean.InteractCourseDetailBean;
 import libraryextra.utils.JsonUtils;
@@ -29,7 +30,7 @@ import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 import libraryextra.view.SimpleViewPagerIndicator;
 
-public class InteractCourseDetailActivity extends BaseFragmentActivity {
+public class InteractCourseDetailActivity extends BaseFragmentActivity implements View.OnClickListener {
     private int id;
     private String[] mTitles;
     private SimpleViewPagerIndicator mIndicator;
@@ -76,6 +77,7 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity {
 
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
+        findViewById(R.id.announcement).setOnClickListener(this);
 
         mIndicator = (SimpleViewPagerIndicator) findViewById(R.id.id_stickynavlayout_indicator);
         mViewPager = (ViewPager) findViewById(R.id.id_stickynavlayout_viewpager);
@@ -163,7 +165,6 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity {
                         tokenOut();
                     }
                 }
-
                 , new VolleyErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -171,5 +172,17 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity {
             }
         });
         addToRequestQueue(request);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.announcement:
+                Intent intent = new Intent(InteractCourseDetailActivity.this, AnnouncementListActivity.class);
+                intent.putExtra("id", data.getData().getId());
+                intent.putExtra("type", Constant.CoursesType.interactive);
+                startActivity(intent);
+                break;
+        }
     }
 }

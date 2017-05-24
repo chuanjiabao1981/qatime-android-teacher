@@ -38,8 +38,8 @@ public class UrlUtils {
     public static String urlAppconstantInformation = baseUrl + "api/v1/app_constant";
     //找回密码
     public static String urlfindPassword = baseUrl + "api/v1/password";
-    //我的辅导班列表
-    public static String urlMyRemedialClass = baseUrl + "api/v1/live_studio/teachers/";
+    //我的
+    public static String urlTeachers = baseUrl + "api/v1/live_studio/teachers/";
     //用户信息
     public static String urlUser = baseUrl + "api/v1/users/";
     //检查更新
