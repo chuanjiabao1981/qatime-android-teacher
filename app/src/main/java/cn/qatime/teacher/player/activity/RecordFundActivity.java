@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import cn.qatime.teacher.player.R;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.base.BaseFragmentActivity;
-import cn.qatime.teacher.player.fragment.FundRecordConsumptionF;
+import cn.qatime.teacher.player.fragment.FundRecordEarningF;
 import cn.qatime.teacher.player.fragment.FundRecordWithdrawCashF;
 import libraryextra.view.FragmentLayoutWithLine;
 
@@ -90,7 +90,7 @@ public class RecordFundActivity extends BaseFragmentActivity {
     private void initView() {
 //        fragBaseFragments.add(new FundRecordRechargeF());
         fragBaseFragments.add(new FundRecordWithdrawCashF());
-        fragBaseFragments.add(new FundRecordConsumptionF());
+        fragBaseFragments.add(new FundRecordEarningF());
 
         fragmentlayout = (FragmentLayoutWithLine) findViewById(R.id.fragmentlayout);
 

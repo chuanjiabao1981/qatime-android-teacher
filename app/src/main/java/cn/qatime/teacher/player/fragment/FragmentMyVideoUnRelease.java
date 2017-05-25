@@ -110,7 +110,7 @@ public class FragmentMyVideoUnRelease extends BaseFragment {
         } else if (status.equals("confirmed")) {//审核通过
             return getResourceString(R.string.confirmed);
         } else if (status.equals("completed")) {//已创建
-            return getResourceString(R.string.completed);
+            return getResourceString(R.string.created);
         } else if (status.equals("published")) {//已经发布
             return getResourceString(R.string.published);
         }else {

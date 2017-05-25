@@ -472,7 +472,8 @@
     <string name="rejected">审核被拒</string>
     <string name="init">初始化</string>
     <string name="confirmed">审核通过</string>
-    <string name="completed">已创建</string>
+    <string name="created">已创建</string>
+    <string name="completed">已结束</string>
     <string name="published">已发布</string>
     <string name="remedial_detail">课程介绍</string>
     <string name="not_available">暂无</string>
