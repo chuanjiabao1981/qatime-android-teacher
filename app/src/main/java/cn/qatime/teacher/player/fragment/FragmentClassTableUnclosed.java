@@ -1,11 +1,13 @@
 package cn.qatime.teacher.player.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -26,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.qatime.teacher.player.R;
+import cn.qatime.teacher.player.activity.InteractCourseDetailActivity;
+import cn.qatime.teacher.player.activity.RemedialClassDetailActivity;
 import cn.qatime.teacher.player.base.BaseApplication;
 import cn.qatime.teacher.player.base.BaseFragment;
 import cn.qatime.teacher.player.bean.ClassTimeTableBean;
@@ -166,15 +170,22 @@ public class FragmentClassTableUnclosed extends BaseFragment {
                 initData();
             }
         });
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), RemedialClassDetailActivity.class);
-//                intent.putExtra("id", Integer.valueOf(itemList.get(position-1).getCourse_id()));
-//                intent.putExtra("pager", 2);
-//                startActivity(intent);
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if ("LiveStudio::Lesson".equals(itemList.get(position - 1).getModal_type())) {
+                    Intent intent = new Intent(getActivity(), RemedialClassDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
+                    intent.putExtra("pager", 2);
+                    startActivity(intent);
+                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position - 1).getModal_type())) {
+                    Intent intent = new Intent(getActivity(), InteractCourseDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
+                    intent.putExtra("pager", 2);
+                    startActivity(intent);
+                }
+            }
+        });
     }
     private String getDay(int day) {
         if (day < 10) {

@@ -1,9 +1,11 @@
 package cn.qatime.teacher.player.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -169,7 +171,22 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
                 initData();
             }
         });
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if ("LiveStudio::Lesson".equals(itemList.get(position - 1).getModal_type())) {
+                    Intent intent = new Intent(ClassTimeTableActivity.this, RemedialClassDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
+                    intent.putExtra("pager", 2);
+                    startActivity(intent);
+                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position - 1).getModal_type())) {
+                    Intent intent = new Intent(ClassTimeTableActivity.this, InteractCourseDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
+                    intent.putExtra("pager", 2);
+                    startActivity(intent);
+                }
+            }
+        });
         ImageView ivLeft = (ImageView) findViewById(R.id.iv_left);
         ImageView ivRight = (ImageView) findViewById(R.id.iv_right);
         monthDateView = (MonthDateView) findViewById(R.id.monthDateView);
