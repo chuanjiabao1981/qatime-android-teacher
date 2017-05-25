@@ -89,6 +89,8 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
                         @Override
                         protected void onSuccess(JSONObject response) {
                             Toast.makeText(AnnouncementCreateActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), 0);
                             setResult(Constant.RESPONSE);
                             finish();
                         }

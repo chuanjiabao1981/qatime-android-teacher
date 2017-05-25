@@ -79,9 +79,9 @@ public class FragmentTutorshipOver extends BaseFragment {
                 helper.setText(R.id.name, item.getName())
                         .setText(R.id.grade, item.getGrade())
                         .setText(R.id.price, "￥" + item.getCurrent_price())
-//                        .setText(R.id.progress,item.get)
-//                        .setText(R.id.number,item.get)
-                        .setText(R.id.teaching_time, "距开课" + "天");
+                        .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
+                        .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()))
+                        .setText(R.id.teaching_time, "全部课程已完成");
             }
         };
         listView.setAdapter(adapter);

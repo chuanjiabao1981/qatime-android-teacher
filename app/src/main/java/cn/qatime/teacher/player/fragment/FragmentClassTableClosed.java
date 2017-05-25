@@ -60,6 +60,7 @@ public class FragmentClassTableClosed extends BaseFragment {
         initview(view);
         return view;
     }
+
     @Override
     public void onShow() {
         if (!isLoad) {
@@ -67,6 +68,7 @@ public class FragmentClassTableClosed extends BaseFragment {
             initData();
         }
     }
+
     private void initview(View view) {
         listView = (PullToRefreshListView) view.findViewById(R.id.list);
         listView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -76,7 +78,7 @@ public class FragmentClassTableClosed extends BaseFragment {
         listView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getResourceString(R.string.loading));
         listView.getLoadingLayoutProxy(true, false).setReleaseLabel(getResourceString(R.string.release_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResourceString(R.string.release_to_load));
-        listView.setEmptyView(View.inflate(getActivity(),R.layout.empty_view,null));
+        listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
 
         adapter = new CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean>(getActivity(), itemList, R.layout.item_class_time_table) {
             @Override
@@ -105,6 +107,20 @@ public class FragmentClassTableClosed extends BaseFragment {
             }
         };
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if ("LiveStudio::Lesson".equals(itemList.get(position).getModal_type())) {
+                    Intent intent = new Intent(getActivity(), RemedialClassDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position).getCourse_id()));
+                    startActivity(intent);
+                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position).getModal_type())) {
+                    Intent intent = new Intent(getActivity(), InteractCourseDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position).getCourse_id()));
+                    startActivity(intent);
+                }
+            }
+        });
 
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
@@ -193,6 +209,7 @@ public class FragmentClassTableClosed extends BaseFragment {
         });
         addToRequestQueue(request);
     }
+
     private String getDay(int day) {
         if (day < 10) {
             return "0" + day;
@@ -207,6 +224,7 @@ public class FragmentClassTableClosed extends BaseFragment {
         }
         return String.valueOf(month);
     }
+
     private void filterList() {
         itemList.clear();
         for (int i = 0; i < totalList.size(); i++) {

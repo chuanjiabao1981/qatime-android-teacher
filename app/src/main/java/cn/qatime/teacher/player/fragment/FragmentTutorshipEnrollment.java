@@ -19,6 +19,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,8 +81,19 @@ public class FragmentTutorshipEnrollment extends BaseFragment {
                         .setText(R.id.grade, item.getGrade())
                         .setText(R.id.price, "￥" + item.getCurrent_price())
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
-//                        .setText(R.id.number,item.get)
-                        .setText(R.id.teaching_time, "距开课" + "天");
+                        .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()));
+                try {
+                    int day = libraryextra.utils.DateUtils.daysBetween(item.getLive_start_time(), System.currentTimeMillis());
+                    if (day > 0) {
+                        helper.getView(R.id.teaching_time).setVisibility(View.VISIBLE);
+                        helper.setText(R.id.teaching_time, "距开课" + day + "天");
+                    } else {
+                        helper.getView(R.id.teaching_time).setVisibility(View.INVISIBLE);
+                    }
+                    ;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         };
         listView.setAdapter(adapter);

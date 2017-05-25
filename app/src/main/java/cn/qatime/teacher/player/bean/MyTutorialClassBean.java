@@ -52,17 +52,44 @@ public class MyTutorialClassBean implements Serializable {
          */
 
         private int id;
+        private int buy_tickets_count;
+        private int preset_lesson_count;
+        private int completed_lesson_count;
         private String name;
         private String subject;
         private String grade;
         private String teacher_name;
-        private int price;
-        private int current_price;
+        private double price;
+        private double current_price;
         private int taste_count;
         private String live_start_time;
         private String live_end_time;
         private int teacher_percentage;
         private String publicize;
+
+        public int getPreset_lesson_count() {
+            return preset_lesson_count;
+        }
+
+        public void setPreset_lesson_count(int preset_lesson_count) {
+            this.preset_lesson_count = preset_lesson_count;
+        }
+
+        public int getCompleted_lesson_count() {
+            return completed_lesson_count;
+        }
+
+        public void setCompleted_lesson_count(int completed_lesson_count) {
+            this.completed_lesson_count = completed_lesson_count;
+        }
+
+        public int getBuy_tickets_count() {
+            return buy_tickets_count;
+        }
+
+        public void setBuy_tickets_count(int buy_tickets_count) {
+            this.buy_tickets_count = buy_tickets_count;
+        }
 
         public int getId() {
             return id;
@@ -104,19 +131,19 @@ public class MyTutorialClassBean implements Serializable {
             this.teacher_name = teacher_name;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 
-        public int getCurrent_price() {
+        public double getCurrent_price() {
             return current_price;
         }
 
-        public void setCurrent_price(int current_price) {
+        public void setCurrent_price(double current_price) {
             this.current_price = current_price;
         }
 
