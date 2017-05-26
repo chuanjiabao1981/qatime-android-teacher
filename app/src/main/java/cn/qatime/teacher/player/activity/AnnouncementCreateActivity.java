@@ -57,7 +57,7 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
         id = getIntent().getIntExtra("id", 0);
         String type = getIntent().getStringExtra("type");
         if (!StringUtils.isNullOrBlanK(type)) {
-            if (type.equals(Constant.CoursesType.courses)) {
+            if (type.equals(Constant.CoursesType.courses  )) {
                 baseUrl = UrlUtils.urlRemedialClass + "/";
             } else if (type.equals(Constant.CoursesType.interactive)) {
                 baseUrl = UrlUtils.urlInteractCourses;

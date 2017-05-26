@@ -50,6 +50,7 @@ public class FragmentVideoCoursesClassList extends BaseFragment {
             public void convert(ViewHolder holder, VideoLessonsBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.time, "时长" + item.getVideo().getFormat_tmp_duration());
+                holder.getView(R.id.taste).setVisibility(item.isTastable() ? View.VISIBLE : View.GONE);
             }
         };
         listView.setAdapter(adapter);

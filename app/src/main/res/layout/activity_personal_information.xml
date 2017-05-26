@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,7 +145,7 @@
                     style="@style/setting_text_style"
                     android:layout_marginRight="12dp"
                     android:text="5-10年"
-                    android:textSize="13sp"  />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -303,12 +304,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp">
 
                 <TextView
-                    style="@style/setting_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="24dp"
-                    android:text="@string/profiles" />
+                    android:text="@string/profiles"
+                    android:textColor="#333" />
 
                 <EditText
                     android:id="@+id/describe"
@@ -316,10 +323,9 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="left|top"
-                    android:maxLines="3"
-                    android:minLines="3"
+                    android:maxEms="200"
                     android:paddingLeft="3dp"
-                    android:scrollbars="vertical"
+                    android:scrollbars="none"
                     android:textSize="13sp" />
             </LinearLayout>
 
