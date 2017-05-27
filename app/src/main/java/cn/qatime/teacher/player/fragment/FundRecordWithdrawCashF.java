@@ -267,9 +267,12 @@ public class FundRecordWithdrawCashF extends BaseFragment {
                 return getString(R.string.review_success);
             case "refused":
                 return getString(R.string.review_failed);
-            case "cancel  ":
-            default:
+            case "paid":
+                return getString(R.string.withdraw_paid);
+            case "canceled":
                 return getString(R.string.cancelled);
+            default:
+                return "";
         }
     }
 }
