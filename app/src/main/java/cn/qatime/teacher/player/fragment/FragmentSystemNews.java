@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -53,7 +54,6 @@ public class FragmentSystemNews extends BaseFragment {
 
     private void initview(View view) {
         listView = (PullToRefreshListView) view.findViewById(R.id.list);
-        listView.getRefreshableView().setDividerHeight(0);
         listView.setMode(PullToRefreshBase.Mode.BOTH);
         listView.getLoadingLayoutProxy(true, false).setPullLabel(getResourceString(R.string.pull_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setPullLabel(getResourceString(R.string.pull_to_load));
@@ -66,9 +66,8 @@ public class FragmentSystemNews extends BaseFragment {
         adapter = new CommonAdapter<SystemNotifyBean.DataBean>(getActivity(), list, R.layout.item_fragment_system_news) {
             @Override
             public void convert(ViewHolder helper, SystemNotifyBean.DataBean item, int position) {
-                helper.setText(R.id.date_time, item.getCreated_at()).setText(R.id.details, item.getNotice_content());
+                helper.setText(R.id.date_time, item.getCreated_at()).setText(R.id.details, item.getNotice_content(), item.isRead() ? 0xff999999 : 0xff666666);
             }
-
 
         };
         listView.setAdapter(adapter);
@@ -142,6 +141,14 @@ public class FragmentSystemNews extends BaseFragment {
                         if (data != null && data.getData() != null) {
                             list.addAll(data.getData());
                             adapter.notifyDataSetChanged();
+
+                            StringBuilder unRead = new StringBuilder();
+                            for (SystemNotifyBean.DataBean bean : data.getData()) {
+                                if (!bean.isRead()) {
+                                    unRead.append(bean.getId()).append(" ");
+                                }
+                            }
+                            markNotifiesRead(unRead.toString());
                         }
                     }
 
@@ -161,6 +168,37 @@ public class FragmentSystemNews extends BaseFragment {
             }
         });
         addToRequestQueue(request);
+    }
+
+
+    public void markNotifiesRead(String unRead) {
+        if (unRead.length() > 0) {
+            Map<String, String> map = new HashMap<>();
+            map.put("ids", unRead);
+            JSONObject jsonObject = new JSONObject(map);
+            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.urlUser + BaseApplication.getUserId() + "/notifications/batch_read", jsonObject,
+                    new VolleyListener(getActivity()) {
+                        @Override
+                        protected void onSuccess(JSONObject response) {
+                        }
+
+                        @Override
+                        protected void onError(JSONObject response) {
+                        }
+
+                        @Override
+                        protected void onTokenOut() {
+                            tokenOut();
+                        }
+
+                    }, new VolleyErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    super.onErrorResponse(volleyError);
+                }
+            });
+            addToRequestQueue(request);
+        }
     }
 
 }
