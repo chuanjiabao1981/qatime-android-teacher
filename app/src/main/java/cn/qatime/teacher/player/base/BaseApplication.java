@@ -73,6 +73,7 @@ public class BaseApplication extends Application {
     public static CashAccountBean getCashAccount() {
         return cashAccount;
     }
+
     public static void setCashAccount(CashAccountBean cashAccount) {
         BaseApplication.cashAccount = cashAccount;
     }
@@ -84,7 +85,7 @@ public class BaseApplication extends Application {
         Logger.init("QTA-TIME")               // default tag : PRETTYLOGGER or use just init()
                 .setMethodCount(3)            // default 2
                 .hideThreadInfo()             // default it is shown
-                .setLogLevel(true ? LogLevel.FULL : LogLevel.NONE);  // default : LogLevel.FULL
+                .setLogLevel(UrlUtils.isDebug ? LogLevel.FULL : LogLevel.NONE);  // default : LogLevel.FULL
         profile = SPUtils.getObject(this, "profile", Profile.class);
         shakeStatus = (boolean) SPUtils.get(this, "shake_status", true);
         voiceStatus = (boolean) SPUtils.get(this, "voice_status", true);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.qatime.teacher.player">
+    package="cn.qatime.teacher.player"
+    android:versionName="0.0.1">
 
     <!-- 权限声明 -->
     <!-- 访问网络状态-->

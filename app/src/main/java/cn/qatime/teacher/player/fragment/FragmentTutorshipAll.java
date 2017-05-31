@@ -19,6 +19,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ import libraryextra.utils.VolleyListener;
  * @Describe
  */
 
-public class FragmentTutorshipInClass extends BaseFragment {
+public class FragmentTutorshipAll extends BaseFragment {
     private PullToRefreshListView listView;
     private CommonAdapter<MyTutorialClassBean.DataBean> adapter;
     private List<MyTutorialClassBean.DataBean> list = new ArrayList<>();
@@ -80,8 +81,19 @@ public class FragmentTutorshipInClass extends BaseFragment {
                         .setText(R.id.grade, item.getGrade())
                         .setText(R.id.price, "￥" + item.getCurrent_price())
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
-                        .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()))
-                        .setText(R.id.teaching_time, item.getCompleted_lesson_count() + "/" + item.getPreset_lesson_count());
+                        .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()));
+                try {
+                    int day = libraryextra.utils.DateUtils.daysBetween(item.getLive_start_time(), System.currentTimeMillis());
+                    if (day > 0) {
+                        helper.getView(R.id.teaching_time).setVisibility(View.VISIBLE);
+                        helper.setText(R.id.teaching_time, "距开课" + day + "天");
+                    } else {
+                        helper.getView(R.id.teaching_time).setVisibility(View.INVISIBLE);
+                    }
+                    ;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         };
         listView.setAdapter(adapter);
@@ -127,7 +139,6 @@ public class FragmentTutorshipInClass extends BaseFragment {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("per_page", "10");
-        map.put("status", "published,teaching");
 
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/courses", map), null,
                 new VolleyListener(getActivity()) {
