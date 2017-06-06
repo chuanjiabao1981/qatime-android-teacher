@@ -128,12 +128,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginTop="10dp"
         android:background="#dfdddd" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#dfdddd" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="#dfdddd" />-->
 
     <LinearLayout
         android:id="@+id/change_pay_password"
@@ -145,7 +146,7 @@
 
         <TextView
             style="@style/setting_text_style"
-            android:text="支付密码" />
+            android:text="重置支付密码" />
 
         <View
             android:layout_width="0dp"
@@ -185,7 +186,7 @@
 
         <TextView
             style="@style/setting_text_style"
-            android:text="登录密码" />
+            android:text="修改登陆密码" />
 
         <View
             android:layout_width="0dp"
