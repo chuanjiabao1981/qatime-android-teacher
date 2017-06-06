@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/tab_menu_height"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/shape_menu_tab"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:background="#f2f2f2"
+    android:paddingTop="1dp">
 
     <LinearLayout
+        android:id="@+id/tabLayout"
         style="@style/tab_menu_height"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:background="#fff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/tab_img1"
-            style="@style/tab_menu_icon_size"
-            android:src="@mipmap/tab_message1" />
+        <LinearLayout
+            style="@style/tab_menu_height"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tab_text1"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:gravity="center_vertical"
-            android:text="@string/message"
-            android:textSize="12sp"
-            android:textColor="@color/colorPrimary" />
+            <ImageView
+                android:id="@+id/tab_img1"
+                style="@style/tab_menu_icon_size"
+                android:src="@mipmap/tab_message1" />
+
+            <TextView
+                android:id="@+id/tab_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:gravity="center_vertical"
+                android:text="@string/message"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/tab_menu_height"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/tab_img2"
+                style="@style/tab_menu_icon_size"
+                android:src="@mipmap/tab_person2" />
+
+            <TextView
+                android:id="@+id/tab_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:gravity="center_vertical"
+                android:text="我的"
+                android:textColor="#ff666666"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        style="@style/tab_menu_height"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/tab_img2"
-            style="@style/tab_menu_icon_size"
-            android:src="@mipmap/tab_person2" />
-
-        <TextView
-            android:id="@+id/tab_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="18dp"
-            android:gravity="center_vertical"
-            android:text="我的"
-            android:textSize="12sp"
-            android:textColor="#ff666666" />
-    </LinearLayout>
-
-
-</LinearLayout>
+</FrameLayout>
