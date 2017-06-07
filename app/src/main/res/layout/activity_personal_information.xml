@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_backbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/head_sculpture"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/personal_information_head" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:text="@string/nick_name" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/nick_name"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="昵称"
+                    android:minWidth="50dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:text="@string/name" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/name"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:minWidth="50dp"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/sex_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:text="@string/sex" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/sex"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text="@string/male"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/birthday_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/birthday" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/birthday"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text="5-10年"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/teaching_years_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/teaching_years" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/teaching_years"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text="5-10年"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/category_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/teach_type" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/category"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text="高中"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/subject_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/subject" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/subject"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text="语文"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/school_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/school" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/school"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text=""
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:id="@+id/region_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/region" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/region"
+                    style="@style/setting_text_style"
+                    android:layout_marginRight="12dp"
+                    android:text=""
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="24dp"
+                    android:text="@string/profiles"
+                    android:textColor="#333" />
+
+                <EditText
+                    android:id="@+id/describe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="left|top"
+                    android:maxEms="200"
+                    android:paddingLeft="3dp"
+                    android:scrollbars="none"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#dfdddd" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

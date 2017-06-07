@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_backbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout style="@style/edit_layout_style">
+
+            <LinearLayout
+                android:id="@+id/information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/head_sculpture"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@mipmap/error_header" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="点此图像添加"
+                    android:textColor="#ccc"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/name"
+                    style="@style/activity_edit_text_style"
+                    android:hint="请输入真实姓名"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/grade"
+                    style="@style/activity_edit_text_style"
+                    android:hint="选择授课范围"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/subject"
+                    style="@style/activity_edit_text_style"
+                    android:hint="选择授课科目"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/teaching_years"
+                    style="@style/activity_edit_text_style"
+                    android:hint="选择执教年龄"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/region"
+                    style="@style/activity_edit_text_style"
+                    android:hint="选择所在地区"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/school"
+                    style="@style/activity_edit_text_style"
+                    android:hint="选择所在学校"
+                    android:maxLength="11"
+                    android:textColorHint="#ccc" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/shape_input"
+                    android:hint="请详细介绍下自己"
+                    android:minLines="3"
+                    android:maxLength="300"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:textColor="#ff333333"
+                    android:textColorHint="#ccc"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/edit_more"
+                    style="@style/button_style"
+                    android:layout_marginRight="5dp"
+                    android:text="完善更多" />
+
+                <TextView
+                    android:id="@+id/complete"
+                    style="@style/button_style"
+                    android:enabled="false"
+                    android:layout_marginLeft="5dp"
+                    android:text="立即进入" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

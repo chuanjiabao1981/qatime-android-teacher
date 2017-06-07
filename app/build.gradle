@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        config {
+            keyAlias 'qatime'
+            keyPassword '32147896'
+            storeFile file('C:/Users/lenovo/Desktop/qatime.jks')
+            storePassword '32147896'
+        }
+    }
+    defaultConfig {
+        applicationId "cn.qatime.player"
+        minSdkVersion 15
+        targetSdkVersion 25
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    productFlavors {
+        flavors_debug {
+            manifestPlaceholders = [yunxin_appkey: properties.getProperty("YunXinDebugAppKey")]
+        }
+        flavors_release {
+            manifestPlaceholders = [yunxin_appkey: properties.getProperty("YunXinReleaseAppKey")]
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def appName = 'qatime_teacher'
+            def buildName
+
+            variant.productFlavors.each { product ->
+                buildName = product.name.replace("flavors_", "")
+            }
+            output.outputFile = new File(output.outputFile.parent, appName + "_" + buildName + "_" + getVersionNameFromManifest() + ".apk");
+        }
+    }
+}
+
+def getVersionNameFromManifest() {
+    def manifestParser = new com.android.builder.core.DefaultManifestParser(android.sourceSets.main.manifest.srcFile)
+    return manifestParser.getVersionName()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile project(':common')
+    compile project(':library_pulltorefresh')
+}

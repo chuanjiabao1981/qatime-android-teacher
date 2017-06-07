@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingBottom="14dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="14dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:id="@+id/head_sculpture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/error_header" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/head_sculpture"
+            android:layout_marginLeft="16dp"
+            android:layout_toEndOf="@+id/head_sculpture"
+            android:layout_toRightOf="@+id/head_sculpture"
+            android:text="老师"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/head_sculpture"
+            android:layout_marginLeft="16dp"
+            android:layout_toEndOf="@+id/head_sculpture"
+            android:layout_toRightOf="@+id/head_sculpture"
+            android:text="昵称:ban"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/center_setting" />
+
+        <ImageView
+            android:id="@+id/information"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/setting"
+            android:src="@mipmap/center_edit" />
+
+        <LinearLayout
+            android:id="@+id/manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/head_sculpture"
+            android:paddingTop="10dp"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textColor="#fff" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text=">"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/cash_account_safe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffe4"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/warning" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="3dp"
+            android:text="尚未设置支付密码，点击设置"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@mipmap/close" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+</LinearLayout>
