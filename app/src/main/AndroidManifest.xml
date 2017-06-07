@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.qatime.teacher.player"
+    package="cn.qatime.player"
     android:versionName="0.0.1">
 
     <!-- 权限声明 -->
@@ -23,10 +23,10 @@
     <!-- SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
     <permission
-        android:name="cn.qatime.teacher.player.permission.RECEIVE_MSG"
+        android:name="cn.qatime.player.permission.RECEIVE_MSG"
         android:protectionLevel="signature" />
     <!-- 接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
-    <uses-permission android:name="cn.qatime.teacher.player.permission.RECEIVE_MSG" />
+    <uses-permission android:name="cn.qatime.player.permission.RECEIVE_MSG" />
 
 
     <application
@@ -38,6 +38,11 @@
         android:theme="@style/AppTheme">
 
         <!--云信start-->
+        <!-- APP key, 可以在这里设置，也可以在 SDKOptions 中提供。
+            如果 SDKOptions 中提供了，取 SDKOptions 中的值。 -->
+        <meta-data
+            android:name="com.netease.nim.appKey"
+            android:value="${yunxin_appkey}" />
         <!-- 声明云信后台服务，如需保持后台推送，使用独立进程效果会更好。 -->
         <service
             android:name="com.netease.nimlib.service.NimService"
