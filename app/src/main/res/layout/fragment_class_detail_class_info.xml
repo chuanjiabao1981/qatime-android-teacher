@@ -161,7 +161,7 @@
                 android:textColor="#333"
                 android:textSize="15sp" />
 
-            <cn.qatime.teacher.player.view.FlowLayout
+            <cn.qatime.player.view.FlowLayout
                 android:id="@+id/flow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
