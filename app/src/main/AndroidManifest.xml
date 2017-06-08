@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.qatime.player"
-    android:versionName="0.0.1">
+    android:versionName="0.0.2">
 
     <!-- 权限声明 -->
     <!-- 访问网络状态-->
@@ -293,6 +293,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PayPSWForgetActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PayPSWChangeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
     </application>

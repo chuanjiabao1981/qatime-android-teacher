@@ -163,9 +163,9 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     protected void onSuccess(JSONObject response) {
-
-
                         Logger.e("验证成功");
+                        BaseApplication.getProfile().getData().getUser().setEmail(email1);
+                        BaseApplication.setProfile(BaseApplication.getProfile());
                         Toast.makeText(BindEmailActivity.this, getResourceString(R.string.bind_email_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindEmailActivity.this, SecurityManagerActivity.class);
                         startActivity(intent);
