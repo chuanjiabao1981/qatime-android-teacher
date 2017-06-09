@@ -64,7 +64,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     textGetcode.setEnabled(true);
                 } else {
                     textGetcode.setEnabled(false);
-                    if(targetPhone.getText().toString().length()==11) {
+                    if (targetPhone.getText().toString().length() == 11) {
                         Toast.makeText(BindPhoneActivity.this, R.string.phone_number_is_incorrect, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -77,7 +77,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-         time = new TimeCount(60000, 1000);
+        time = new TimeCount(60000, 1000);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                         Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.code_send_failed), Toast.LENGTH_SHORT).show();
 
                     }
-                }, new VolleyErrorListener(){
+                }, new VolleyErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         super.onErrorResponse(volleyError);
@@ -166,6 +166,8 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
+                        BaseApplication.getProfile().getData().getUser().setLogin_mobile(currentphone);
+                        BaseApplication.setProfile(BaseApplication.getProfile());
                         Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.bind_phone_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindPhoneActivity.this, MainActivity.class);
                         intent.putExtra("sign", "exit_login");
@@ -185,7 +187,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                             e.printStackTrace();
                         }
                     }
-                }, new VolleyErrorListener(){
+                }, new VolleyErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         super.onErrorResponse(volleyError);

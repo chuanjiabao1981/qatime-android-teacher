@@ -43,9 +43,6 @@ import libraryextra.utils.StringUtils;
 public class FragmentPersonalCenter extends BaseFragment implements View.OnClickListener {
 
 
-    private View setting;
-    private View manage;
-    private View information;
     private TextView name;
     private TextView balance;
     private ImageView headSculpture;
@@ -86,15 +83,15 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     }
 
     private void initView(View view) {
-        setting = view.findViewById(R.id.setting);
-        manage = view.findViewById(R.id.manage);
+        View setting = view.findViewById(R.id.setting);
+        View manage = view.findViewById(R.id.manage);
         headSculpture = (ImageView) view.findViewById(R.id.head_sculpture);
         name = (TextView) view.findViewById(R.id.name);
         nickName = (TextView) view.findViewById(R.id.nick_name);
         balance = (TextView) view.findViewById(R.id.balance);
         cashAccountSafe = view.findViewById(R.id.cash_account_safe);
         close = view.findViewById(R.id.close);
-        information = view.findViewById(R.id.information);
+        View information = view.findViewById(R.id.information);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         initRecyclerView();
 
