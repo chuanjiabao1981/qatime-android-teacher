@@ -81,7 +81,7 @@ public class FragmentTutorshipInClass extends BaseFragment {
                         .setText(R.id.price, "￥" + item.getCurrent_price())
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
                         .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()))
-                        .setText(R.id.teaching_time, item.getCompleted_lesson_count() + "/" + item.getPreset_lesson_count());
+                        .setText(R.id.teaching_time, item.getClosed_lessons_count() + "/" + item.getPreset_lesson_count());
             }
         };
         listView.setAdapter(adapter);

@@ -55,6 +55,7 @@ public class MyTutorialClassBean implements Serializable {
         private int buy_tickets_count;
         private int preset_lesson_count;
         private int completed_lesson_count;
+        private int closed_lessons_count;
         private String name;
         private String subject;
         private String grade;
@@ -66,6 +67,14 @@ public class MyTutorialClassBean implements Serializable {
         private String live_end_time;
         private int teacher_percentage;
         private String publicize;
+
+        public int getClosed_lessons_count() {
+            return closed_lessons_count;
+        }
+
+        public void setClosed_lessons_count(int closed_lessons_count) {
+            this.closed_lessons_count = closed_lessons_count;
+        }
 
         public int getPreset_lesson_count() {
             return preset_lesson_count;
