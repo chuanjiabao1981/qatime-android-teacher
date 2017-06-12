@@ -2,8 +2,8 @@ package cn.qatime.player.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,10 +64,12 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
 
     private void initView() {
         ListView listView = (ListView) findViewById(R.id.list);
-        View empty = View.inflate(this, R.layout.empty_view, null);
-        TextView textEmpty = (TextView) empty.findViewById(R.id.text_empty);
+        ViewGroup parent = (ViewGroup) listView.getParent();
+        View inflate = View.inflate(this, R.layout.empty_view, null);
+        TextView textEmpty = (TextView) inflate.findViewById(R.id.text_empty);
         textEmpty.setText(R.string.no_course_announcements);
-        listView.setEmptyView(empty);
+        parent.addView(inflate, parent.indexOfChild(listView) + 1);
+        listView.setEmptyView(inflate);
         adapter = new CommonAdapter<Announcements.DataBean.AnnouncementsBean>(this, items, R.layout.item_announcement_list) {
             @Override
             public void convert(ViewHolder helper, Announcements.DataBean.AnnouncementsBean item, int position) {
