@@ -136,7 +136,10 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
         listView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getResources().getString(R.string.loading));
         listView.getLoadingLayoutProxy(true, false).setReleaseLabel(getResources().getString(R.string.release_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResources().getString(R.string.release_to_load));
-        listView.setEmptyView(View.inflate(ClassTimeTableActivity.this, R.layout.empty_view, null));
+        View emptyView = View.inflate(this, R.layout.empty_view, null);
+        TextView textEmpty = (TextView) emptyView.findViewById(R.id.text_empty);
+        textEmpty.setText("本周暂无数据");
+        listView.setEmptyView(emptyView);
         adapter = new CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean>(this, itemList, R.layout.item_class_time_table) {
             @Override
             public void convert(ViewHolder helper, final ClassTimeTableBean.DataBean.LessonsBean item, int position) {
