@@ -15,6 +15,7 @@ import android.widget.Toast;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.utils.Constant;
+import libraryextra.utils.AppUtils;
 
 /**
  * @author luntify
@@ -80,5 +81,6 @@ public class AboutUsActivity extends BaseActivity {
 //                alertDialog.getWindow().setAttributes(attributes);
             }
         });
+        ((TextView) findViewById(R.id.version)).setText("V " + AppUtils.getVersionName(this));
     }
 }
