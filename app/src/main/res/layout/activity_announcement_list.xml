@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/layout_backbar" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/create"
-        android:orientation="vertical">
-
-        <include layout="@layout/layout_backbar" />
-
+        android:layout_height="0dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_weight="1">
         <ListView
             android:id="@+id/list"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f7f7f7"
+            android:layout_width="match_parent"
             android:cacheColorHint="#00000000"
-            android:divider="#f7f7f7"
-            android:dividerHeight="12dp"
-            android:horizontalSpacing="0dp"
+            android:divider="#dfdddd"
+            android:dividerHeight="1px"
             android:listSelector="#00000000"
-            android:scrollbars="none"
-            android:verticalSpacing="0dp" />
-    </LinearLayout>
+            android:scrollbars="none" />
+    </FrameLayout>
 
-
-    <TextView
+    <Button
         android:id="@+id/create"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_bg_selector_red_with_stork_no_corners"
+        android:layout_height="36dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/button_bg_selector_red_with_stork"
+        android:clickable="true"
         android:gravity="center"
         android:text="创建公告"
+        android:textColor="@drawable/text_selector_white_red"
         android:textSize="16sp" />
-</RelativeLayout>
+</LinearLayout>
+
+

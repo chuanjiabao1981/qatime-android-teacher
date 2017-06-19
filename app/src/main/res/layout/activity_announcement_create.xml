@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_backbar" />
+
+    <EditText
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/text_background"
+        android:textColor="#666"
+        android:textColorHint="#ccc"
+        android:gravity="top"
+        android:hint="输入新公告内容(最多200字)"
+        android:maxEms="200"
+        android:minLines="6"
+        android:padding="3dp" />
 
-        <include layout="@layout/layout_backbar" />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <EditText
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/text_background"
-            android:gravity="top"
-            android:hint="最多输入200字"
-            android:minLines="6"
-            android:padding="3dp" />
-    </LinearLayout>
-
-    <TextView
+    <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_bg_selector_red_with_stork_no_corners"
+        android:layout_height="36dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/button_bg_selector_red_with_stork"
+        android:clickable="true"
         android:gravity="center"
-        android:text="发 布"
-        android:textColor="@color/colorPrimary"
+        android:text="发  布"
+        android:textColor="@drawable/text_selector_white_red"
         android:textSize="16sp" />
-</RelativeLayout>
+</LinearLayout>

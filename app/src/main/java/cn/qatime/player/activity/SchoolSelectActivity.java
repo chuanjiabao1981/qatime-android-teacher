@@ -33,8 +33,6 @@ public class SchoolSelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_select);
         setTitle("选择学校");
-
-
         initView();
         initData();
     }
@@ -45,9 +43,12 @@ public class SchoolSelectActivity extends BaseActivity {
     }
 
     private void initData() {
+        String city_id = getIntent().getStringExtra("city_id");
         SchoolBean schoolBean = JsonUtils.objectFromJson(FileUtil.readFile(getFilesDir() + "/school.txt").toString(), SchoolBean.class);
-        if (schoolBean != null && schoolBean.getData() != null) {
-            schoolList.addAll(schoolBean.getData());
+        for (SchoolBean.Data data : schoolBean.getData()) {
+            if(data.getCity_id().equals(city_id)){
+                schoolList.add(data);
+            }
         }
         adapter.notifyDataSetChanged();
     }

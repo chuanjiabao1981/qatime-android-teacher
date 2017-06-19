@@ -422,7 +422,12 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
                 startActivityForResult(regionIntent, Constant.REQUEST_REGION_SELECT);
                 break;
             case R.id.school_layout:
+                if (city == null) {
+                    Toast.makeText(this, "请先选择城市", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent schoolIntent = new Intent(this, SchoolSelectActivity.class);
+                schoolIntent.putExtra("city_id", city.getId());
                 startActivityForResult(schoolIntent, Constant.REQUEST_SCHOOL_SELECT);
                 break;
         }
