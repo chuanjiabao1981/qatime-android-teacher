@@ -90,7 +90,6 @@ public class FragmentTutorshipEnrollment extends BaseFragment {
                     } else {
                         helper.getView(R.id.teaching_time).setVisibility(View.INVISIBLE);
                     }
-                    ;
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

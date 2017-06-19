@@ -63,10 +63,19 @@ public class MyTutorialClassBean implements Serializable {
         private double price;
         private double current_price;
         private int taste_count;
+        private String status;
         private String live_start_time;
         private String live_end_time;
         private int teacher_percentage;
         private String publicize;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
         public int getClosed_lessons_count() {
             return closed_lessons_count;

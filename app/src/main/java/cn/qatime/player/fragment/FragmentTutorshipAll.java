@@ -31,6 +31,7 @@ import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyTutorialClassBean;
+import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
@@ -83,10 +84,21 @@ public class FragmentTutorshipAll extends BaseFragment {
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
                         .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()));
                 try {
-                    int day = libraryextra.utils.DateUtils.daysBetween(item.getLive_start_time(), System.currentTimeMillis());
-                    if (day > 0) {
-                        helper.getView(R.id.teaching_time).setVisibility(View.VISIBLE);
-                        helper.setText(R.id.teaching_time, "距开课" + day + "天");
+
+
+
+                    if ("init".equals(item.getStatus()) || "published".equals(item.getStatus())) {
+                        int day = libraryextra.utils.DateUtils.daysBetween(item.getLive_start_time(), System.currentTimeMillis());
+                        if (day > 0) {
+                            helper.getView(R.id.teaching_time).setVisibility(View.VISIBLE);
+                            helper.setText(R.id.teaching_time, "距开课" + day + "天");
+                        } else {
+                            helper.getView(R.id.teaching_time).setVisibility(View.INVISIBLE);
+                        }
+                    } else if ("teaching".equals(item.getStatus())) {
+                        helper.setText(R.id.teaching_time, item.getClosed_lessons_count() + "/" + item.getPreset_lesson_count());
+                    } else if (Constant.CourseStatus.finished.equals(item.getStatus()) || Constant.CourseStatus.completed.equals(item.getStatus())) {
+                        helper.setText(R.id.teaching_time, "全部课程已完成");
                     } else {
                         helper.getView(R.id.teaching_time).setVisibility(View.INVISIBLE);
                     }
