@@ -3,11 +3,10 @@ package cn.qatime.player.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -436,16 +435,21 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
         if (requestCode == Constant.REQUEST_PICTURE_SELECT) {
             if (resultCode == Constant.RESPONSE_CAMERA) {//拍照返回的照片
                 if (data != null) {
-                    String url = data.getStringExtra("url");
-
-                    if (url != null && !StringUtils.isNullOrBlanK(url)) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(url);
-                        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null, null));
-                        bitmap.recycle();
-                        Intent intent = new Intent(RegisterPerfectActivity.this, CropImageActivity.class);
-                        intent.putExtra("id", uri.toString());
-                        startActivityForResult(intent, Constant.PHOTO_CROP);
-                    }
+                        String url = data.getStringExtra("url");
+                        if (url != null && !StringUtils.isNullOrBlanK(url)) {
+                            Uri uri = null;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                uri = FileProvider.getUriForFile(this, "com.qatime.player.fileprovider", new File(url));
+//                            Bitmap bitmap = BitmapFactory.decodeFile(url);
+//                            uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null, null));
+//                            bitmap.recycle();
+                            } else {
+                                uri = Uri.fromFile(new File(url));
+                            }
+                            Intent intent = new Intent(RegisterPerfectActivity.this, CropImageActivity.class);
+                            intent.putExtra("id", uri.toString());
+                            startActivityForResult(intent, Constant.PHOTO_CROP);
+                        }
                 }
             } else if (resultCode == Constant.RESPONSE_PICTURE_SELECT) {//选择照片返回的照片
                 if (data != null) {

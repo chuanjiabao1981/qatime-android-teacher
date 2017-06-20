@@ -54,7 +54,8 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        File file = new File(Constant.CACHEPATH);
+        deleteDir(file);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (NetUtils.checkExternalStoragePermission(this)) {
                 getData();
@@ -65,6 +66,17 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
             getData();
         }
 
+    }
+
+    public static void deleteDir(File f) {
+        if (f.exists() && f.isDirectory()) {
+            for (File file : f.listFiles()) {
+                if (file.isDirectory())
+                    deleteDir(file);
+                file.delete();
+            }
+            f.delete();
+        }
     }
 
     private void getData() {

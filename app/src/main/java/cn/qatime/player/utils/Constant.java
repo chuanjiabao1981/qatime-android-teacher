@@ -11,7 +11,7 @@ public class Constant {
 
     public static String APP_ID = "wxf2dfbeb5f641ce40";//微信appid
     public static String phoneNumber = "400-838-8010";
-    public static final String CACHEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qatime_teacher";
+    public static final String CACHEPATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/qatime_teacher/images";
 
     public static int REQUEST = 0;
     public static int RESPONSE = 1;
