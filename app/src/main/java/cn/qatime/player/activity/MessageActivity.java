@@ -27,6 +27,7 @@ import cn.qatime.player.bean.MessageListPanel;
 import cn.qatime.player.bean.ModuleProxy;
 import cn.qatime.player.im.SimpleCallback;
 import cn.qatime.player.im.cache.TeamDataCache;
+import libraryextra.utils.NetUtils;
 import libraryextra.utils.StringUtils;
 
 /**
@@ -86,7 +87,19 @@ public class MessageActivity extends BaseActivity implements ModuleProxy, InputP
             }
         });
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (NetUtils.checkRecordAudioPermission(this)) {
+                } else {
+                    Toast.makeText(this, "未取得录音权限", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
     /**
      * ****************** 观察者 **********************
