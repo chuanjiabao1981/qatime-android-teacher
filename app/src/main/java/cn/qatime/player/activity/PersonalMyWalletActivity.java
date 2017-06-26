@@ -49,6 +49,13 @@ public class PersonalMyWalletActivity extends BaseActivity implements View.OnCli
         withdrawRecord = (LinearLayout) findViewById(R.id.withdraw_record);
         phone = (TextView) findViewById(R.id.phone);
         withdrawCash = (TextView) findViewById(R.id.withdraw_cash);
+        setRightText("说明", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonalMyWalletActivity.this, WalletExplainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

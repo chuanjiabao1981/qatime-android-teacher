@@ -24,8 +24,6 @@ import libraryextra.utils.AppUtils;
  */
 public class AboutUsActivity extends BaseActivity {
 
-    private View call;
-    private TextView phone;
     private AlertDialog alertDialog;
 
     @Override
@@ -41,8 +39,8 @@ public class AboutUsActivity extends BaseActivity {
 
     private void initView() {
         setTitle(getResources().getString(R.string.about_us));
-        call = findViewById(R.id.call_phone);
-        phone = (TextView) findViewById(R.id.phone);
+        View call = findViewById(R.id.call_phone);
+        TextView phone = (TextView) findViewById(R.id.phone);
         phone.setText(Constant.phoneNumber);
         call.setOnClickListener(new View.OnClickListener() {
             @Override
