@@ -127,7 +127,7 @@ public class FragmentTutorshipInClass extends BaseFragment {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("per_page", "10");
-        map.put("status", "published,teaching");
+        map.put("status", "teaching");
 
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/courses", map), null,
                 new VolleyListener(getActivity()) {

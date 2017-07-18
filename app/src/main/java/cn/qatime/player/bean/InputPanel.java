@@ -442,8 +442,8 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(context,new String[]{
-                                    android.Manifest.permission.RECORD_AUDIO},1);
+                            ActivityCompat.requestPermissions(context, new String[]{
+                                    android.Manifest.permission.RECORD_AUDIO}, 1);
                             return true;
                         }
                     }
