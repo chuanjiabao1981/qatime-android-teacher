@@ -24,11 +24,11 @@ import cn.qatime.player.fragment.FragmentInteractDetailClassList;
 import cn.qatime.player.fragment.FragmentInteractDetailTeachersInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
+import cn.qatime.player.view.SimpleViewPagerIndicator;
 import libraryextra.bean.InteractCourseDetailBean;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
-import libraryextra.view.SimpleViewPagerIndicator;
 
 public class InteractCourseDetailActivity extends BaseFragmentActivity implements View.OnClickListener {
     private int id;

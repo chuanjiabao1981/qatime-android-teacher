@@ -26,11 +26,11 @@ import cn.qatime.player.fragment.FragmentClassDetailClassList;
 import cn.qatime.player.fragment.FragmentClassDetailTeacherInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
+import cn.qatime.player.view.SimpleViewPagerIndicator;
 import libraryextra.bean.RemedialClassDetailBean;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
-import libraryextra.view.SimpleViewPagerIndicator;
 
 public class RemedialClassDetailActivity extends BaseFragmentActivity implements View.OnClickListener {
     private int id;

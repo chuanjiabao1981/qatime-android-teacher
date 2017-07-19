@@ -95,6 +95,7 @@
                 android:checked="true"
                 android:minWidth="40dp"
                 android:minHeight="20dp"
+                android:track="@drawable/switch_track_selector"
                 android:thumb="@drawable/switch_thumb_selector" />
         </LinearLayout>
     </LinearLayout>
