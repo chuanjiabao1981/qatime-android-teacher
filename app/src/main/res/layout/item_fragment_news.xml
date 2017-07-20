@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="10dp">
@@ -35,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="名字" />
+                android:text="名字"
+                android:textColor="#666" />
 
             <ImageView
                 android:id="@+id/notify"
@@ -56,19 +57,22 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:text="00:00"
-                android:textSize="13sp" />
+                android:textColor="#999"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/notify_count_bg"
+                android:background="@drawable/shape_circle"
                 android:gravity="center"
-                android:padding="2dp"
-                android:text="0"
+                android:text="10"
                 android:textColor="#fff"
+                android:textSize="12sp"
                 android:visibility="gone" />
 
         </RelativeLayout>

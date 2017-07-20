@@ -19,6 +19,7 @@ public class MessageListBean implements Serializable {
     private long time;
     private int unreadCount;
     private String camera;
+    private String icon;
     private String board;
     private String name;
     private int courseId;
@@ -34,6 +35,14 @@ public class MessageListBean implements Serializable {
 
     public void setRecentMessageId(String recentMessageId) {
         this.recentMessageId = recentMessageId;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public MsgStatusEnum getMsgStatus() {
