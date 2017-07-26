@@ -40,7 +40,8 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
 
 
     private void initview(View view) {
-        ListView listView = (ListView) view.findViewById(R.id.id_stickynavlayout_innerscrollview);
+        ListView listView = (ListView) view.findViewById(R.id.list1);
+        ListView listView2 = (ListView) view.findViewById(R.id.list2);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
         adapter = new CommonAdapter<Lessons>(getActivity(), list, R.layout.item_fragment_remedial_class_detail3) {
 
@@ -88,6 +89,7 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
             }
         };
         listView.setAdapter(adapter);
+        listView2.setAdapter(adapter);
     }
 
     private boolean isFinished(Lessons item) {

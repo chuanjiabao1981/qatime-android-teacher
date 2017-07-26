@@ -145,28 +145,6 @@
                 android:text="0000-00-00"
                 android:textColor="#666" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/flow_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="20dp"
-                android:text="课程标签"
-                android:textColor="#333"
-                android:textSize="15sp" />
-
-            <cn.qatime.player.view.FlowLayout
-                android:id="@+id/flow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
