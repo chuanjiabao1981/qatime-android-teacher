@@ -14,23 +14,19 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragmentActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.player.fragment.FragmentClassDetailClassInfo;
-import cn.qatime.player.fragment.FragmentClassDetailClassList;
-import cn.qatime.player.fragment.FragmentClassDetailTeacherInfo;
+import cn.qatime.player.bean.ExclusiveCourseDetailBean;
 import cn.qatime.player.fragment.FragmentExclusiveCourseClassInfo;
 import cn.qatime.player.fragment.FragmentExclusiveCourseClassList;
 import cn.qatime.player.fragment.FragmentExclusiveCourseTeacherInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.SimpleViewPagerIndicator;
-import libraryextra.bean.RemedialClassDetailBean;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -42,14 +38,13 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
     private TextView name;
     private TextView title;
-    private RemedialClassDetailBean data;
+    private ExclusiveCourseDetailBean data;
     private ViewPager mViewPager;
     private int pager = 0;
     TextView price;
     TextView studentnumber;
     private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     DecimalFormat df = new DecimalFormat("#.00");
-    private TextView transferPrice;
     private TextView refundAnyTime;
     private TextView freeTaste;
     private TextView couponFree;
@@ -98,7 +93,6 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
 
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
-        transferPrice = (TextView) findViewById(R.id.transfer_price);
         studentnumber = (TextView) findViewById(R.id.student_number);
         findViewById(R.id.announcement).setOnClickListener(this);
 
@@ -145,49 +139,41 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id, null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlExclusiveCourse + id + "/detail", null,
                 new VolleyListener(ExclusiveCourseDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        data = JsonUtils.objectFromJson(response.toString(), RemedialClassDetailBean.class);
+                        data = JsonUtils.objectFromJson(response.toString(), ExclusiveCourseDetailBean.class);
 
-                        if (data != null && data.getData() != null && data.getData().getLive_start_time() != null) {
-                            status.setText(getStatus(data.getData().getStatus()));
-                            name.setText(data.getData().getName());
-                            title.setText(data.getData().getName());
-                            studentnumber.setText(getString(R.string.student_number, data.getData().getBuy_tickets_count()));
-                            String price;
-                            if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
-                                price = df.format(data.getData().getPrice());
-                            } else {
-                                price = df.format(data.getData().getCurrent_price());
-                            }
+                        if (data != null && data.getData() != null && data.getData().getCustomized_group() != null) {
+                            status.setText(getStatus(data.getData().getCustomized_group().getStatus()));
+                            name.setText(data.getData().getCustomized_group().getName());
+                            title.setText(data.getData().getCustomized_group().getName());
+                            studentnumber.setText(getString(R.string.student_number, data.getData().getCustomized_group().getView_tickets_count()));
+                            String price = data.getData().getCustomized_group().getPrice();
                             if (price.startsWith(".")) {
                                 price = "0" + price;
                             }
-                            ExclusiveCourseDetailActivity.this.price.setText("￥" + price);
-                            if (Constant.CourseStatus.teaching.equals(data.getData().getStatus())) {
-                                transferPrice.setVisibility(View.VISIBLE);
-                            } else {
-                                transferPrice.setVisibility(View.GONE);
-                            }
-                            if (data.getData().getIcons() != null) {
-                                if (!data.getData().getIcons().isCoupon_free()) {
+                            ExclusiveCourseDetailActivity.this.price.setText("free".equals(data.getData().getCustomized_group().getSell_type()) ? "免费" : ("￥" + price));
+
+                            if (data.getData().getCustomized_group().getIcons() != null) {
+                                if (!data.getData().getCustomized_group().getIcons().isCoupon_free()) {
                                     couponFree.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getIcons().isRefund_any_time()) {
+                                if (!data.getData().getCustomized_group().getIcons().isRefund_any_time()) {
                                     refundAnyTime.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getIcons().isFree_taste()) {
+                                if (!data.getData().getCustomized_group().getIcons().isFree_taste()) {
                                     freeTaste.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getIcons().isJoin_cheap()) {
+                                if (!data.getData().getCustomized_group().getIcons().isJoin_cheap()) {
                                     joinCheap.setVisibility(View.GONE);
                                 }
                             }
                             try {
-                                if ("init".equals(data.getData().getStatus()) || "published".equals(data.getData().getStatus())) {
-                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getLive_start_time(), System.currentTimeMillis());
+                                if ("init".equals(data.getData().getCustomized_group().getStatus()) || "published".equals(data.getData().getCustomized_group().getStatus())) {
+//                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getCustomized_group().getStart_at(), System.currentTimeMillis());
+                                    int value = 0;
                                     progress.setVisibility(View.GONE);
                                     if (value > 0) {
                                         timeToStart.setVisibility(View.VISIBLE);
@@ -197,26 +183,26 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
 //                                        timeToStart.setText(R.string.ready_to_start);
                                     }
                                     layoutView.setBackgroundColor(0xff00d564);
-                                } else if ("teaching".equals(data.getData().getStatus())) {
+                                } else if ("teaching".equals(data.getData().getCustomized_group().getStatus())) {
                                     progress.setVisibility(View.VISIBLE);
                                     timeToStart.setVisibility(View.GONE);
                                     layoutView.setBackgroundColor(0xff00a0e9);
-                                    progress.setText(getString(R.string.progress_live, data.getData().getClosed_lessons_count(), data.getData().getPreset_lesson_count()));
-                                } else if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
+                                    progress.setText(getString(R.string.progress_live, data.getData().getCustomized_group().getClosed_events_count(), data.getData().getCustomized_group().getEvents_count()));
+                                } else if (Constant.CourseStatus.finished.equals(data.getData().getCustomized_group().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getCustomized_group().getStatus())) {
                                     progress.setVisibility(View.VISIBLE);
                                     timeToStart.setVisibility(View.GONE);
                                     layoutView.setBackgroundColor(0xff999999);
-                                    progress.setText(getString(R.string.progress_live, data.getData().getClosed_lessons_count(), data.getData().getPreset_lesson_count()));
+                                    progress.setText(getString(R.string.progress_live, data.getData().getCustomized_group().getClosed_events_count(), data.getData().getCustomized_group().getEvents_count()));
                                 } else {
                                     layoutView.setVisibility(View.INVISIBLE);
                                 }
-                            } catch (ParseException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
-                            ((FragmentClassDetailClassInfo) fragBaseFragments.get(0)).setData(data);
-                            ((FragmentClassDetailTeacherInfo) fragBaseFragments.get(1)).setData(data);
-                            ((FragmentClassDetailClassList) fragBaseFragments.get(2)).setData(data);
+                            ((FragmentExclusiveCourseClassInfo) fragBaseFragments.get(0)).setData(data);
+                            ((FragmentExclusiveCourseTeacherInfo) fragBaseFragments.get(1)).setData(data);
+                            ((FragmentExclusiveCourseClassList) fragBaseFragments.get(2)).setData(data);
 
                         }
                     }
@@ -262,8 +248,8 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         switch (v.getId()) {
             case R.id.announcement:
                 Intent intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
-                intent.putExtra("id", data.getData().getId());
-                intent.putExtra("type", Constant.CoursesType.courses);
+                intent.putExtra("id", data.getData().getCustomized_group().getId());
+                intent.putExtra("type", Constant.CoursesType.exclusive);
                 startActivity(intent);
                 break;
         }

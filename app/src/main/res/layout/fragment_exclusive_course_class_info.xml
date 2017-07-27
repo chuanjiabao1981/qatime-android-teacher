@@ -195,7 +195,7 @@
             android:background="#00000000"
             tools:ignore="WebViewLayout" />
 
-        <include layout="@layout/learn_progress_layout_live" />
+        <include layout="@layout/learn_progress_layout_exclusive" />
 
         <WebView
             android:id="@+id/learning_tips"

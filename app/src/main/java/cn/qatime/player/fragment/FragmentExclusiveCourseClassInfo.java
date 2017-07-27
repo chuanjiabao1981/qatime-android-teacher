@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragment;
-import libraryextra.bean.RemedialClassDetailBean;
+import cn.qatime.player.bean.ExclusiveCourseDetailBean;
 import libraryextra.utils.StringUtils;
 
 public class FragmentExclusiveCourseClassInfo extends BaseFragment {
@@ -28,7 +28,7 @@ public class FragmentExclusiveCourseClassInfo extends BaseFragment {
     TextView subject;
     TextView grade;
     TextView totalclass;
-    RemedialClassDetailBean data;
+    ExclusiveCourseDetailBean data;
     private SimpleDateFormat parse1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private SimpleDateFormat parse2 = new SimpleDateFormat("yyyy-MM-dd");
     private TextView suitable;
@@ -88,25 +88,25 @@ public class FragmentExclusiveCourseClassInfo extends BaseFragment {
         }
     }
 
-    public void setData(RemedialClassDetailBean bean) {
+    public void setData(ExclusiveCourseDetailBean bean) {
         if (bean != null && bean.getData() != null) {
-            subject.setText((StringUtils.isNullOrBlanK(bean.getData().getSubject()) ? "" : bean.getData().getSubject()));
+            subject.setText((StringUtils.isNullOrBlanK(bean.getData().getCustomized_group().getSubject()) ? "" : bean.getData().getCustomized_group().getSubject()));
             try {
-                classStartTime.setText((bean.getData().getLive_start_time() == null ? "" : parse2.format(parse1.parse(bean.getData().getLive_start_time()))));
-                classEndTime.setText(parse2.format(parse1.parse(bean.getData().getLive_end_time())));
+                classStartTime.setText((bean.getData().getCustomized_group().getStart_at() == null ? "" : parse2.format(parse1.parse(bean.getData().getCustomized_group().getStart_at()))));
+                classEndTime.setText(bean.getData().getCustomized_group().getEnd_at() == null ? "" : parse2.format(parse1.parse(bean.getData().getCustomized_group().getEnd_at())));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            grade.setText((bean.getData().getGrade() == null ? "" : bean.getData().getGrade()));
-            totalclass.setText(getString(R.string.lesson_count, bean.getData().getPreset_lesson_count()));
-            if (!StringUtils.isNullOrBlanK(bean.getData().getObjective())) {
-                target.setText(bean.getData().getObjective());
+            grade.setText((bean.getData().getCustomized_group().getGrade() == null ? "" : bean.getData().getCustomized_group().getGrade()));
+            totalclass.setText(getString(R.string.lesson_count, bean.getData().getCustomized_group().getEvents_count()));
+            if (!StringUtils.isNullOrBlanK(bean.getData().getCustomized_group().getObjective())) {
+                target.setText(bean.getData().getCustomized_group().getObjective());
             }
-            if (!StringUtils.isNullOrBlanK(bean.getData().getSuit_crowd())) {
-                suitable.setText(bean.getData().getSuit_crowd());
+            if (!StringUtils.isNullOrBlanK(bean.getData().getCustomized_group().getSuit_crowd())) {
+                suitable.setText(bean.getData().getCustomized_group().getSuit_crowd());
             }
             String header = "<style>* {color:#666666;margin:0;padding:0;}.one {float: left;width:50%;height:auto;position: relative;text-align: center;}.two {width:100%;height:100%;top: 0;left:0;position: absolute;text-align: center;}</style>";//默认color段落间距
-            String body = StringUtils.isNullOrBlanK(bean.getData().getDescription()) ? getString(R.string.no_desc) : bean.getData().getDescription();
+            String body = StringUtils.isNullOrBlanK(bean.getData().getCustomized_group().getDescription()) ? getString(R.string.no_desc) : bean.getData().getCustomized_group().getDescription();
             body = body.replace("\r\n", "<br>");
             //......
             String footer =
