@@ -61,6 +61,8 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
                 baseUrl = UrlUtils.urlRemedialClass + "/";
             } else if (type.equals(Constant.CoursesType.interactive)) {
                 baseUrl = UrlUtils.urlInteractCourses;
+            }else if(type.equals(Constant.CoursesType.exclusive)){
+                baseUrl = UrlUtils.urlExclusiveCourse;
             }
         }
         assignViews();
