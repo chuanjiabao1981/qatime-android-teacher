@@ -78,7 +78,7 @@ public class FragmentTutorshipInClass extends BaseFragment {
                 Glide.with(getActivity()).load(item.getPublicize()).placeholder(R.mipmap.photo).crossFade().into((ImageView) helper.getView(R.id.image));
                 helper.setText(R.id.name, item.getName())
                         .setText(R.id.grade, item.getGrade())
-                        .setText(R.id.price, "￥" + item.getCurrent_price())
+                        .setText(R.id.price, "free".equals(item.getSell_type()) ? "免费" : ("￥" + item.getCurrent_price()))
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
                         .setText(R.id.number, String.valueOf(item.getBuy_tickets_count()))
                         .setText(R.id.teaching_time, item.getClosed_lessons_count() + "/" + item.getPreset_lesson_count());

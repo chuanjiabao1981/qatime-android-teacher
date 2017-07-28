@@ -172,8 +172,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             }
                             try {
                                 if ("init".equals(data.getData().getCustomized_group().getStatus()) || "published".equals(data.getData().getCustomized_group().getStatus())) {
-//                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getCustomized_group().getStart_at(), System.currentTimeMillis());
-                                    int value = 0;
+                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getCustomized_group().getStart_at(), System.currentTimeMillis());
                                     progress.setVisibility(View.GONE);
                                     if (value > 0) {
                                         timeToStart.setVisibility(View.VISIBLE);

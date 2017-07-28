@@ -12,12 +12,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragment;
 import libraryextra.bean.InteractCourseDetailBean;
-import libraryextra.bean.RemedialClassDetailBean;
 import libraryextra.utils.StringUtils;
 
 public class FragmentInteractDetailClassInfo extends BaseFragment {
@@ -26,7 +23,6 @@ public class FragmentInteractDetailClassInfo extends BaseFragment {
     TextView subject;
     TextView grade;
     TextView totalTime;
-    RemedialClassDetailBean data;
     private TextView suitable;
     private TextView target;
     private TextView totalCount;

@@ -502,4 +502,5 @@
     <string name="review_success">审核通过</string>
     <string name="review_failed">审核失败</string>
     <string name="withdraw_paid">提现成功</string>
+    <string name="my_exclusive">我的专属课</string>
 </resources>

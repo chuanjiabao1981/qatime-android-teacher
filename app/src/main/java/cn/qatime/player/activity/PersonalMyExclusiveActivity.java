@@ -11,15 +11,12 @@ import java.util.ArrayList;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.base.BaseFragmentActivity;
-import cn.qatime.player.fragment.FragmentTutorshipEnrollment;
-import cn.qatime.player.fragment.FragmentTutorshipInClass;
-import cn.qatime.player.fragment.FragmentTutorshipOver;
+import cn.qatime.player.fragment.FragmentExclusiveInClass;
+import cn.qatime.player.fragment.FragmentExclusiveOver;
+import cn.qatime.player.fragment.FragmentExclusivePublished;
 import libraryextra.view.FragmentLayoutWithLine;
 
-/**
- * 我的辅导
- */
-public class PersonalMyTutorshipActivity extends BaseFragmentActivity {
+public class PersonalMyExclusiveActivity extends BaseFragmentActivity {
     private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3};
     FragmentLayoutWithLine fragmentlayout;
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
@@ -27,20 +24,21 @@ public class PersonalMyTutorshipActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("我的直播课");
+        setTitle("我的专属课");
         initView();
     }
 
     @Override
     public int getContentView() {
-        return R.layout.activity_personal_my_tutorship;
+        return R.layout.activity_personal_my_exclusive;
     }
 
 
     private void initView() {
-        fragBaseFragments.add(new FragmentTutorshipEnrollment());
-        fragBaseFragments.add(new FragmentTutorshipInClass());
-        fragBaseFragments.add(new FragmentTutorshipOver());
+//        Exclusive
+        fragBaseFragments.add(new FragmentExclusivePublished());
+        fragBaseFragments.add(new FragmentExclusiveInClass());
+        fragBaseFragments.add(new FragmentExclusiveOver());
 
         fragmentlayout = (FragmentLayoutWithLine) findViewById(R.id.fragmentlayout);
 
@@ -56,7 +54,7 @@ public class PersonalMyTutorshipActivity extends BaseFragmentActivity {
                 ((BaseFragment) fragBaseFragments.get(position)).onShow();
             }
         });
-        fragmentlayout.setAdapter(fragBaseFragments, R.layout.tableout_personal_my_tutor, 0x0311);
+        fragmentlayout.setAdapter(fragBaseFragments, R.layout.tablayout_personal_my_exclusive, 0x0311);
         fragmentlayout.getViewPager().setOffscreenPageLimit(3);
         ((BaseFragment) fragBaseFragments.get(0)).onShow();
         new Handler().postDelayed(new Runnable() {
@@ -66,5 +64,4 @@ public class PersonalMyTutorshipActivity extends BaseFragmentActivity {
             }
         }, 200);
     }
-
 }
