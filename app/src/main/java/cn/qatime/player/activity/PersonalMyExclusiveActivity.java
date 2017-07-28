@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.base.BaseFragmentActivity;
-import cn.qatime.player.fragment.FragmentExclusiveAll;
 import cn.qatime.player.fragment.FragmentExclusiveInClass;
 import cn.qatime.player.fragment.FragmentExclusiveOver;
 import cn.qatime.player.fragment.FragmentExclusivePublished;
 import libraryextra.view.FragmentLayoutWithLine;
 
 public class PersonalMyExclusiveActivity extends BaseFragmentActivity {
-    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3, R.id.tab_text4};
+    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3};
     FragmentLayoutWithLine fragmentlayout;
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
 
@@ -37,7 +36,6 @@ public class PersonalMyExclusiveActivity extends BaseFragmentActivity {
 
     private void initView() {
 //        Exclusive
-        fragBaseFragments.add(new FragmentExclusiveAll());
         fragBaseFragments.add(new FragmentExclusivePublished());
         fragBaseFragments.add(new FragmentExclusiveInClass());
         fragBaseFragments.add(new FragmentExclusiveOver());

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.base.BaseFragmentActivity;
-import cn.qatime.player.fragment.FragmentInteractAll;
 import cn.qatime.player.fragment.FragmentInteractEnrollment;
 import cn.qatime.player.fragment.FragmentInteractInClass;
 import cn.qatime.player.fragment.FragmentInteractOver;
@@ -21,7 +20,7 @@ import libraryextra.view.FragmentLayoutWithLine;
  * 我的一对一
  */
 public class PersonalMyInteractActivity extends BaseFragmentActivity {
-    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3, R.id.tab_text4};
+    private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3};
     FragmentLayoutWithLine fragmentlayout;
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
 
@@ -41,7 +40,6 @@ public class PersonalMyInteractActivity extends BaseFragmentActivity {
     private void initView() {
         findViewById(R.id.right).setVisibility(View.GONE);
 
-        fragBaseFragments.add(new FragmentInteractAll());
         fragBaseFragments.add(new FragmentInteractEnrollment());
         fragBaseFragments.add(new FragmentInteractInClass());
         fragBaseFragments.add(new FragmentInteractOver());

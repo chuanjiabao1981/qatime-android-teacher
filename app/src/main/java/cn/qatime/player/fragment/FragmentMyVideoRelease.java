@@ -73,7 +73,7 @@ public class FragmentMyVideoRelease extends BaseFragment {
                 helper.setText(R.id.grade, item.getGrade());
                 helper.setText(R.id.lesson_count, "共" + item.getPreset_lesson_count() + "课时");
                 helper.setText(R.id.buy_count, item.getBuy_tickets_count() + "");
-                helper.setText(R.id.price, "￥" + item.getPrice());
+                helper.setText(R.id.price, "free".equals(item.getSell_type()) ? "免费" : ("￥" + item.getPrice()));
                 helper.setText(R.id.scale, "(" + item.getTeacher_percentage() + "%)");
             }
         };
