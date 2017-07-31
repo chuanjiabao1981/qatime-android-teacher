@@ -27,6 +27,7 @@ import cn.qatime.player.fragment.FragmentExclusiveCourseTeacherInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.SimpleViewPagerIndicator;
+import libraryextra.utils.DateUtils;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -172,8 +173,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             }
                             try {
                                 if ("init".equals(data.getData().getCustomized_group().getStatus()) || "published".equals(data.getData().getCustomized_group().getStatus())) {
-//                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getCustomized_group().getStart_at(), System.currentTimeMillis());
-                                    int value = 0;
+                                    int value = DateUtils.daysBetween(Long.valueOf(data.getData().getCustomized_group().getStart_at())*1000, System.currentTimeMillis());
                                     progress.setVisibility(View.GONE);
                                     if (value > 0) {
                                         timeToStart.setVisibility(View.VISIBLE);

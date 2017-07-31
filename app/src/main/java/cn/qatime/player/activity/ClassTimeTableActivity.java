@@ -71,9 +71,10 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
     private void initData() {
         Map<String, String> map = new HashMap<>();
         if (!StringUtils.isNullOrBlanK(date)) {
-            map.put("month", date);
+            map.put("date", date);
         }
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/schedule", map), null,
+        map.put("date_type", "month");
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/schedule_data", map), null,
                 new VolleyListener(ClassTimeTableActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
@@ -138,7 +139,7 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResources().getString(R.string.release_to_load));
         View emptyView = View.inflate(this, R.layout.empty_view, null);
         TextView textEmpty = (TextView) emptyView.findViewById(R.id.text_empty);
-        textEmpty.setText("本周暂无数据");
+        textEmpty.setText("暂无数据");
         listView.setEmptyView(emptyView);
         adapter = new CommonAdapter<ClassTimeTableBean.DataBean.LessonsBean>(this, itemList, R.layout.item_class_time_table) {
             @Override
@@ -157,12 +158,15 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
                 helper.setText(R.id.grade, item.getGrade());
                 helper.setText(R.id.subject, item.getSubject());
                 helper.setText(R.id.teacher, "/" + item.getTeacher_name());
-                if ("LiveStudio::Lesson".equals(itemList.get(position).getModal_type())) {
-                    helper.getView(R.id.modal_type).setBackgroundColor(0xffff4856);
+                if ("LiveStudio::Course".equals(item.getProduct_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xffb8860b);
                     helper.setText(R.id.modal_type, "直播课");
-                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position).getModal_type())) {
-                    helper.getView(R.id.modal_type).setBackgroundColor(0xff4856ff);
+                } else if ("LiveStudio::InteractiveCourse".equals(item.getProduct_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xffffb6c1);
                     helper.setText(R.id.modal_type, "一对一");
+                } else if ("LiveStudio::CustomizedGroup".equals(item.getProduct_type())) {
+                    helper.getView(R.id.modal_type).setBackgroundColor(0xff00ccff);
+                    helper.setText(R.id.modal_type, "专属课");
                 }
             }
         };
@@ -177,13 +181,18 @@ public class ClassTimeTableActivity extends BaseActivity implements View.OnClick
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if ("LiveStudio::Lesson".equals(itemList.get(position - 1).getModal_type())) {
+                if ("LiveStudio::Course".equals(itemList.get(position - 1).getProduct_type())) {
                     Intent intent = new Intent(ClassTimeTableActivity.this, RemedialClassDetailActivity.class);
                     intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
                     intent.putExtra("pager", 2);
                     startActivity(intent);
-                } else if ("LiveStudio::InteractiveLesson".equals(itemList.get(position - 1).getModal_type())) {
+                } else if ("LiveStudio::InteractiveCourse".equals(itemList.get(position - 1).getProduct_type())) {
                     Intent intent = new Intent(ClassTimeTableActivity.this, InteractCourseDetailActivity.class);
+                    intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
+                    intent.putExtra("pager", 2);
+                    startActivity(intent);
+                } else if ("LiveStudio::CustomizedGroup".equals(itemList.get(position - 1).getProduct_type())) {
+                    Intent intent = new Intent(ClassTimeTableActivity.this, ExclusiveCourseDetailActivity.class);
                     intent.putExtra("id", Integer.valueOf(itemList.get(position - 1).getProduct_id()));
                     intent.putExtra("pager", 2);
                     startActivity(intent);

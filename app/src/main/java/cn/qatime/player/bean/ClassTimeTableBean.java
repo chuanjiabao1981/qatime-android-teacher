@@ -3,11 +3,6 @@ package cn.qatime.player.bean;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @author luntify
- * @date 2016/8/26 16:23
- * @Description
- */
 public class ClassTimeTableBean implements Serializable {
     private int status;
     private List<DataBean> data;
@@ -50,68 +45,88 @@ public class ClassTimeTableBean implements Serializable {
         }
 
         public static class LessonsBean {
+            /**
+             * taste : false
+             * id : 479
+             * name : 课程二
+             * status : closed
+             * class_date : 2017-07-10
+             * replayable : false
+             * left_replay_times : 0
+             * model_type : LiveStudio::Lesson
+             * course_name : 晓龙直播室
+             * course_publicize : http://testing.qatime.cn/assets/courses/mathematics/list_default-1b3bf1a3d82979605caea89854b60a44.png
+             * subject : 数学
+             * grade : 高二
+             * buy_tickets_count : 4
+             * product_id : 138
+             * product_type : LiveStudio::Course
+             */
 
-            private String board;
-            private String board_pull_stream;
-            private String camera;
-            private String camera_pull_stream;
-            private String chat_team_id;
+            private boolean taste;
+            private int id;
+            private String name;
+            private String status;
             private String class_date;
-            private String course_id;
+            private boolean replayable;
+            private int left_replay_times;
+            private String model_type;
             private String course_name;
             private String course_publicize;
-            private String grade;
-            private int id;
-            private int left_replay_times;
-            private String lesson_name;
-            private String live_time;
-            private String modal_type;
-            private String name;
-            private int product_id;
-            private String pull_address;
-            private boolean replayable;
-            private String status;
             private String subject;
+            private String grade;
+            private int buy_tickets_count;
+            private int product_id;
+            private String product_type;
+            private String live_time;
             private String teacher_name;
 
-            public String getBoard() {
-                return board;
+            public String getLive_time() {
+                return live_time;
             }
 
-            public void setBoard(String board) {
-                this.board = board;
+            public void setLive_time(String live_time) {
+                this.live_time = live_time;
             }
 
-            public String getBoard_pull_stream() {
-                return board_pull_stream;
+            public String getTeacher_name() {
+                return teacher_name;
             }
 
-            public void setBoard_pull_stream(String board_pull_stream) {
-                this.board_pull_stream = board_pull_stream;
+            public void setTeacher_name(String teacher_name) {
+                this.teacher_name = teacher_name;
             }
 
-            public String getCamera() {
-                return camera;
+            public boolean isTaste() {
+                return taste;
             }
 
-            public void setCamera(String camera) {
-                this.camera = camera;
+            public void setTaste(boolean taste) {
+                this.taste = taste;
             }
 
-            public String getCamera_pull_stream() {
-                return camera_pull_stream;
+            public int getId() {
+                return id;
             }
 
-            public void setCamera_pull_stream(String camera_pull_stream) {
-                this.camera_pull_stream = camera_pull_stream;
+            public void setId(int id) {
+                this.id = id;
             }
 
-            public String getChat_team_id() {
-                return chat_team_id;
+            public String getName() {
+                return name;
             }
 
-            public void setChat_team_id(String chat_team_id) {
-                this.chat_team_id = chat_team_id;
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
             }
 
             public String getClass_date() {
@@ -122,12 +137,28 @@ public class ClassTimeTableBean implements Serializable {
                 this.class_date = class_date;
             }
 
-            public String getCourse_id() {
-                return course_id;
+            public boolean isReplayable() {
+                return replayable;
             }
 
-            public void setCourse_id(String course_id) {
-                this.course_id = course_id;
+            public void setReplayable(boolean replayable) {
+                this.replayable = replayable;
+            }
+
+            public int getLeft_replay_times() {
+                return left_replay_times;
+            }
+
+            public void setLeft_replay_times(int left_replay_times) {
+                this.left_replay_times = left_replay_times;
+            }
+
+            public String getModel_type() {
+                return model_type;
+            }
+
+            public void setModel_type(String model_type) {
+                this.model_type = model_type;
             }
 
             public String getCourse_name() {
@@ -146,6 +177,14 @@ public class ClassTimeTableBean implements Serializable {
                 this.course_publicize = course_publicize;
             }
 
+            public String getSubject() {
+                return subject;
+            }
+
+            public void setSubject(String subject) {
+                this.subject = subject;
+            }
+
             public String getGrade() {
                 return grade;
             }
@@ -154,54 +193,13 @@ public class ClassTimeTableBean implements Serializable {
                 this.grade = grade;
             }
 
-            public int getId() {
-                return id;
+            public int getBuy_tickets_count() {
+                return buy_tickets_count;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setBuy_tickets_count(int buy_tickets_count) {
+                this.buy_tickets_count = buy_tickets_count;
             }
-
-            public int getLeft_replay_times() {
-                return left_replay_times;
-            }
-
-            public void setLeft_replay_times(int left_replay_times) {
-                this.left_replay_times = left_replay_times;
-            }
-
-            public String getLesson_name() {
-                return lesson_name;
-            }
-
-            public void setLesson_name(String lesson_name) {
-                this.lesson_name = lesson_name;
-            }
-
-            public String getLive_time() {
-                return live_time;
-            }
-
-            public void setLive_time(String live_time) {
-                this.live_time = live_time;
-            }
-
-            public String getModal_type() {
-                return modal_type;
-            }
-
-            public void setModal_type(String modal_type) {
-                this.modal_type = modal_type;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
 
             public int getProduct_id() {
                 return product_id;
@@ -211,44 +209,12 @@ public class ClassTimeTableBean implements Serializable {
                 this.product_id = product_id;
             }
 
-            public String getPull_address() {
-                return pull_address;
+            public String getProduct_type() {
+                return product_type;
             }
 
-            public void setPull_address(String pull_address) {
-                this.pull_address = pull_address;
-            }
-
-            public boolean isReplayable() {
-                return replayable;
-            }
-
-            public void setReplayable(boolean replayable) {
-                this.replayable = replayable;
-            }
-
-            public String getStatus() {
-                return status;
-            }
-
-            public void setStatus(String status) {
-                this.status = status;
-            }
-
-            public String getSubject() {
-                return subject;
-            }
-
-            public void setSubject(String subject) {
-                this.subject = subject;
-            }
-
-            public String getTeacher_name() {
-                return teacher_name;
-            }
-
-            public void setTeacher_name(String teacher_name) {
-                this.teacher_name = teacher_name;
+            public void setProduct_type(String product_type) {
+                this.product_type = product_type;
             }
         }
     }
