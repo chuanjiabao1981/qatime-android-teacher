@@ -25,11 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 import cn.qatime.player.R;
-import cn.qatime.player.activity.InteractCourseDetailActivity;
+import cn.qatime.player.activity.ExclusiveCourseDetailActivity;
 import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.player.bean.MyInteractiveBean;
+import cn.qatime.player.bean.MyExclusiveCourseBean;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
@@ -39,20 +39,20 @@ import libraryextra.utils.VolleyListener;
 
 /**
  * @author lungtify
- * @Time 2017/5/17 15:44
+ * @Time 2017/5/16 14:46
  * @Describe
  */
 
-public class FragmentInteractAll extends BaseFragment {
+public class FragmentExclusiveInClass extends BaseFragment {
     private PullToRefreshListView listView;
-    private CommonAdapter<MyInteractiveBean.DataBean> adapter;
-    private List<MyInteractiveBean.DataBean> list = new ArrayList<>();
+    private CommonAdapter<MyExclusiveCourseBean.DataBean> adapter;
+    private List<MyExclusiveCourseBean.DataBean> list = new ArrayList<>();
     private int page = 1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_interactive, null);
+        return inflater.inflate(R.layout.fragment_my_exclusive, null);
     }
 
     @Override
@@ -72,15 +72,16 @@ public class FragmentInteractAll extends BaseFragment {
         listView.getLoadingLayoutProxy(false, true).setRefreshingLabel(getResourceString(R.string.loading));
         listView.getLoadingLayoutProxy(true, false).setReleaseLabel(getResourceString(R.string.release_to_refresh));
         listView.getLoadingLayoutProxy(false, true).setReleaseLabel(getResourceString(R.string.release_to_load));
-        adapter = new CommonAdapter<MyInteractiveBean.DataBean>(getActivity(), list, R.layout.item_fragment_personal_my_interactive) {
+        adapter = new CommonAdapter<MyExclusiveCourseBean.DataBean>(getActivity(), list, R.layout.item_fragment_personal_my_exclusive) {
             @Override
-            public void convert(ViewHolder helper, final MyInteractiveBean.DataBean item, int position) {
-                Glide.with(getActivity()).load(item.getPublicize_list_url()).placeholder(R.mipmap.photo).crossFade().into((ImageView) helper.getView(R.id.image));
+            public void convert(ViewHolder helper, final MyExclusiveCourseBean.DataBean item, int position) {
+                Glide.with(getActivity()).load(item.getPublicizes_url().getList()).placeholder(R.mipmap.photo).crossFade().into((ImageView) helper.getView(R.id.image));
                 helper.setText(R.id.name, item.getName())
                         .setText(R.id.grade, item.getGrade())
-                        .setText(R.id.price, "￥" + item.getPrice())
+                        .setText(R.id.price, "free".equals(item.getSell_type()) ? "免费" : ("￥" + item.getCurrent_price()))
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
-                        .setText(R.id.lesson_count, "我的课时共" + item.getLessons_count() + "课");
+                        .setText(R.id.number, String.valueOf(item.getView_tickets_count()))
+                        .setText(R.id.teaching_time, item.getClosed_events_count() + "/" + item.getEvents_count());
             }
         };
         listView.setAdapter(adapter);
@@ -101,7 +102,7 @@ public class FragmentInteractAll extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), InteractCourseDetailActivity.class);
+                Intent intent = new Intent(getActivity(), ExclusiveCourseDetailActivity.class);
                 intent.putExtra("id", list.get(position - 1).getId());
                 startActivity(intent);
             }
@@ -126,8 +127,9 @@ public class FragmentInteractAll extends BaseFragment {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("per_page", "10");
+        map.put("status", "teaching");
 
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/interactive_courses", map), null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/customized_groups", map), null,
                 new VolleyListener(getActivity()) {
                     @Override
                     protected void onSuccess(JSONObject response) {
@@ -143,7 +145,7 @@ public class FragmentInteractAll extends BaseFragment {
                         listView.onRefreshComplete();
 
                         try {
-                            MyInteractiveBean data = JsonUtils.objectFromJson(response.toString(), MyInteractiveBean.class);
+                            MyExclusiveCourseBean data = JsonUtils.objectFromJson(response.toString(), MyExclusiveCourseBean.class);
                             if (data != null) {
                                 list.addAll(data.getData());
                                 adapter.notifyDataSetChanged();

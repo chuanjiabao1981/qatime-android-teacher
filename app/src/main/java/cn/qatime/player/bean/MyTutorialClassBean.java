@@ -68,6 +68,15 @@ public class MyTutorialClassBean implements Serializable {
         private String live_end_time;
         private int teacher_percentage;
         private String publicize;
+        private String sell_type;
+
+        public String getSell_type() {
+            return sell_type;
+        }
+
+        public void setSell_type(String sell_type) {
+            this.sell_type = sell_type;
+        }
 
         public String getStatus() {
             return status;

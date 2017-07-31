@@ -153,21 +153,27 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
                             name.setText(data.getData().getName());
                             title.setText(data.getData().getName());
                             studentnumber.setText(getString(R.string.student_number, data.getData().getBuy_tickets_count()));
-                            String price;
-                            if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
-                                price = df.format(data.getData().getPrice());
+                            if (!"free".equals(data.getData().getSell_type())) {
+                                String price;
+                                if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
+                                    price = df.format(data.getData().getPrice());
+                                } else {
+                                    price = df.format(data.getData().getCurrent_price());
+                                }
+                                if (price.startsWith(".")) {
+                                    price = "0" + price;
+                                }
+                                RemedialClassDetailActivity.this.price.setText("￥" + price);
+                                if (Constant.CourseStatus.teaching.equals(data.getData().getStatus())) {
+                                    transferPrice.setVisibility(View.VISIBLE);
+                                } else {
+                                    transferPrice.setVisibility(View.GONE);
+                                }
                             } else {
-                                price = df.format(data.getData().getCurrent_price());
-                            }
-                            if (price.startsWith(".")) {
-                                price = "0" + price;
-                            }
-                            RemedialClassDetailActivity.this.price.setText("￥" + price);
-                            if (Constant.CourseStatus.teaching.equals(data.getData().getStatus())) {
-                                transferPrice.setVisibility(View.VISIBLE);
-                            } else {
+                                RemedialClassDetailActivity.this.price.setText("免费");
                                 transferPrice.setVisibility(View.GONE);
                             }
+
                             if (data.getData().getIcons() != null) {
                                 if (!data.getData().getIcons().isCoupon_free()) {
                                     couponFree.setVisibility(View.GONE);

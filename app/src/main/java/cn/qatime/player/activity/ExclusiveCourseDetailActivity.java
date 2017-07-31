@@ -27,7 +27,6 @@ import cn.qatime.player.fragment.FragmentExclusiveCourseTeacherInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.SimpleViewPagerIndicator;
-import libraryextra.utils.DateUtils;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
