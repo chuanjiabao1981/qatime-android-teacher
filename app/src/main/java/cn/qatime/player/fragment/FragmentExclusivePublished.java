@@ -82,7 +82,7 @@ public class FragmentExclusivePublished extends BaseFragment {
                         .setText(R.id.progress, "(" + item.getTeacher_percentage() + "%)")
                         .setText(R.id.number, String.valueOf(item.getView_tickets_count()));
                 try {
-                    int day = libraryextra.utils.DateUtils.daysBetween(item.getStart_at(), System.currentTimeMillis());
+                    int day = libraryextra.utils.DateUtils.daysBetween(Long.valueOf(item.getStart_at()), System.currentTimeMillis());
                     if (day > 0) {
                         helper.getView(R.id.teaching_time).setVisibility(View.VISIBLE);
                         helper.setText(R.id.teaching_time, "距开课" + day + "天");
