@@ -22,7 +22,6 @@ import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.bean.Announcements;
-import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -89,14 +88,14 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
                     new VolleyListener(AnnouncementListActivity.this) {
                         @Override
                         protected void onSuccess(JSONObject response) {
-                            Announcements data = JsonUtils.objectFromJson(response.toString(), Announcements.class);
-                            if (data != null) {
-                                if (data.getData() != null) {
-                                    items.clear();
-                                    items.addAll(data.getData().getAnnouncements());
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
+//                            Announcements data = JsonUtils.objectFromJson(response.toString(), Announcements.class);
+//                            if (data != null) {
+//                                if (data.getData() != null) {
+//                                    items.clear();
+//                                    items.addAll(data.getData().getAnnouncements());
+//                                }
+//                                adapter.notifyDataSetChanged();
+//                            }
                         }
 
                         @Override
