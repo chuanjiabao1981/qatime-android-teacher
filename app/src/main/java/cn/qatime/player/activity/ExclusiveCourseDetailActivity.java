@@ -249,7 +249,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
             case R.id.announcement:
                 Intent intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getCustomized_group().getId());
-                intent.putExtra("type", Constant.CoursesType.exclusive);
+                intent.putExtra(  "type", Constant.CoursesType.exclusive);
                 startActivity(intent);
                 break;
         }

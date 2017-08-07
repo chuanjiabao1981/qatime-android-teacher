@@ -8,6 +8,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.team.TeamService;
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum;
+import com.netease.nimlib.sdk.team.model.Team;
 
 import org.json.JSONObject;
 
@@ -17,6 +22,8 @@ import java.util.List;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
+import cn.qatime.player.im.SimpleCallback;
+import cn.qatime.player.im.cache.TeamDataCache;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
@@ -131,4 +138,46 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
         intent.putExtra("type", type);
         startActivityForResult(intent, Constant.REQUEST);
     }
+//
+//    private void getAnnouncementsData() {
+//        Team team = TeamDataCache.getInstance().getTeamById(sessionId);
+//        if (team != null) {
+//            updateAnnouncement(team);
+//        } else {
+//            TeamDataCache.getInstance().fetchTeamById(sessionId, new SimpleCallback<Team>() {
+//                @Override
+//                public void onResult(boolean success, Team result) {
+//                    if (success && result != null) {
+//                        updateAnnouncement(result);
+//                    } else {
+////                        Toast.makeText(AnnouncementListActivity.this, "", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+//        }
+//    }
+
+    private void updateAnnouncement(Team result) {
+        result.getAnnouncement();
+//        // 每次仅修改群的一个属性，可修改的属性包括：群名，介绍，公告，验证类型等。
+//        NIMClient.getService(TeamService.class).updateTeam(teamId, TeamFieldEnum.Announcement, value)
+//                .setCallback(new RequestCallback<Void>() {
+//
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailed(int i) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onException(Throwable throwable) {
+//
+//                    }
+//                });
+    }
+
 }
