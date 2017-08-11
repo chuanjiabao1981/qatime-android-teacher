@@ -3,6 +3,8 @@ package cn.qatime.player.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import libraryextra.bean.ChatTeamBean;
+
 /**
  * @author lungtify
  * @Time 2017/5/19 15:20
@@ -79,6 +81,15 @@ public class MyExclusiveCourseBean implements Serializable {
         private String description;
         private IconsBean icons;
         private int teacher_percentage;
+        private ChatTeamBean chat_team;
+
+        public ChatTeamBean getChat_team() {
+            return chat_team;
+        }
+
+        public void setChat_team(ChatTeamBean chat_team) {
+            this.chat_team = chat_team;
+        }
 
         public int getId() {
             return id;

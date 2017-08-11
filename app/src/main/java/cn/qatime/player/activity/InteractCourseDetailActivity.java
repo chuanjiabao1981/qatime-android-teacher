@@ -43,7 +43,7 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     TextView price;
     DecimalFormat df = new DecimalFormat("#.00");
     private TextView refundAnyTime;
-    private TextView joinCheap;
+    private TextView couponFree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
         fragBaseFragments.add(new FragmentInteractDetailClassList());
 
         refundAnyTime = (TextView) findViewById(R.id.refund_any_time);
-        joinCheap = (TextView) findViewById(R.id.join_cheap);
+        couponFree = (TextView) findViewById(R.id.coupon_free);
 
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
@@ -124,17 +124,17 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlInteractCourses + "/" + id, null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlInteractCourses+ id + "/detail" , null,
                 new VolleyListener(InteractCourseDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
                         data = JsonUtils.objectFromJson(response.toString(), InteractCourseDetailBean.class);
 
-                        if (data != null && data.getData() != null && data.getData().getLive_start_time() != null) {
-                            name.setText(data.getData().getName());
-                            title.setText(data.getData().getName());
+                        if (data != null && data.getData() != null && data.getData().getInteractive_course().getLive_start_time() != null) {
+                            name.setText(data.getData().getInteractive_course().getName());
+                            title.setText(data.getData().getInteractive_course().getName());
                             String price;
-                            price = df.format(Double.valueOf(data.getData().getPrice()));
+                            price = df.format(Double.valueOf(data.getData().getInteractive_course().getPrice()));
                             if (price.startsWith(".")) {
                                 price = "0" + price;
                             }
@@ -143,15 +143,16 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
                             ((FragmentInteractDetailClassInfo) fragBaseFragments.get(0)).setData(data);
                             ((FragmentInteractDetailTeachersInfo) fragBaseFragments.get(1)).setData(data);
                             ((FragmentInteractDetailClassList) fragBaseFragments.get(2)).setData(data);
-
-                            if (data.getData().getIcons() != null) {
-                                if (!data.getData().getIcons().isRefund_any_time()) {
+                            if (data.getData().getInteractive_course().getIcons() != null) {
+                                if (!data.getData().getInteractive_course().getIcons().isRefund_any_time()) {
                                     refundAnyTime.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getIcons().isJoin_cheap()) {
-                                    joinCheap.setVisibility(View.GONE);
+
+                                if (!data.getData().getInteractive_course().getIcons().isCoupon_free()) {
+                                    couponFree.setVisibility(View.GONE);
                                 }
                             }
+
                         }
                     }
 
@@ -179,7 +180,7 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
         switch (v.getId()) {
             case R.id.announcement:
                 Intent intent = new Intent(InteractCourseDetailActivity.this, AnnouncementListActivity.class);
-                intent.putExtra("id", data.getData().getId());
+                intent.putExtra("id", data.getData().getInteractive_course().getId());
                 intent.putExtra("type", Constant.CoursesType.interactive);
                 startActivity(intent);
                 break;

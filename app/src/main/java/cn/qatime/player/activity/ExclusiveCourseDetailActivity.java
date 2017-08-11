@@ -55,12 +55,14 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private TextView status;
     private TextView timeToStart;
     private View layoutView;
+    private String teamId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         id = getIntent().getIntExtra("id", 0);//联网id
+        teamId = getIntent().getStringExtra("teamId");
         pager = getIntent().getIntExtra("pager", 0);
         initView();
         if (id == 0) {
@@ -158,17 +160,11 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             ExclusiveCourseDetailActivity.this.price.setText("free".equals(data.getData().getCustomized_group().getSell_type()) ? "免费" : ("￥" + price));
 
                             if (data.getData().getCustomized_group().getIcons() != null) {
-                                if (!data.getData().getCustomized_group().getIcons().isCoupon_free()) {
-                                    couponFree.setVisibility(View.GONE);
-                                }
                                 if (!data.getData().getCustomized_group().getIcons().isRefund_any_time()) {
                                     refundAnyTime.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getCustomized_group().getIcons().isFree_taste()) {
-                                    freeTaste.setVisibility(View.GONE);
-                                }
-                                if (!data.getData().getCustomized_group().getIcons().isJoin_cheap()) {
-                                    joinCheap.setVisibility(View.GONE);
+                                if (!data.getData().getCustomized_group().getIcons().isCoupon_free()) {
+                                    couponFree.setVisibility(View.GONE);
                                 }
                             }
                             try {

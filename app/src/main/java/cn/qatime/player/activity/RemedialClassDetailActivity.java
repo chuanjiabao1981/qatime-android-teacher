@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragmentActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
+import cn.qatime.player.bean.LiveLessonDetailBean;
 import cn.qatime.player.fragment.FragmentClassDetailClassInfo;
 import cn.qatime.player.fragment.FragmentClassDetailClassList;
 import cn.qatime.player.fragment.FragmentClassDetailTeacherInfo;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.SimpleViewPagerIndicator;
-import libraryextra.bean.RemedialClassDetailBean;
+import libraryextra.utils.DateUtils;
 import libraryextra.utils.JsonUtils;
+import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 
@@ -39,7 +41,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
     private TextView name;
     private TextView title;
-    private RemedialClassDetailBean data;
+    private LiveLessonDetailBean data;
     private ViewPager mViewPager;
     private int pager = 0;
     TextView price;
@@ -142,86 +144,87 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id, null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id + "/detail", null,
                 new VolleyListener(RemedialClassDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        data = JsonUtils.objectFromJson(response.toString(), RemedialClassDetailBean.class);
+                        data = JsonUtils.objectFromJson(response.toString(), LiveLessonDetailBean.class);
+                        if (data != null && data.getData() != null && data.getData().getCourse() != null) {
+                            status.setText(getStatus(data.getData().getCourse().getStatus()));
+                            name.setText(data.getData().getCourse().getName());
+                            setTitle(data.getData().getCourse().getName());
+                            studentnumber.setText(getString(R.string.student_number, data.getData().getCourse().getBuy_tickets_count()));
 
-                        if (data != null && data.getData() != null && data.getData().getLive_start_time() != null) {
-                            status.setText(getStatus(data.getData().getStatus()));
-                            name.setText(data.getData().getName());
-                            title.setText(data.getData().getName());
-                            studentnumber.setText(getString(R.string.student_number, data.getData().getBuy_tickets_count()));
-                            if (!"free".equals(data.getData().getSell_type())) {
-                                String price;
-                                if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
-                                    price = df.format(data.getData().getPrice());
+                            if (Constant.CourseStatus.published.equals(data.getData().getCourse().getStatus())) {
+                                layoutView.setBackgroundColor(0xff00d564);
+                                int value = 0;
+                                try {
+                                    value = DateUtils.daysBetween(data.getData().getCourse().getLive_start_time(), System.currentTimeMillis());
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                progress.setVisibility(View.GONE);
+                                if (value > 0) {
+                                    timeToStart.setVisibility(View.VISIBLE);
+                                    timeToStart.setText("[" + getResources().getString(R.string.item_to_start_main) + value + getResources().getString(R.string.item_day) + "]");
                                 } else {
-                                    price = df.format(data.getData().getCurrent_price());
+                                    timeToStart.setVisibility(View.GONE);
                                 }
-                                if (price.startsWith(".")) {
-                                    price = "0" + price;
+                            } else if (Constant.CourseStatus.teaching.equals(data.getData().getCourse().getStatus())) {
+                                layoutView.setBackgroundColor(0xff00a0e9);
+                                timeToStart.setVisibility(View.GONE);
+                                progress.setVisibility(View.VISIBLE);
+                                progress.setText(getString(R.string.progress_live, data.getData().getCourse().getClosed_lessons_count(), data.getData().getCourse().getLessons_count()));
+                            } else if (Constant.CourseStatus.completed.equals(data.getData().getCourse().getStatus())) {
+                                layoutView.setBackgroundColor(0xff999999);
+                                timeToStart.setVisibility(View.GONE);
+                                progress.setVisibility(View.VISIBLE);
+                                progress.setText(getString(R.string.progress_live, data.getData().getCourse().getClosed_lessons_count(), data.getData().getCourse().getLessons_count()));
+                            } else {
+                                layoutView.setVisibility(View.GONE);
+                            }
+
+                            if (data.getData().getCourse().getSell_type().equals("charge")) {
+                                String priceStr;
+                                if (Constant.CourseStatus.completed.equals(data.getData().getCourse().getStatus())) {
+                                    priceStr = df.format(data.getData().getCourse().getPrice());
+                                } else {
+                                    priceStr = df.format(data.getData().getCourse().getCurrent_price());
                                 }
-                                RemedialClassDetailActivity.this.price.setText("￥" + price);
-                                if (Constant.CourseStatus.teaching.equals(data.getData().getStatus())) {
+                                if (priceStr.startsWith(".")) {
+                                    priceStr = "0" + priceStr;
+                                }
+                                price.setText("￥" + priceStr);
+                                if (Constant.CourseStatus.teaching.equals(data.getData().getCourse().getStatus())) {
                                     transferPrice.setVisibility(View.VISIBLE);
                                 } else {
                                     transferPrice.setVisibility(View.GONE);
                                 }
-                            } else {
-                                RemedialClassDetailActivity.this.price.setText("免费");
-                                transferPrice.setVisibility(View.GONE);
-                            }
 
-                            if (data.getData().getIcons() != null) {
-                                if (!data.getData().getIcons().isCoupon_free()) {
-                                    couponFree.setVisibility(View.GONE);
-                                }
-                                if (!data.getData().getIcons().isRefund_any_time()) {
-                                    refundAnyTime.setVisibility(View.GONE);
-                                }
-                                if (!data.getData().getIcons().isFree_taste()) {
-                                    freeTaste.setVisibility(View.GONE);
-                                }
-                                if (!data.getData().getIcons().isJoin_cheap()) {
-                                    joinCheap.setVisibility(View.GONE);
-                                }
                             }
-                            try {
-                                if ("init".equals(data.getData().getStatus()) || "published".equals(data.getData().getStatus())) {
-                                    int value = libraryextra.utils.DateUtils.daysBetween(data.getData().getLive_start_time(), System.currentTimeMillis());
-                                    progress.setVisibility(View.GONE);
-                                    if (value > 0) {
-                                        timeToStart.setVisibility(View.VISIBLE);
-                                        timeToStart.setText("[" + getResources().getString(R.string.item_to_start_main) + value + getResources().getString(R.string.item_day) + "]");
-                                    } else {
-                                        timeToStart.setVisibility(View.GONE);
-//                                        timeToStart.setText(R.string.ready_to_start);
-                                    }
-                                    layoutView.setBackgroundColor(0xff00d564);
-                                } else if ("teaching".equals(data.getData().getStatus())) {
-                                    progress.setVisibility(View.VISIBLE);
-                                    timeToStart.setVisibility(View.GONE);
-                                    layoutView.setBackgroundColor(0xff00a0e9);
-                                    progress.setText(getString(R.string.progress_live, data.getData().getClosed_lessons_count(), data.getData().getPreset_lesson_count()));
-                                } else if (Constant.CourseStatus.finished.equals(data.getData().getStatus()) || Constant.CourseStatus.completed.equals(data.getData().getStatus())) {
-                                    progress.setVisibility(View.VISIBLE);
-                                    timeToStart.setVisibility(View.GONE);
-                                    layoutView.setBackgroundColor(0xff999999);
-                                    progress.setText(getString(R.string.progress_live, data.getData().getClosed_lessons_count(), data.getData().getPreset_lesson_count()));
-                                } else {
-                                    layoutView.setVisibility(View.INVISIBLE);
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            ((FragmentClassDetailClassInfo) fragBaseFragments.get(0)).setData(data);
-                            ((FragmentClassDetailTeacherInfo) fragBaseFragments.get(1)).setData(data);
-                            ((FragmentClassDetailClassList) fragBaseFragments.get(2)).setData(data);
-
+                        } else if (data.getData().getCourse().getSell_type().equals("free")) {
+                            price.setText("免费");
                         }
+
+                        if (data.getData().getCourse().getIcons() != null) {
+                            if (!data.getData().getCourse().getIcons().isCoupon_free()) {
+                                couponFree.setVisibility(View.GONE);
+                            }
+                            if (!data.getData().getCourse().getIcons().isRefund_any_time()) {
+                                refundAnyTime.setVisibility(View.GONE);
+                            }
+                            if (!data.getData().getCourse().getIcons().isFree_taste()) {
+                                freeTaste.setVisibility(View.GONE);
+                            }
+                            if (!data.getData().getCourse().getIcons().isJoin_cheap()) {
+                                joinCheap.setVisibility(View.GONE);
+                            }
+                        }
+
+                        ((FragmentClassDetailClassInfo) fragBaseFragments.get(0)).setData(data);
+                        ((FragmentClassDetailTeacherInfo) fragBaseFragments.get(1)).setData(data);
+                        ((FragmentClassDetailClassList) fragBaseFragments.get(2)).setData(data);
+
                     }
 
                     @Override
@@ -265,7 +268,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
         switch (v.getId()) {
             case R.id.announcement:
                 Intent intent = new Intent(RemedialClassDetailActivity.this, AnnouncementListActivity.class);
-                intent.putExtra("id", data.getData().getId());
+                intent.putExtra("id", data.getData().getCourse().getId());
                 intent.putExtra("type", Constant.CoursesType.courses);
                 startActivity(intent);
                 break;

@@ -45,6 +45,7 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
     private List<Announcements.DataBean.AnnouncementsBean> items = new ArrayList<>();
     private String baseUrl;
     private String type;
+    private String teamId;
 
     @Override
     public int getContentView() {
@@ -57,17 +58,20 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
         setTitle("公告");
         initView();
         id = getIntent().getIntExtra("id", 0);
+        teamId = getIntent().getStringExtra("teamId");
+        // TODO: 2017/8/11  课程teamId获取
         type = getIntent().getStringExtra("type");
-        if (!StringUtils.isNullOrBlanK(type)) {
-            if (type.equals(Constant.CoursesType.courses)) {
-                baseUrl = UrlUtils.urlRemedialClass+"/";
-            } else if (type.equals(Constant.CoursesType.interactive)) {
-                baseUrl = UrlUtils.urlInteractCourses;
-            }else if(type.equals(Constant.CoursesType.exclusive)){
-                baseUrl = UrlUtils.urlExclusiveCourse;
-            }
-        }
-        initData();
+//        if (!StringUtils.isNullOrBlanK(type)) {
+//            if (type.equals(Constant.CoursesType.courses)) {
+//                baseUrl = UrlUtils.urlRemedialClass+"/";
+//            } else if (type.equals(Constant.CoursesType.interactive)) {
+//                baseUrl = UrlUtils.urlInteractCourses;
+//            }else if(type.equals(Constant.CoursesType.exclusive)){
+//                baseUrl = UrlUtils.urlExclusiveCourse;
+//            }
+//        }
+//        initData();
+//        getAnnouncementsData();
     }
 
     private void initView() {
@@ -138,27 +142,27 @@ public class AnnouncementListActivity extends BaseActivity implements View.OnCli
         intent.putExtra("type", type);
         startActivityForResult(intent, Constant.REQUEST);
     }
-//
-//    private void getAnnouncementsData() {
-//        Team team = TeamDataCache.getInstance().getTeamById(sessionId);
-//        if (team != null) {
-//            updateAnnouncement(team);
-//        } else {
-//            TeamDataCache.getInstance().fetchTeamById(sessionId, new SimpleCallback<Team>() {
-//                @Override
-//                public void onResult(boolean success, Team result) {
-//                    if (success && result != null) {
-//                        updateAnnouncement(result);
-//                    } else {
-////                        Toast.makeText(AnnouncementListActivity.this, "", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
+
+    private void getAnnouncementsData() {
+        Team team = TeamDataCache.getInstance().getTeamById(teamId);
+        if (team != null) {
+            updateAnnouncement(team);
+        } else {
+            TeamDataCache.getInstance().fetchTeamById(teamId, new SimpleCallback<Team>() {
+                @Override
+                public void onResult(boolean success, Team result) {
+                    if (success && result != null) {
+                        updateAnnouncement(result);
+                    } else {
+//                        Toast.makeText(AnnouncementListActivity.this, "", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
 
     private void updateAnnouncement(Team result) {
-        result.getAnnouncement();
+        String announcement = result.getAnnouncement();
 //        // 每次仅修改群的一个属性，可修改的属性包括：群名，介绍，公告，验证类型等。
 //        NIMClient.getService(TeamService.class).updateTeam(teamId, TeamFieldEnum.Announcement, value)
 //                .setCallback(new RequestCallback<Void>() {

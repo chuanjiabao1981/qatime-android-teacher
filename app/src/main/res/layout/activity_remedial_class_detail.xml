@@ -95,7 +95,7 @@
                     android:drawableLeft="@mipmap/identification_light"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text=" 插班优惠"
+                    android:text=" 报名立减"
                     android:textColor="#109f10"
                     android:textSize="11dp" />
 
@@ -106,7 +106,7 @@
                     android:drawableLeft="@mipmap/identification_light"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text=" 报名立减"
+                    android:text=" 插班优惠"
                     android:textColor="#109f10"
                     android:textSize="11dp" />
 
@@ -116,6 +116,7 @@
                     android:drawableLeft="@mipmap/identification_light"
                     android:gravity="center"
                     android:padding="3dp"
+                    android:text=""
                     android:textColor="#109f10"
                     android:textSize="11dp"
                     android:visibility="invisible" />

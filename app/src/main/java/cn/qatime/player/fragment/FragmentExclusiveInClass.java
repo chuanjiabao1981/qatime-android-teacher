@@ -104,6 +104,7 @@ public class FragmentExclusiveInClass extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ExclusiveCourseDetailActivity.class);
                 intent.putExtra("id", list.get(position - 1).getId());
+                intent.putExtra("teamId", list.get(position - 1).getChat_team().getTeam_id());
                 startActivity(intent);
             }
         });

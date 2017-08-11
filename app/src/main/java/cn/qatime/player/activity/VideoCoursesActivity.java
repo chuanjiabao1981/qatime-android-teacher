@@ -46,7 +46,7 @@ public class VideoCoursesActivity extends BaseActivity {
     private TextView transferPrice;
     private TextView studentNumber;
     private TextView freeTaste;
-    private TextView joinCheap;
+    private TextView couponFree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +96,8 @@ public class VideoCoursesActivity extends BaseActivity {
                                 if (!data.getData().getVideo_course().getIcons().isFree_taste()) {
                                     freeTaste.setVisibility(View.GONE);
                                 }
-                                if (!data.getData().getVideo_course().getIcons().isJoin_cheap()) {
-                                    joinCheap.setVisibility(View.GONE);
+                                if (!data.getData().getVideo_course().getIcons().isCoupon_free()) {
+                                    couponFree.setVisibility(View.GONE);
                                 }
                             }
                             ((FragmentVideoCoursesClassInfo) fragBaseFragments.get(0)).setData(data);
@@ -126,7 +126,7 @@ public class VideoCoursesActivity extends BaseActivity {
 
     private void initView() {
         freeTaste = (TextView) findViewById(R.id.free_taste);
-        joinCheap = (TextView) findViewById(R.id.join_cheap);
+        couponFree = (TextView) findViewById(R.id.coupon_free);
         name = (TextView) findViewById(R.id.name);
         price = (TextView) findViewById(R.id.price);
         transferPrice = (TextView) findViewById(R.id.transfer_price);
