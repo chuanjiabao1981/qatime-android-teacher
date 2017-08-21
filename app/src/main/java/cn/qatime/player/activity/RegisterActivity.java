@@ -1,9 +1,11 @@
 package cn.qatime.player.activity;
 
-import android.app.AlertDialog;
+
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,6 +29,8 @@ import com.orhanobut.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +45,7 @@ import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.SPUtils;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.bean.Profile;
+import libraryextra.utils.AppUtils;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.KeyBoardUtils;
 import libraryextra.utils.StringUtils;
@@ -57,11 +62,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     TextView agreement;
     Button next;
     private TimeCount time;
+    private Profile profile;
+    private String captchaPhone;
     private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
         setTitle(getResources().getString(R.string.set_for_login));
         initView();
         time = new TimeCount(60000, 1000);
@@ -69,7 +77,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public int getContentView() {
-        return R.layout.activity_register;
+        return 0;
     }
 
     private void initView() {
@@ -81,13 +89,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         next = (Button) findViewById(R.id.next);
         agreement = (TextView) findViewById(R.id.agreement);
-
-        phone.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_phone_number)));
-        code.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_input_verification_code)));
-        password.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_input_password)));
-        repassword.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_confirm_password)));
-
-
         phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -114,6 +115,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+        phone.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_phone_number)));
+        code.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_input_verification_code)));
+        password.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_input_password)));
+        repassword.setHint(StringUtils.getSpannedString(getResources().getString(R.string.hint_confirm_password)));
+//        registercode.setHint(StringUtils.getSpannedString(this, getResources().getString(R.string.hint_qatime_register_code)));
+
         getcode.setOnClickListener(this);
         next.setOnClickListener(this);
         agreement.setOnClickListener(this);
@@ -134,7 +141,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlUserCheck + "?account=" + phone.getText().toString().trim(), null, new VolleyListener(RegisterActivity.this) {
                         @Override
                         protected void onTokenOut() {
-
+                            tokenOut();
                         }
 
                         @Override
@@ -152,15 +159,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                         @Override
                         protected void onError(JSONObject response) {
-                            Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, getResourceString(R.string.code_send_failed), Toast.LENGTH_SHORT).show();
                         }
+
+
                     }, new VolleyErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            super.onErrorResponse(volleyError);
                             Toast.makeText(getApplicationContext(), getResourceString(R.string.server_error), Toast.LENGTH_LONG).show();
                         }
                     });
                     addToRequestQueue(request);
+
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
                 }
@@ -169,7 +180,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 next();
                 break;
             case R.id.agreement:
-                Intent intent= new Intent(this,AgreementActivity.class);
+                Intent intent = new Intent(this, AgreementActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -206,9 +217,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void getCode() {
         time.start();
+        captchaPhone = phone.getText().toString().trim();
         Map<String, String> map = new HashMap<>();
-
-        map.put("send_to", phone.getText().toString().trim());
+        map.put("send_to", captchaPhone);
         map.put("key", "register_captcha");
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
             @Override
@@ -261,18 +272,24 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void next() {
-
         if (StringUtils.isNullOrBlanK(phone.getText().toString().trim())) {//账号为空
             Toast.makeText(this, getResources().getString(R.string.account_can_not_be_empty), Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!StringUtils.isPhone(phone.getText().toString().trim())) {//手机号不正确
             Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!phone.getText().toString().trim().equals(captchaPhone)) { //验证手机是否一致
+            Toast.makeText(this, getResources().getString(R.string.captcha_phone_has_changed), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtils.isNullOrBlanK(code.getText().toString().trim())) { //验证码
+            Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!StringUtils.isGoodPWD(password.getText().toString().trim())) {
-            Toast.makeText(this, getResources().getString(R.string.password_6_16), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.password_format_error), Toast.LENGTH_LONG).show();
             return;
         }
         if (StringUtils.isNullOrBlanK(repassword.getText().toString().trim())) {  //确认密码为空
@@ -283,10 +300,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             Toast.makeText(this, getResources().getString(R.string.password_and_repassword_are_incongruous), Toast.LENGTH_SHORT).show();
             return;
         }
-        if (StringUtils.isNullOrBlanK(code.getText().toString().trim())) { //验证码
-            Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         if (!checkBox.isChecked()) {   //协议勾选
             Toast.makeText(this, getResources().getString(R.string.agree_agreement), Toast.LENGTH_SHORT).show();
             return;
@@ -300,7 +314,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void registerTeacher() {
         Map<String, String> map = new HashMap<>();
-        map.put("login_mobile", phone.getText().toString().trim());
+        map.put("login_mobile", captchaPhone);
         map.put("captcha_confirmation", code.getText().toString().trim());
         map.put("password", password.getText().toString().trim());
         map.put("password_confirmation", repassword.getText().toString().trim());//确认密码
@@ -426,13 +440,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Logger.e("注册失败--" + result);
                 if (result.contains("已经被使用")) {
-                    Toast.makeText(RegisterActivity.this, getResourceString(R.string.phone_already_used), Toast.LENGTH_SHORT).show();
-                } else if (result.contains("与确认值不匹配")) {
+//                    Toast.makeText(RegisterActivity.this, getResourceString(R.string.phone_already_used), Toast.LENGTH_SHORT).show();
+                    dialogReTry();
+                } else if (result.contains("Captcha confirmation")) {
                     Toast.makeText(RegisterActivity.this, getResourceString(R.string.code_error), Toast.LENGTH_SHORT).show();
-                } else if (result.contains("注册码")) {
-                    Toast.makeText(RegisterActivity.this, getResourceString(R.string.register_code_error), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(RegisterActivity.this, getResourceString(R.string.register_failed), Toast.LENGTH_SHORT).show();
                 }
@@ -448,6 +460,47 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         });
 
         addToRequestQueue(request);
+    }
+
+
+    /**
+     * 手机号已注册提示
+     */
+    private void dialogReTry() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+        View view = View.inflate(RegisterActivity.this, R.layout.dialog_cancel_or_confirm, null);
+        TextView text = (TextView) view.findViewById(R.id.text);
+        text.setText(R.string.this_phone_number_already_regist);
+        ((TextView) view.findViewById(R.id.cancel)).setText(R.string.use_a_new_number);
+        ((TextView) view.findViewById(R.id.confirm)).setText(R.string.login);
+        Button cancel = (Button) view.findViewById(R.id.cancel);
+        Button confirm = (Button) view.findViewById(R.id.confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                clearData();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                finish();
+            }
+        });
+        alertDialog.show();
+        alertDialog.setContentView(view);
+    }
+
+    /**
+     * 清空数据
+     */
+    private void clearData() {
+        phone.setText("");
+        code.setText("");
+        password.setText("");
+        repassword.setText("");
     }
 
     private void loginAccount() {

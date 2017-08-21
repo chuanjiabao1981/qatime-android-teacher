@@ -68,16 +68,24 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
 
     }
 
-    public static void deleteDir(File f) {
-        if (f.exists() && f.isDirectory()) {
-            for (File file : f.listFiles()) {
-                if (file.isDirectory())
-                    deleteDir(file);
+    public void deleteDir(File file) {
+        if (file.isFile()) {
+            file.delete();
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] childFile = file.listFiles();
+            if (childFile == null || childFile.length == 0) {
                 file.delete();
+                return;
             }
-            f.delete();
+            for (File f : childFile) {
+                deleteDir(f);
+            }
+            file.delete();
         }
     }
+
 
     private void getData() {
         GetGradeslist();//加载年纪列表

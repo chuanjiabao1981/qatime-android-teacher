@@ -503,4 +503,8 @@
     <string name="review_failed">审核失败</string>
     <string name="withdraw_paid">提现成功</string>
     <string name="my_exclusive">我的专属课</string>
+    <string name="captcha_phone_has_changed">手机号已变更,请重新验证</string>
+    <string name="captcha_email_has_changed">邮箱已变更,请重新验证</string>
+    <string name="this_phone_number_already_regist">该手机号已注册,请直接登陆</string>
+    <string name="use_a_new_number">新号码注册</string>
 </resources>
