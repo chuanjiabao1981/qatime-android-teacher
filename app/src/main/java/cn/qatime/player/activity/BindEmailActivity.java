@@ -1,6 +1,5 @@
 package cn.qatime.player.activity;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -40,15 +39,14 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
     private Button buttonOver;
     private EditText inputNewEmail;
     private EditText code;
+    private String captchaEmail;
 
 
     private void assignViews() {
-
         code = (EditText) findViewById(R.id.code);
         textGetcode = (TextView) findViewById(R.id.text_getcode);
         inputNewEmail = (EditText) findViewById(R.id.input_new_email);
         buttonOver = (Button) findViewById(R.id.button_over);
-
 
         inputNewEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,7 +62,8 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void afterTextChanged(Editable s) {
                 if (StringUtils.isEmail(inputNewEmail.getText().toString().trim())) {
-                    textGetcode.setEnabled(true);
+                    if (!time.ticking)
+                        textGetcode.setEnabled(true);
                 } else {
                     textGetcode.setEnabled(false);
                 }
@@ -75,6 +74,7 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bind_email);
 
         initView();
         time = new TimeCount(60000, 1000);
@@ -82,7 +82,7 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public int getContentView() {
-        return R.layout.activity_bind_email;
+        return 0;
     }
 
     private void initView() {
@@ -98,16 +98,17 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        final String email1 = inputNewEmail.getText().toString().trim();
 
         switch (v.getId()) {
             case R.id.text_getcode:
-                if (!StringUtils.isEmail(email1)) { //邮箱
+                captchaEmail = inputNewEmail.getText().toString().trim();
+                if (!StringUtils.isEmail(captchaEmail)) { //邮箱
                     Toast.makeText(this, getResources().getString(R.string.email_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 Map<String, String> map = new HashMap<>();
-                map.put("send_to", email1);
+                map.put("send_to", captchaEmail);
                 map.put("key", "change_email_captcha");
 
                 addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
@@ -118,14 +119,12 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        Logger.e("验证码发送成功" + email1 + "---" + response.toString());
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_success), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     protected void onError(JSONObject response) {
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_failed), Toast.LENGTH_LONG).show();
-
                     }
                 }, new VolleyErrorListener() {
                     @Override
@@ -138,21 +137,22 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                 time.start();
                 break;
             case R.id.button_over:
-
-                if (!StringUtils.isEmail(email1)) { //邮箱
+                if (!StringUtils.isEmail(inputNewEmail.getText().toString().trim())) { //邮箱
                     Toast.makeText(this, getResources().getString(R.string.email_wrong), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!inputNewEmail.getText().toString().trim().equals(captchaEmail)) { //验证手机是否一致
+                    Toast.makeText(this, getResources().getString(R.string.captcha_email_has_changed), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (StringUtils.isNullOrBlanK(code.getText().toString())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 String code = this.code.getText().toString().trim();
-
                 map = new HashMap<>();
                 map.put("id", "" + BaseApplication.getUserId());
-                map.put("email", email1);
+                map.put("email", captchaEmail);
                 map.put("captcha_confirmation", code);
 
                 addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/email", map), null, new VolleyListener(this) {
@@ -164,7 +164,7 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
-                        BaseApplication.getProfile().getData().getUser().setEmail(email1);
+                        BaseApplication.getProfile().getData().getUser().setEmail(captchaEmail);
                         BaseApplication.setProfile(BaseApplication.getProfile());
                         Toast.makeText(BindEmailActivity.this, getResourceString(R.string.bind_email_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindEmailActivity.this, SecurityManagerActivity.class);
@@ -199,18 +199,22 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
 
 
     class TimeCount extends CountDownTimer {
+        public boolean ticking;
+
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 
         @Override
         public void onFinish() {// 计时完毕
+            ticking = false;
             textGetcode.setText(getResources().getString(R.string.getcode));
             textGetcode.setEnabled(true);
         }
 
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程
+            ticking = true;
             textGetcode.setEnabled(false);//防止重复点击
             textGetcode.setText(millisUntilFinished / 1000 + getResourceString(R.string.time_after_acquisition));
         }

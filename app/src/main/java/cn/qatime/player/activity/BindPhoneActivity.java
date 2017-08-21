@@ -38,7 +38,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
     private EditText targetPhone;
     private EditText code;
     private TimeCount time;
-    private String currentphone;
+    private String captchaPhone;
 
 
     private void assignViews() {
@@ -61,7 +61,9 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void afterTextChanged(Editable s) {
                 if (StringUtils.isPhone(targetPhone.getText().toString().trim())) {
-                    textGetcode.setEnabled(true);
+                    if (!time.ticking) {
+                        textGetcode.setEnabled(true);
+                    }
                 } else {
                     textGetcode.setEnabled(false);
                     if (targetPhone.getText().toString().length() == 11) {
@@ -70,19 +72,19 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         });
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bind_phone);
         initView();
         time = new TimeCount(60000, 1000);
     }
 
     @Override
     public int getContentView() {
-        return R.layout.activity_bind_phone;
+        return 0;
     }
 
     private void initView() {
@@ -91,7 +93,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
         assignViews();
 
         targetPhone.setHint(StringUtils.getSpannedString(this, R.string.hint_input_new_phone));
-        code.setHint(StringUtils.getSpannedString(this, R.string.hint_input_code));
+        code.setHint(StringUtils.getSpannedString(this, R.string.hint_input_verification_code));
 
 
         textGetcode.setOnClickListener(this);
@@ -102,16 +104,15 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        currentphone = targetPhone.getText().toString().trim();
         switch (v.getId()) {
             case R.id.text_getcode:
-                if (!StringUtils.isPhone(currentphone)) {//手机号不正确
+                captchaPhone = targetPhone.getText().toString().trim();
+                if (!StringUtils.isPhone(captchaPhone)) {//手机号不正确
                     Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 Map<String, String> map = new HashMap<>();
-                map.put("send_to", currentphone);
+                map.put("send_to", captchaPhone);
                 map.put("key", "send_captcha");
 
                 addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
@@ -122,7 +123,6 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        Logger.e("验证码发送成功" + currentphone + "---" + response.toString());
                         Toast.makeText(getApplicationContext(), getResourceString(R.string.code_send_success), Toast.LENGTH_LONG).show();
                     }
 
@@ -143,18 +143,21 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.button_over:
 
-                if (!StringUtils.isPhone(currentphone)) {//手机号不正确
+                if (!StringUtils.isPhone(targetPhone.getText().toString().trim())) {//手机号不正确
                     Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if (!targetPhone.getText().toString().trim().equals(captchaPhone)) { //验证手机是否一致
+                    Toast.makeText(this, getResources().getString(R.string.captcha_phone_has_changed), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (StringUtils.isNullOrBlanK(code.getText().toString())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 map = new HashMap<>();
                 map.put("id", "" + BaseApplication.getUserId());
-                map.put("login_mobile", currentphone);
+                map.put("login_mobile", captchaPhone);
                 map.put("captcha_confirmation", code.getText().toString().trim());
 
                 addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/login_mobile", map), null, new VolleyListener(this) {
@@ -166,7 +169,7 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
-                        BaseApplication.getProfile().getData().getUser().setLogin_mobile(currentphone);
+                        BaseApplication.getProfile().getData().getUser().setLogin_mobile(captchaPhone);
                         BaseApplication.setProfile(BaseApplication.getProfile());
                         Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.bind_phone_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindPhoneActivity.this, MainActivity.class);
@@ -201,18 +204,22 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
     }
 
     class TimeCount extends CountDownTimer {
+        public boolean ticking;
+
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 
         @Override
         public void onFinish() {// 计时完毕
+            ticking = false;
             textGetcode.setText(getResourceString(R.string.getcode));
             textGetcode.setEnabled(true);
         }
 
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程
+            ticking = true;
             textGetcode.setEnabled(false);//防止重复点击
             textGetcode.setText(millisUntilFinished / 1000 + getResourceString(R.string.time_after_acquisition));
         }

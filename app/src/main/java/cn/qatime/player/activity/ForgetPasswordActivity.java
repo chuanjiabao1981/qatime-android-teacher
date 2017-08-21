@@ -40,11 +40,13 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
     private boolean statusLogin;
     private View currentPhoneView;
     private TextView currentPhone;
-    private String phone;
+    private String captchaPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_forget_password);
+
         initView();
         setTitle(getResources().getString(R.string.find_password));
         time = new TimeCount(60000, 1000);
@@ -53,7 +55,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     public int getContentView() {
-        return R.layout.activity_forget_password;
+        return 0;
     }
 
     private void initView() {
@@ -84,12 +86,11 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
             @Override
             public void afterTextChanged(Editable s) {
                 if (StringUtils.isPhone(number.getText().toString().trim())) {
-                    getcode.setEnabled(true);
+                    if(!time.ticking){
+                        getcode.setEnabled(true);
+                    }
                 } else {
                     getcode.setEnabled(false);
-                    if(number.getText().toString().length()==11) {
-                        Toast.makeText(ForgetPasswordActivity.this, R.string.phone_number_is_incorrect, Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
         });
@@ -101,8 +102,8 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
         if (statusLogin) {
             currentPhoneView.setVisibility(View.VISIBLE);
             number.setVisibility(View.GONE);
-            phone = BaseApplication.getProfile().getData().getUser().getLogin_mobile() + "";
-            currentPhone.setText(phone);
+            captchaPhone = BaseApplication.getProfile().getData().getUser().getLogin_mobile() + "";
+            currentPhone.setText(captchaPhone);
             getcode.setEnabled(true);
         } else {
             number.setVisibility(View.VISIBLE);
@@ -112,17 +113,17 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        if (!statusLogin) {
-            phone = number.getText().toString().trim();
-        }
         switch (v.getId()) {
             case R.id.get_code:
-                if (!StringUtils.isPhone(phone)) {
+                if (!statusLogin) {
+                    captchaPhone = number.getText().toString().trim();
+                }
+                if (!StringUtils.isPhone(captchaPhone)) {
                     Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Map<String, String> map = new HashMap<>();
-                map.put("send_to", phone);
+                map.put("send_to", captchaPhone);
                 map.put("key", "get_password_back");
                 addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGetCode, map), null, new VolleyListener(this) {
                     @Override
@@ -149,9 +150,16 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
                 time.start();
                 break;
             case R.id.submit:
-                if (!StringUtils.isPhone(phone)) {//手机号不正确
-                    Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
-                    return;
+                if(!statusLogin){//非登陆，取number值
+                    String phone = number.getText().toString().trim();
+                    if (!StringUtils.isPhone(phone)) {//手机号不正确
+                        Toast.makeText(this, getResources().getString(R.string.phone_number_is_incorrect), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!phone.equals(captchaPhone)) { //验证手机是否一致
+                        Toast.makeText(this, getResources().getString(R.string.captcha_phone_has_changed), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 if (StringUtils.isNullOrBlanK(code.getText().toString().trim())) { //验证码
                     Toast.makeText(this, getResources().getString(R.string.enter_the_verification_code), Toast.LENGTH_SHORT).show();
@@ -171,7 +179,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
                     return;
                 }
                 map = new HashMap<>();
-                map.put("login_account", phone);
+                map.put("login_account", captchaPhone);
                 map.put("captcha_confirmation", code.getText().toString().trim());
                 map.put("password", newpass.getText().toString().trim());
                 map.put("password_confirmation", confirmNewpass.getText().toString().trim());
@@ -216,20 +224,23 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
 
 
     private class TimeCount extends CountDownTimer {
+        public boolean ticking;
         TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
 
         @Override
         public void onFinish() {// 计时完毕
+            ticking=false;
             getcode.setText(getResources().getString(R.string.get_verification_code));
             getcode.setEnabled(true);
         }
 
         @Override
         public void onTick(long millisUntilFinished) {// 计时过程
+            ticking=true;
             getcode.setEnabled(false);//防止重复点击
-            getcode.setText(millisUntilFinished / 1000 + getResourceString(R.string.time_after_acquisition));
+                getcode.setText(millisUntilFinished / 1000 + getResourceString(R.string.time_after_acquisition));
         }
     }
 }
