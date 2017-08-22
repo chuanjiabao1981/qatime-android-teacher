@@ -140,38 +140,13 @@ public class FragmentClassDetailClassInfo extends BaseFragment {
             body = body.replace("\r\n", "<br>");
             //......
             String footer =
-//                    "<p></p><p style='margin-top:20;margin-bottom:10'><font style='font-size:15;color:#333333'}>上课流程</font></p>" +
-//                    "<div class='one'><img style='width:98%;height:auto;margin-right:2%' src='file:///android_res/mipmap/process_111.png' />" +
-//                    "<div class='two'>" +
-//                    "<p style='margin-top:5;margin-left:27%;margin-right:2%;color:#fff;font-size:14;'>购买课程</p>" +
-//                    "<p style='margin-top:5;margin-left:27%;margin-right:2%;color:#fff;font-size:12;'>支持购买,放心退款</p>" +
-//                    "</div>" +
-//                    "</div>" +
-//                    "<div class='one'><img style='width:98%;height:auto;margin-left:2%' src='file:///android_res/mipmap/process_22.png' />" +
-//                    "<div class='two'>" +
-//                    "<p style='margin-top:5;margin-left:29%;color:#fff;font-size:14;'>准时上课</p>" +
-//                    "<p style='margin-top:5;margin-left:29%;color:#fff;font-size:12;'>提前预习,准时上课</p>" +
-//                    "</div>" +
-//                    "</div>" +
-//                    "<div class='one' style='margin-top:10;margin-bottom:20;'><img style='width:98%;height:auto;margin-right:2%' src='file:///android_res/mipmap/process_33.png' />" +
-//                    "<div class='two'>" +
-//                    "<p style='margin-top:5;margin-left:27%;margin-right:2%;color:#fff;font-size:14;'>在线授课</p>" +
-//                    "<p style='margin-top:5;margin-left:27%;margin-right:2%;color:#fff;font-size:12;'>多人交流,生动直播</p>" +
-//                    "</div>" +
-//                    "</div>" +
-//                    "<div class='one' style='margin-top:10;margin-bottom:20;'><img style='width:98%;height:auto;margin-left:2%' src='file:///android_res/mipmap/process_44.png' />" +
-//                    "<div class='two'>" +
-//                    "<p style='margin-top:5;margin-left:29%;color:#fff;font-size:14;'>上课结束</p>" +
-//                    "<p style='margin-top:5;margin-left:29%;color:#fff;font-size:12;'>视频回放,想看就看</p>" +
-//                    "</div>" +
-//                    "</div>" +
                     "<p style='margin-top:20'><font style='font-size:15;color:#333333'}>学习须知</font></p>" +
                             "<p style='margin-top:5;'><font style='font-size:15;color:#333333'}>上课前</font></p>" +
                             "<p><font>1.做好课程预习，预先了解本课所讲内容，更好的吸收课程精华；<br>" +
                             "2.准备好相关的学习工具（如：纸、笔等）并在上课前调试好电脑，使用手机请保持电量充足。<br>" +
                             "3.选择安静的学习环境，并将与学习无关的事物置于远处；选择安静的环境避免影响听课。 <br>" +
                             "4.三年级以下的同学请在家长帮助下学习。<br>" +
-                            "5.遇到网页不能打开或者不能登陆等情况请及时联系客服。</font></p>" +
+                            "5.遇到网页不能打开或者不能登录等情况请及时联系客服。</font></p>" +
                             "<p style='margin-top:5;'><font style='font-size:15;color:#333333'>上课中</font></p>" +
                             "<p><font >1.时刻保持注意力集中，认真听讲才能更好的提升学习；<br>" +
                             "2.课程中遇到听不懂的问题及时通过聊天或互动申请向老师提问，老师收到后会给予解答；<br>" +
@@ -181,7 +156,13 @@ public class FragmentClassDetailClassInfo extends BaseFragment {
                             "</font></p>" +
                             "<p style='margin-top:5;'><font style='font-size:15;color:#333333'>上课后</font></p>" +
                             "<p><font>1.直播结束后请大家仍可以在直播教室内进行聊天和讨论，老师也会适时解答；<br>" +
-                            "2.请同学按时完成老师布置的作业任务。</font></p>";
+                            "2.请同学按时完成老师布置的作业任务。</font></p>" +
+                            "<p style='margin-top:5;'><font style='font-size:15;color:#333333'>回放说明</font></p>" +
+                            "<p><font>1.购买课程后方可观看回放；<br>" +
+                            "2.直播课回放学生可以免费观看最多10天，同一天不限定观看次数；<br>" +
+                            "3.直播结束后最晚于24小时内上传回放；<br>" +
+                            "4.回放内容不完全等于直播内容，请尽量观看直播进行学习；<br>" +
+                            "5.回放内容仅供学生学习使用，未经允许不得进行录制。\n</font></p>";
             describe.loadDataWithBaseURL(null, header + body, "text/html", "UTF-8", null);
             learningTips.loadDataWithBaseURL(null, header + footer, "text/html", "UTF-8", null);
         }
