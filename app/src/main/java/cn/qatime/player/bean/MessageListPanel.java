@@ -114,7 +114,7 @@ public class MessageListPanel {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             messageListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         }
-        // adapter
+        // expandAdapter
         items = new ArrayList<>();
         adapter = new MsgAdapter(messageListView, items);
         adapter.setFetchMoreView(new MsgListFetchLoadMoreView());
@@ -146,7 +146,7 @@ public class MessageListPanel {
             adapter.notifyDataSetChanged();
         }
 
-//        adapter.updateShowTimeItem(addedListItems, false, true);
+//        expandAdapter.updateShowTimeItem(addedListItems, false, true);
 
         // incoming messages tip
         IMMessage lastMsg = messages.get(messages.size() - 1);
@@ -207,7 +207,7 @@ public class MessageListPanel {
     public void onMsgSend(IMMessage message) {
         List<IMMessage> addedListItems = new ArrayList<>(1);
         addedListItems.add(message);
-//        adapter.updateShowTimeItem(addedListItems, false, true);
+//        expandAdapter.updateShowTimeItem(addedListItems, false, true);
 
         adapter.appendData(message);
 
@@ -295,7 +295,7 @@ public class MessageListPanel {
 //            } else {
 //                total.addAll(0, messages);
 //            }
-//            adapter.updateShowTimeItem(total, true, firstLoad); // 更新要显示时间的消息
+//            expandAdapter.updateShowTimeItem(total, true, firstLoad); // 更新要显示时间的消息
 
             // 顶部加载
             int count = messages.size();
@@ -331,7 +331,7 @@ public class MessageListPanel {
             // resend的的情况，可能时间已经变化了，这里要重新检查是否要显示时间
 //            List<IMMessage> msgList = new ArrayList<>(1);
 //            msgList.add(message);
-//            adapter.updateShowTimeItem(msgList, false, true);
+//            expandAdapter.updateShowTimeItem(msgList, false, true);
 
             refreshViewHolderByIndex(index);
         }

@@ -36,6 +36,7 @@ import cn.qatime.player.utils.UrlUtils;
 import custom.Configure;
 import libraryextra.bean.CashAccountBean;
 import libraryextra.bean.Profile;
+import libraryextra.rx.HttpManager;
 import libraryextra.utils.AppUtils;
 import libraryextra.utils.StringUtils;
 
@@ -88,6 +89,9 @@ public class BaseApplication extends Application {
                 .hideThreadInfo()             // default it is shown
                 .setLogLevel(Configure.isDebug ? LogLevel.FULL : LogLevel.NONE);  // default : LogLevel.FULL
         profile = SPUtils.getObject(this, "profile", Profile.class);
+        HttpManager.init(this);
+        HttpManager.getInstance().setBaseUrl(UrlUtils.getBaseUrl());
+
         shakeStatus = (boolean) SPUtils.get(this, "shake_status", true);
         voiceStatus = (boolean) SPUtils.get(this, "voice_status", true);
         chatMessageNotifyStatus = (boolean) SPUtils.get(this, "notify_status", true);

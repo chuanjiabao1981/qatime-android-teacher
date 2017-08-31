@@ -31,7 +31,7 @@ public class UrlUtils {
     //注册
     public static String urlRegister = baseUrl + "api/v1/user/register";
     //检测
-    public static  String urlUserCheck = baseUrl + "api/v1/user/check";
+    public static String urlUserCheck = baseUrl + "api/v1/user/check";
     //个人信息
     public static String urlPersonalInformation = baseUrl + "api/v1/teachers/";
     //基础信息
@@ -42,6 +42,8 @@ public class UrlUtils {
     public static String urlTeachers = baseUrl + "api/v1/live_studio/teachers/";
     //用户信息
     public static String urlUser = baseUrl + "api/v1/users/";
+    //用户信息
+    public static String urlFiles = baseUrl + "api/v1/resource/";
     //检查更新
     public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
     //账户充值
@@ -78,5 +80,9 @@ public class UrlUtils {
             }
         }
         return sb.toString();
+    }
+
+    public static String getBaseUrl() {
+        return baseUrl;
     }
 }
