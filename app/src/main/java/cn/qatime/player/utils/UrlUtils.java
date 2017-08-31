@@ -40,6 +40,8 @@ public class UrlUtils {
     public static String urlfindPassword = baseUrl + "api/v1/password";
     //我的
     public static String urlTeachers = baseUrl + "api/v1/live_studio/teachers/";
+    //课件
+    public static String urlGroups = baseUrl + "api/v1/live_studio/groups/";
     //用户信息
     public static String urlUser = baseUrl + "api/v1/users/";
     //用户信息

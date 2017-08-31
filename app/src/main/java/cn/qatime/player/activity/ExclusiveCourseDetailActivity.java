@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +59,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private TextView timeToStart;
     private View layoutView;
     private String teamId;
+    private PopupWindow pop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
             return;
         }
         initData();
+        initMenu();
     }
 
     @Override
@@ -239,11 +244,75 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         return getString(R.string.recruiting);
     }
 
+
+    private void initMenu() {
+        if (pop == null) {
+            setRightImage(R.mipmap.exclusive_menu, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pop.showAsDropDown(v);
+                    backgroundAlpha(0.9f);
+                }
+            });
+            View popView = View.inflate(this, R.layout.exclusive_pop_menu, null);
+            View menu1 = popView.findViewById(R.id.menu_1);
+            View menu2 = popView.findViewById(R.id.menu_2);
+            View menu3 = popView.findViewById(R.id.menu_3);
+            View menu4 = popView.findViewById(R.id.menu_4);
+            View menu5 = popView.findViewById(R.id.menu_5);
+            menu1.setOnClickListener(this);
+            menu2.setOnClickListener(this);
+            menu3.setOnClickListener(this);
+            menu4.setOnClickListener(this);
+            menu5.setOnClickListener(this);
+            pop = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    WindowManager.LayoutParams lp = getWindow().getAttributes();
+                    lp.alpha = 1f;
+                    getWindow().setAttributes(lp);
+                }
+            });
+        }
+    }
+
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().setAttributes(lp);
+    }
+
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
+            case R.id.menu_1:
+                Toast.makeText(this, "menu1", Toast.LENGTH_SHORT).show();
+                pop.dismiss();
+                break;
+            case R.id.menu_2:
+                intent = new Intent(this,ExclusiveFilesActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+                pop.dismiss();
+                Toast.makeText(this, "menu2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_3:
+                pop.dismiss();
+                Toast.makeText(this, "menu3", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_4:
+                pop.dismiss();
+                Toast.makeText(this, "menu4", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_5:
+                pop.dismiss();
+                Toast.makeText(this, "menu5", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.announcement:
-                Intent intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
+                 intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getCustomized_group().getId());
                 intent.putExtra(  "type", Constant.CoursesType.exclusive);
                 startActivity(intent);

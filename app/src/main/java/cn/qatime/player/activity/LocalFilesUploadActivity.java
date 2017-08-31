@@ -46,12 +46,21 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
     private FragmentUploadFilesPicture fragmentUploadFilesPicture;
     private FragmentUploadFilesDoc fragmentUploadFilesDoc;
     private FragmentUploadFilesOther fragmentUploadFilesOther;
+    private int courseId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("本地文件");
+        setRightText("说明", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LocalFilesUploadActivity.this, WalletExplainActivity.class);
+                startActivity(intent);
+            }
+        });
+        courseId = getIntent().getIntExtra("id", 0);
         initView();
         upload = (Button) findViewById(R.id.upload);
         size = (TextView) findViewById(R.id.size);
@@ -111,6 +120,7 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
                 File item = (File) items[0];
                 Intent intent = new Intent(this,FileUploadActivity.class);
                 intent.putExtra("file",item);
+                intent.putExtra("id",courseId);
                 startActivityForResult(intent,0);
                 finish();
                 break;

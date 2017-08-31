@@ -7,16 +7,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.orhanobut.logger.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.base.BaseApplication;
+import cn.qatime.player.bean.DaYiJsonObjectRequest;
+import cn.qatime.player.bean.MyFilesBean;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.rx.HttpManager;
 import libraryextra.rx.body.ProgressResponseCallBack;
 import libraryextra.rx.callback.SimpleCallBack;
 import libraryextra.utils.DataCleanUtils;
+import libraryextra.utils.JsonUtils;
+import libraryextra.utils.VolleyErrorListener;
+import libraryextra.utils.VolleyListener;
 
 /**
  * Created by lenovo on 2017/8/31.
@@ -39,6 +52,8 @@ public class FileUploadActivity extends BaseActivity {
             super.handleMessage(msg);
         }
     };
+    private int courseId;
+    private MyFilesBean.DataBean item;
 
     @Override
     public int getContentView() {
@@ -53,6 +68,7 @@ public class FileUploadActivity extends BaseActivity {
         File file = (File) getIntent().getSerializableExtra("file");
         name.setText(file.getName());
         size.setText(DataCleanUtils.getFormatSize(file.length()));
+        courseId = getIntent().getIntExtra("id", 0);
         if (file != null) {
             HttpManager.post(UrlUtils.urlFiles + "files")
                     .headers("Remember-Token", BaseApplication.getProfile().getToken())
@@ -72,10 +88,18 @@ public class FileUploadActivity extends BaseActivity {
 //                                Logger.e("bytesWritten:" + bytesWritten + "  contentLength:" + contentLength + "   done:" + done);
 //                            }
 //                        })
-                    .execute(new SimpleCallBack<Object>() {
+                    .execute(new SimpleCallBack<String>() {
                         @Override
-                        public void onSuccess(Object o) {
-
+                        public void onSuccess(String o) {
+                            if (courseId != 0) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(o);
+                                    item = JsonUtils.objectFromJson(jsonObject.getJSONObject("data").toString(), MyFilesBean.DataBean.class);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                addToCourse();
+                            }
                         }
 
                         @Override
@@ -86,9 +110,35 @@ public class FileUploadActivity extends BaseActivity {
         }
     }
 
+    private void addToCourse() {
+        if (item != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("file_id", item.getId() + "");
+            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGroups + courseId + "/files", map)
+                    , null, new VolleyListener(FileUploadActivity.this) {
+                @Override
+                protected void onTokenOut() {
+                    tokenOut();
+                }
+
+                @Override
+                protected void onSuccess(JSONObject response) {
+                    Logger.e("上传课件成功");
+                    setResult(0);
+                    finish();
+                }
+
+                @Override
+                protected void onError(JSONObject response) {
+
+                }
+            }, new VolleyErrorListener());
+            addToRequestQueue(request);
+        }
+    }
+
     @Override
     public void finish() {
-        setResult(0);
         super.finish();
     }
 

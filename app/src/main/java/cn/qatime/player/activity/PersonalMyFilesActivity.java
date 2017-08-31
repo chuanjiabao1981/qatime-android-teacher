@@ -14,7 +14,9 @@ import com.orhanobut.logger.Logger;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import cn.qatime.player.R;
@@ -42,7 +44,6 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
     private Set<MyFilesBean.DataBean> selectSet = new HashSet<>();
     private FragmentMyFilesAll fragmentMyFilesAll;
-    private boolean isShowCheckbox;
     private TextView rightText;
     private ImageView rightImage;
     private FragmentMyFilesVideo fragmentMyFilesVideo;
@@ -50,12 +51,21 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
     private FragmentMyFilesDoc fragmentMyFilesDoc;
     private FragmentMyFilesOther fragmentMyFilesOther;
     private Button bottom;
+    private boolean isShowCheckbox;
     public final boolean singleMode = true;
+    private int courseId;
+    private String selectAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("我的文件");
+        courseId = getIntent().getIntExtra("id", 0);
+        if (courseId == 0) {
+            selectAction = "删除";
+        } else {
+            selectAction = "上传";
+        }
         rightText = (TextView) findViewById(R.id.right_text);
         rightImage = (ImageView) findViewById(R.id.right);
         rightText.setText("取消");
@@ -138,9 +148,10 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
         fragmentMyFilesOther.adapter.updateItem(item, isChecked);
 
         if (selectSet.size() <= 0) {
-            bottom.setText("删除");
+            bottom.setText(selectAction);
         } else {
-            bottom.setText("删除(" + selectSet.size() + ")");
+            bottom.setText(selectAction +
+                    "(" + selectSet.size() + ")");
         }
 
     }
@@ -157,9 +168,10 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
             rightText.setVisibility(View.VISIBLE);
             rightImage.setVisibility(View.GONE);
             if (selectSet.size() <= 0) {
-                bottom.setText("删除");
+                bottom.setText(selectAction);
             } else {
-                bottom.setText("删除(" + selectSet.size() + ")");
+                bottom.setText(selectAction +
+                        "(" + selectSet.size() + ")");
             }
         } else {
             rightImage.setVisibility(View.VISIBLE);
@@ -174,15 +186,51 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
             case R.id.bottom_button:
                 if (isShowCheckbox) {
                     if (selectSet.size() > 0) {
-                        deleteSelect();
+                        if (courseId != 0) {
+                            addToCourse();
+                        } else {
+                            deleteSelect();
+                        }
                     }
                 } else {
                     Intent intent = new Intent(this, LocalFilesUploadActivity.class);
-                    startActivityForResult(intent,0);
+                    startActivityForResult(intent, 0);
                 }
                 break;
         }
     }
+
+    private void addToCourse() {
+        // TODO: 2017/8/29 批量上传
+        Object[] items = selectSet.toArray();
+        selectSet.clear();
+        final MyFilesBean.DataBean item = (MyFilesBean.DataBean) items[0];
+        if (item != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("file_id", item.getId() + "");
+            DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.getUrl(UrlUtils.urlGroups + courseId + "/files", map)
+                    , null, new VolleyListener(PersonalMyFilesActivity.this) {
+                @Override
+                protected void onTokenOut() {
+                    tokenOut();
+                }
+
+                @Override
+                protected void onSuccess(JSONObject response) {
+                    Logger.e("上传课件成功");
+                    setResult(0);
+                    finish();
+                }
+
+                @Override
+                protected void onError(JSONObject response) {
+
+                }
+            }, new VolleyErrorListener());
+            addToRequestQueue(request);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         fragmentMyFilesAll.onShow();
@@ -191,6 +239,7 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
         fragmentMyFilesDoc.onShow();
         fragmentMyFilesOther.onShow();
     }
+
     private void deleteSelect() {
         // TODO: 2017/8/29 批量删除
         Object[] items = selectSet.toArray();
