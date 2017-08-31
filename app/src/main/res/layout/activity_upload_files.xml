@@ -57,7 +57,7 @@
             android:layout_marginRight="12dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/button_bg_selector_red"
-            android:text="上传(0/0)"
+            android:text="上传(0/1)"
             android:textColor="#fff" />
 
     </LinearLayout>

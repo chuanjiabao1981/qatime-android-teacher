@@ -116,7 +116,9 @@ public abstract class ListViewSelectAdapter<T> extends BaseAdapter implements Co
         if (isChecked && !selectedSet.contains(tag)) {
             if (singleMode) {
                 for (T t : selectedSet) {
-                    mListener.update(t, false);
+                    if (mListener != null) {
+                        mListener.update(t, false);
+                    }
                 }
             }
             selectedSet.add(tag);
@@ -142,16 +144,16 @@ public abstract class ListViewSelectAdapter<T> extends BaseAdapter implements Co
 
     public void updateItem(T item, boolean isChecked) {
         if (isChecked) {
-            int index = list.indexOf(item);
-            if (index != -1) {
+            if (singleMode) {
+                selectedSet.clear();
+            }
+            if (list.indexOf(item) != -1) {
                 selectedSet.add(item);
             }
         } else {
             selectedSet.remove(item);
         }
         notifyDataSetChanged();
-
-
     }
 
     public interface SelectChangeListener<T> {

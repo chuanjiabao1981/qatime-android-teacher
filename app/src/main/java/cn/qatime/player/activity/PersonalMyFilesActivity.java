@@ -134,7 +134,7 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
         fragmentMyFilesAll.adapter.updateItem(item, isChecked);
         fragmentMyFilesVideo.adapter.updateItem(item, isChecked);
         fragmentMyFilesPicture.adapter.updateItem(item, isChecked);
-        fragmentMyFilesDoc.adapter.updateItem(item, isChecked);
+        fragmentMyFilesDoc.expandAdapter.updateItem(item, isChecked);
         fragmentMyFilesOther.adapter.updateItem(item, isChecked);
 
         if (selectSet.size() <= 0) {
@@ -150,7 +150,7 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
         fragmentMyFilesAll.adapter.showCheckbox(isShowCheckbox);
         fragmentMyFilesVideo.adapter.showCheckbox(isShowCheckbox);
         fragmentMyFilesPicture.adapter.showCheckbox(isShowCheckbox);
-        fragmentMyFilesDoc.adapter.showCheckbox(isShowCheckbox);
+        fragmentMyFilesDoc.expandAdapter.showCheckbox(isShowCheckbox);
         fragmentMyFilesOther.adapter.showCheckbox(isShowCheckbox);
 
         if (isShowCheckbox) {
@@ -177,13 +177,20 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
                         deleteSelect();
                     }
                 } else {
-                    Intent intent = new Intent(this, FilesUploadActivity.class);
-                    startActivity(intent);
+                    Intent intent = new Intent(this, LocalFilesUploadActivity.class);
+                    startActivityForResult(intent,0);
                 }
                 break;
         }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        fragmentMyFilesAll.onShow();
+        fragmentMyFilesVideo.onShow();
+        fragmentMyFilesPicture.onShow();
+        fragmentMyFilesDoc.onShow();
+        fragmentMyFilesOther.onShow();
+    }
     private void deleteSelect() {
         // TODO: 2017/8/29 批量删除
         Object[] items = selectSet.toArray();

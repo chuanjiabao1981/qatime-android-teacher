@@ -1,5 +1,6 @@
 package cn.qatime.player.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,7 @@ import libraryextra.view.FragmentLayoutWithLine;
  * Created by lenovo on 2017/8/28.
  */
 
-public class FilesUploadActivity extends BaseActivity implements View.OnClickListener {
+public class LocalFilesUploadActivity extends BaseActivity implements View.OnClickListener {
 
     private int[] tab_text = {R.id.tab_text1, R.id.tab_text2, R.id.tab_text3, R.id.tab_text4};
     FragmentLayoutWithLine fragmentlayout;
@@ -105,39 +106,20 @@ public class FilesUploadActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.upload:
-                // TODO: 2017/8/29 批量上传
                 Object[] items = selectSet.toArray();
                 selectSet.clear();
                 File item = (File) items[0];
-                if (item != null) {
-                    HttpManager.post(UrlUtils.urlFiles + "files")
-                            .headers("Remember-Token", BaseApplication.getProfile().getToken())
-                            .params("file", item, new ProgressResponseCallBack() {
-                                @Override
-                                public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
-                                    Logger.e("bytesWritten:" + bytesWritten + "  contentLength:" + contentLength + "   done:" + done);
-                                }
-                            })
-//                        .addFileParams("file", files, new ProgressResponseCallBack() {
-//                            @Override
-//                            public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
-//                                Logger.e("bytesWritten:" + bytesWritten + "  contentLength:" + contentLength + "   done:" + done);
-//                            }
-//                        })
-                            .execute(new SimpleCallBack<Object>() {
-                                @Override
-                                public void onSuccess(Object o) {
-
-                                }
-
-                                @Override
-                                public void onTokenOut() {
-
-                                }
-                            });
-                }
+                Intent intent = new Intent(this,FileUploadActivity.class);
+                intent.putExtra("file",item);
+                startActivityForResult(intent,0);
+                finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        setResult(0);
     }
 
     public void update(File item, boolean isChecked) {

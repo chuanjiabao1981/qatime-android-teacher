@@ -8,33 +8,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 
-import com.android.volley.VolleyError;
-import com.google.gson.JsonSyntaxException;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.qatime.player.R;
-import cn.qatime.player.activity.FilesUploadActivity;
-import cn.qatime.player.activity.PersonalMyFilesActivity;
+import cn.qatime.player.activity.LocalFilesUploadActivity;
 import cn.qatime.player.adapter.ListViewSelectAdapter;
-import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
-import cn.qatime.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.player.bean.MyFilesBean;
-import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
 import libraryextra.utils.FileUtil;
-import libraryextra.utils.JsonUtils;
-import libraryextra.utils.VolleyErrorListener;
-import libraryextra.utils.VolleyListener;
 
 /**
  * Created by lenovo on 2017/8/28.
@@ -46,7 +32,7 @@ public class FragmentUploadFilesVideo extends BaseFragment {
     private PullToRefreshListView listView;
     private List<File> list = new ArrayList<>();
     public ListViewSelectAdapter adapter;
-    public FilesUploadActivity activity ;
+    public LocalFilesUploadActivity activity ;
 
     @Nullable
     @Override
@@ -63,10 +49,10 @@ public class FragmentUploadFilesVideo extends BaseFragment {
     }
 
     private void initView() {
-        activity = (FilesUploadActivity) getActivity();
+        activity = (LocalFilesUploadActivity) getActivity();
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
-        adapter = new ListViewSelectAdapter<File>(getActivity(), list, R.layout.item_file_upload_manager,true) {
+        adapter = new ListViewSelectAdapter<File>(getActivity(), list, R.layout.item_file_upload_manager,activity.singleMode) {
             @Override
             public void convert(ViewHolder holder, File item, int position) {
                 holder.setText(R.id.name, getItem(position).getName());

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
@@ -17,14 +18,17 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.qatime.player.R;
+import cn.qatime.player.activity.LocalFilesUploadActivity;
 import cn.qatime.player.activity.PersonalMyFilesActivity;
 import cn.qatime.player.adapter.ListViewSelectAdapter;
+import cn.qatime.player.adapter.MyExpandableListViewAdapter;
 import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
@@ -32,6 +36,7 @@ import cn.qatime.player.bean.MyFilesBean;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
+import libraryextra.utils.FileUtil;
 import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -41,55 +46,86 @@ import libraryextra.utils.VolleyListener;
  */
 
 public class FragmentMyFilesDoc extends BaseFragment {
-    private PullToRefreshListView listView;
-    public ListViewSelectAdapter<MyFilesBean.DataBean> adapter;
-    private List<MyFilesBean.DataBean> list = new ArrayList<>();
-    private PersonalMyFilesActivity activity;
+
+    public MyExpandableListViewAdapter expandAdapter;
+    public PersonalMyFilesActivity activity ;
+    private ExpandableListView listExpand;
+    private ArrayList<String> groupList;
+    private ArrayList<List<MyFilesBean.DataBean>> childList;
+    private List<MyFilesBean.DataBean> word =  new ArrayList<>();
+    private List<MyFilesBean.DataBean> excel =  new ArrayList<>();
+    private List<MyFilesBean.DataBean> ppt =  new ArrayList<>();
+    private  List<MyFilesBean.DataBean> pdf =  new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_files, null);
+        return inflater.inflate(R.layout.fragment_my_files_doc, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity = (PersonalMyFilesActivity) getActivity();
         initView();
         initOver = true;
         onShow();
     }
 
     private void initView() {
-        activity = (PersonalMyFilesActivity) getActivity();
-        listView = (PullToRefreshListView) findViewById(R.id.list);
-        listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
-        adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files,activity.singleMode) {
+        listExpand =(ExpandableListView)findViewById(R.id.list_expand);
+        groupList = new ArrayList<>();
+        childList = new ArrayList<>();
+        groupList.add("Word");
+        groupList.add("Excel");
+        groupList.add("PPT");
+        groupList.add("PDF");
+        childList.add(word);
+        childList.add(excel);
+        childList.add(ppt);
+        childList.add(pdf);
+        expandAdapter = new MyExpandableListViewAdapter<MyFilesBean.DataBean>(getActivity(),listExpand, groupList, childList,activity.singleMode){
+
             @Override
-            public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
+            public void convert(ViewHolder holder, MyFilesBean.DataBean item, int groupPosition, int childPosition) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
             }
         };
-        adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {
+        listExpand.setAdapter(expandAdapter);
+        //重写OnGroupClickListener，实现当展开时，ExpandableListView不自动滚动
+        listExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void update(MyFilesBean.DataBean item, boolean isChecked) {
-                activity.update(item,isChecked);
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (parent.isGroupExpanded(groupPosition)) {
+                    parent.collapseGroup(groupPosition);
+                } else {
+                    //第二个参数false表示展开时是否触发默认滚动动画
+                    parent.expandGroup(groupPosition, false);
+                }
+                //telling the listView we have handled the group click, and don't want the default actions.
+                return true;
             }
         });
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listExpand.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!adapter.isCheckboxShow()) {
+            public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+                if (!expandAdapter.isCheckboxShow()) {
 
                 } else {
                     CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkedView);
                     checkBox.setChecked(!checkBox.isChecked());
                 }
+                return true;
             }
         });
-        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        expandAdapter.setSelectListener(new MyExpandableListViewAdapter.SelectChangeListener<MyFilesBean.DataBean>(){
+            @Override
+            public void update(MyFilesBean.DataBean item, boolean isChecked) {
+                activity.update(item,isChecked);
+            }
+        });
+        listExpand.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 activity.updateCheckbox();
@@ -119,12 +155,26 @@ public class FragmentMyFilesDoc extends BaseFragment {
                 new VolleyListener(getActivity()) {
                     @Override
                     protected void onSuccess(JSONObject response) {
-                        list.clear();
+                        word.clear();
+                        excel.clear();
+                        ppt.clear();
+                        pdf.clear();
                         try {
                             MyFilesBean data = JsonUtils.objectFromJson(response.toString(), MyFilesBean.class);
                             if (data != null) {
-                                list.addAll(data.getData());
-                                adapter.notifyDataSetChanged();
+                                for (MyFilesBean.DataBean item : data.getData()) {
+                                    if(item.getExt_name().equals("doc")||item.getExt_name().equals("docx")){
+                                        word.add(item);
+                                    }else if(item.getExt_name().equals("xls")||item.getExt_name().equals("xlsx")){
+                                        excel.add(item);
+                                    }else if(item.getExt_name().equals("ppt")){
+                                        ppt.add(item);
+                                    }else if(item.getExt_name().equals("pdf")){
+                                        pdf.add(item);
+                                    }
+
+                                }
+                                expandAdapter.refresh();
                             }
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();

@@ -5,18 +5,20 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.qatime.player.R;
-import cn.qatime.player.activity.FilesUploadActivity;
-import cn.qatime.player.adapter.ListViewSelectAdapter;
+import cn.qatime.player.activity.LocalFilesUploadActivity;
 import cn.qatime.player.adapter.MyExpandableListViewAdapter;
 import cn.qatime.player.base.BaseFragment;
+import libraryextra.adapter.ViewHolder;
+import libraryextra.utils.DataCleanUtils;
 import libraryextra.utils.FileUtil;
 
 /**
@@ -26,7 +28,7 @@ import libraryextra.utils.FileUtil;
 public class FragmentUploadFilesDoc extends BaseFragment {
 
     public MyExpandableListViewAdapter expandAdapter;
-    public FilesUploadActivity activity ;
+    public LocalFilesUploadActivity activity ;
     private ExpandableListView listExpand;
     private ArrayList<String> groupList;
     private ArrayList<List<File>> childList;
@@ -44,7 +46,7 @@ public class FragmentUploadFilesDoc extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity = (FilesUploadActivity) getActivity();
+        activity = (LocalFilesUploadActivity) getActivity();
         initView();
         initOver = true;
         onShow();
@@ -62,7 +64,13 @@ public class FragmentUploadFilesDoc extends BaseFragment {
         childList.add(excel);
         childList.add(ppt);
         childList.add(pdf);
-        expandAdapter = new MyExpandableListViewAdapter(getActivity(),listExpand, groupList, childList);
+        expandAdapter = new MyExpandableListViewAdapter<File>(getActivity(), listExpand, groupList, childList,activity.singleMode) {
+            @Override
+            public void convert(ViewHolder holder, File item, int groupPosition, int childPosition) {
+                holder.setText(R.id.name, item.getName());
+                holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+            }
+        };
         listExpand.setAdapter(expandAdapter);
         //重写OnGroupClickListener，实现当展开时，ExpandableListView不自动滚动
         listExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -78,13 +86,25 @@ public class FragmentUploadFilesDoc extends BaseFragment {
                 return true;
             }
         });
+        listExpand.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
+                if (!expandAdapter.isCheckboxShow()) {
 
-        expandAdapter.setSelectListener(new MyExpandableListViewAdapter.SelectChangeListener() {
+                } else {
+                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkedView);
+                    checkBox.setChecked(!checkBox.isChecked());
+                }
+                return true;
+            }
+        });
+        expandAdapter.setSelectListener(new MyExpandableListViewAdapter.SelectChangeListener<File>() {
             @Override
             public void update(File item, boolean isChecked) {
                 activity.update(item,isChecked);
             }
         });
+        expandAdapter.showCheckbox(true);
     }
 
     public void onShow() {

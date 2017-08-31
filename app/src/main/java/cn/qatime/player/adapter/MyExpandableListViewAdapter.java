@@ -25,7 +25,7 @@ import libraryextra.utils.DataCleanUtils;
  * Created by lenovo on 2017/8/30.
  */
 
-public class MyExpandableListViewAdapter extends BaseExpandableListAdapter implements CompoundButton.OnCheckedChangeListener {
+public abstract class MyExpandableListViewAdapter<T> extends BaseExpandableListAdapter implements CompoundButton.OnCheckedChangeListener {
     private final Handler handler = new Handler() {
 
         @Override
@@ -37,10 +37,10 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
     private ExpandableListView expandableListView;
     private Context context;
     private List<String> groupData;
-    private List<List<File>> childData;
+    private List<List<T>> childData;
 
-    private Set<File> selectedSet = new HashSet<>();
-    private boolean show = true;
+    private Set<T> selectedSet = new HashSet<>();
+    private boolean show;
     private boolean singleMode;
     private boolean selectAll;
     private SelectChangeListener mListener;
@@ -53,10 +53,11 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
         expandableListView.expandGroup(0);
     }
 
-    public MyExpandableListViewAdapter(Context context, ExpandableListView expandableListView, List<String> groupData, List<List<File>> childData) {
+    public MyExpandableListViewAdapter(Context context, ExpandableListView expandableListView, List<String> groupData, List<List<T>> childData,boolean singleMode) {
         this.context = context;
         this.groupData = groupData;
         this.childData = childData;
+        this.singleMode = singleMode;
         this.expandableListView = expandableListView;
 
     }
@@ -144,10 +145,9 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ViewHolder holder = getChildViewHolder(groupPosition, convertView,
                 parent);
-        File item = childData.get(groupPosition).get(childPosition);
-//        convert(holder, item, position);
-        holder.setText(R.id.name, item.getName());
-        holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+        T item = childData.get(groupPosition).get(childPosition);
+        convert(holder, item,groupPosition,childPosition);
+
 
         holder.getView(R.id.checkedView).setTag(item);
         if (show) {
@@ -163,6 +163,8 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
         ((CheckBox) holder.getView(R.id.checkedView)).setOnCheckedChangeListener(this);
         return holder.getConvertView();
     }
+
+    public abstract void convert(ViewHolder holder, T item, int groupPosition, int childPosition);
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -205,14 +207,14 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
 
     public void showCheckbox(boolean show) {
         this.show = show;
-        notifyDataSetChanged();
+        refresh();
     }
 
     public void selectAll(boolean b) {
         this.selectAll = b;
         selectedSet.clear();
         if (b) {
-            for (List<File> list : childData) {
+            for (List<T> list : childData) {
                 selectedSet.addAll(list);
             }
         }
@@ -222,9 +224,9 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
         return selectAll;
     }
 
-    public List<File> getSelectedList() {
-        List<File> list = new ArrayList<>();
-        for (File t : selectedSet) {
+    public List<T> getSelectedList() {
+        List<T> list = new ArrayList<>();
+        for (T t : selectedSet) {
             list.add(t);
         }
         return list;
@@ -232,12 +234,14 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        File tag = (File) buttonView.getTag();
+        T tag = (T) buttonView.getTag();
 
         if (isChecked && !selectedSet.contains(tag)) {
             if (singleMode) {
-                for (File t : selectedSet) {
-                    mListener.update(t, false);
+                for (T t : selectedSet) {
+                    if(mListener!=null){
+                        mListener.update(t, false);
+                    }
                 }
             }
             selectedSet.add(tag);
@@ -261,9 +265,12 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
         this.mListener = Listener;
     }
 
-    public void updateItem(File item, boolean isChecked) {
+    public void updateItem(T item, boolean isChecked) {
         if (isChecked) {
-            for (List<File> list : childData) {
+            if (singleMode) {
+                selectedSet.clear();
+            }
+            for (List<T> list : childData) {
                 if (list.indexOf(item) != -1) {
                     selectedSet.add(item);
                 }
@@ -274,7 +281,7 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter imple
         refresh();
     }
 
-    public interface SelectChangeListener {
-        void update(File item, boolean isChecked);
+    public interface SelectChangeListener<T> {
+        void update(T item, boolean isChecked);
     }
 }
