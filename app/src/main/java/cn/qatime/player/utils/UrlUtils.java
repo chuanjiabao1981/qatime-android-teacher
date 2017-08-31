@@ -44,7 +44,7 @@ public class UrlUtils {
     public static String urlGroups = baseUrl + "api/v1/live_studio/groups/";
     //用户信息
     public static String urlUser = baseUrl + "api/v1/users/";
-    //用户信息
+    //文件资源
     public static String urlFiles = baseUrl + "api/v1/resource/";
     //检查更新
     public static String urlcheckUpdate = baseUrl + "api/v1/system/check_update";
