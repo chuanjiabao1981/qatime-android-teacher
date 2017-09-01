@@ -69,6 +69,7 @@ public class FragmentMyFilesOther extends BaseFragment {
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                holder.setImageResource(R.id.image, R.mipmap.unknown);
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {

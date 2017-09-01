@@ -69,6 +69,15 @@ public class FragmentUploadFilesDoc extends BaseFragment {
             public void convert(ViewHolder holder, File item, int groupPosition, int childPosition) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+                if(groupPosition==0){
+                    holder.setImageResource(R.id.image,R.mipmap.word);
+                }else if(groupPosition==1){
+                    holder.setImageResource(R.id.image,R.mipmap.excel);
+                }else if(groupPosition==3){
+                    holder.setImageResource(R.id.image,R.mipmap.pdf);
+                }else{
+                    holder.setImageResource(R.id.image,R.mipmap.unknown);
+                }
             }
         };
         listExpand.setAdapter(expandAdapter);

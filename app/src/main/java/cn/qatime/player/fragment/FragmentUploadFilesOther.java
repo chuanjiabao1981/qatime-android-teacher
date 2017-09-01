@@ -57,6 +57,7 @@ public class FragmentUploadFilesOther extends BaseFragment {
             public void convert(ViewHolder holder, File item, int position) {
                 holder.setText(R.id.name, getItem(position).getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+                holder.setImageResource(R.id.image,R.mipmap.unknown);
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<File>() {

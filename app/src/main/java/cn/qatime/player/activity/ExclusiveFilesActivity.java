@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonSyntaxException;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
@@ -29,6 +30,7 @@ import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyFilesBean;
+import cn.qatime.player.utils.MyVideoThumbLoader;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
@@ -90,10 +92,26 @@ public class ExclusiveFilesActivity extends BaseActivity implements View.OnClick
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(this, R.layout.empty_view, null));
         adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(this, list, R.layout.item_personal_my_files, singleMode) {
+            public MyVideoThumbLoader mVideoThumbLoader = new MyVideoThumbLoader();
+
             @Override
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                if (item.getExt_name().equals("doc") || item.getExt_name().equals("docx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.word);
+                } else if (item.getExt_name().equals("xls") || item.getExt_name().equals("xlsx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.excel);
+                }else if (item.getExt_name().equals("pdf")) {
+                    holder.setImageResource(R.id.image, R.mipmap.pdf);
+                } else if (item.getExt_name().equals("mp4")) {
+                    mVideoThumbLoader.showThumbByAsyncTask(item.getFile_url(), (ImageView) holder.getView(R.id.image));
+//                    holder.setImageBitmap(R.id.image, ImageUtil.getVideoThumbnail(item.getFile_url()));
+                } else if (item.getExt_name().equals("jpg") || item.getExt_name().equals("png")) {
+                    Glide.with(ExclusiveFilesActivity.this).load(item.getFile_url()).placeholder(R.mipmap.unknown).centerCrop().crossFade().dontAnimate().into(((ImageView) holder.getView(R.id.image)));
+                } else {
+                    holder.setImageResource(R.id.image, R.mipmap.unknown);
+                }
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {

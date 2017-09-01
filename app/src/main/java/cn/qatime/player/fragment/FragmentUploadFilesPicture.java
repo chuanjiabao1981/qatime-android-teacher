@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.io.File;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import cn.qatime.player.R;
 import cn.qatime.player.activity.LocalFilesUploadActivity;
+import cn.qatime.player.activity.TeacherDataActivity;
 import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseFragment;
 import libraryextra.adapter.ViewHolder;
@@ -57,6 +60,7 @@ public class FragmentUploadFilesPicture extends BaseFragment {
             public void convert(ViewHolder holder, File item, int position) {
                 holder.setText(R.id.name, getItem(position).getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+                Glide.with(activity).load(item.getAbsolutePath()).placeholder(R.mipmap.photo).centerCrop().crossFade().dontAnimate().into(((ImageView) holder.getView(R.id.image)));
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<File>() {

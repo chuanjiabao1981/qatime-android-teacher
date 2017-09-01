@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonSyntaxException;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -69,6 +71,8 @@ public class FragmentMyFilesPicture extends BaseFragment {
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                Glide.with(activity).load(item.getFile_url()).placeholder(R.mipmap.unknown).centerCrop().crossFade().dontAnimate().into(((ImageView) holder.getView(R.id.image)));
+
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {

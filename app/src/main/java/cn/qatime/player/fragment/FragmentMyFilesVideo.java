@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
@@ -29,6 +30,8 @@ import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyFilesBean;
+import cn.qatime.player.utils.ImageUtil;
+import cn.qatime.player.utils.MyVideoThumbLoader;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
@@ -65,10 +68,13 @@ public class FragmentMyFilesVideo extends BaseFragment {
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
         adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files,activity.singleMode) {
+            public MyVideoThumbLoader mVideoThumbLoader = new MyVideoThumbLoader();
+
             @Override
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                mVideoThumbLoader.showThumbByAsyncTask(item.getFile_url(), (ImageView) holder.getView(R.id.image));
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {

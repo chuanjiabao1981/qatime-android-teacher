@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonSyntaxException;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -33,6 +35,7 @@ import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyFilesBean;
+import cn.qatime.player.utils.ImageUtil;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
@@ -90,6 +93,17 @@ public class FragmentMyFilesDoc extends BaseFragment {
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int groupPosition, int childPosition) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                if (item.getExt_name().equals("doc") || item.getExt_name().equals("docx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.word);
+                } else if (item.getExt_name().equals("xls") || item.getExt_name().equals("xlsx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.excel);
+                }else if (item.getExt_name().equals("pdf")) {
+                    holder.setImageResource(R.id.image, R.mipmap.pdf);
+                }else {
+                    holder.setImageResource(R.id.image, R.mipmap.unknown);
+                }
+
+
             }
         };
         listExpand.setAdapter(expandAdapter);

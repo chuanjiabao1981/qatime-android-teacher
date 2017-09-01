@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -18,6 +19,7 @@ import cn.qatime.player.R;
 import cn.qatime.player.activity.LocalFilesUploadActivity;
 import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseFragment;
+import cn.qatime.player.utils.MyVideoThumbLoader;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
 import libraryextra.utils.FileUtil;
@@ -32,7 +34,7 @@ public class FragmentUploadFilesVideo extends BaseFragment {
     private PullToRefreshListView listView;
     private List<File> list = new ArrayList<>();
     public ListViewSelectAdapter adapter;
-    public LocalFilesUploadActivity activity ;
+    public LocalFilesUploadActivity activity;
 
     @Nullable
     @Override
@@ -52,17 +54,20 @@ public class FragmentUploadFilesVideo extends BaseFragment {
         activity = (LocalFilesUploadActivity) getActivity();
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
-        adapter = new ListViewSelectAdapter<File>(getActivity(), list, R.layout.item_file_upload_manager,activity.singleMode) {
+        adapter = new ListViewSelectAdapter<File>(getActivity(), list, R.layout.item_file_upload_manager, activity.singleMode) {
+            public MyVideoThumbLoader mVideoThumbLoader = new MyVideoThumbLoader();
+
             @Override
             public void convert(ViewHolder holder, File item, int position) {
                 holder.setText(R.id.name, getItem(position).getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(item.length()));
+                mVideoThumbLoader.showThumbByAsyncTask(item, (ImageView) holder.getView(R.id.image));
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<File>() {
             @Override
             public void update(File item, boolean isChecked) {
-                activity.update(item,isChecked);
+                activity.update(item, isChecked);
             }
         });
         listView.setAdapter(adapter);
@@ -86,6 +91,7 @@ public class FragmentUploadFilesVideo extends BaseFragment {
 //            }
 //        });
     }
+
     public void onShow() {
         if (!isLoad) {
             if (initOver) {
@@ -95,12 +101,13 @@ public class FragmentUploadFilesVideo extends BaseFragment {
             }
         }
     }
+
     private void initData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 list.clear();
-                list.addAll( FileUtil.getSpecificTypeOfFile(getActivity(), new String[]{"mp4"}));
+                list.addAll(FileUtil.getSpecificTypeOfFile(getActivity(), new String[]{"mp4"}));
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

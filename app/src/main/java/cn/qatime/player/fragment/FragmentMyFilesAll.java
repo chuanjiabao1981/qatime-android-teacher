@@ -2,17 +2,16 @@ package cn.qatime.player.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.ListView;
+import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonSyntaxException;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
@@ -29,6 +28,7 @@ import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.base.BaseFragment;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyFilesBean;
+import cn.qatime.player.utils.MyVideoThumbLoader;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.DataCleanUtils;
@@ -64,17 +64,33 @@ public class FragmentMyFilesAll extends BaseFragment {
         activity = (PersonalMyFilesActivity) getActivity();
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
-        adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files,activity.singleMode) {
+        adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files, activity.singleMode) {
+            private MyVideoThumbLoader mVideoThumbLoader = new MyVideoThumbLoader();
+
             @Override
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                if (item.getExt_name().equals("doc") || item.getExt_name().equals("docx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.word);
+                } else if (item.getExt_name().equals("xls") || item.getExt_name().equals("xlsx")) {
+                    holder.setImageResource(R.id.image, R.mipmap.excel);
+                }else if (item.getExt_name().equals("pdf")) {
+                    holder.setImageResource(R.id.image, R.mipmap.pdf);
+                } else if (item.getExt_name().equals("mp4")) {
+                    mVideoThumbLoader.showThumbByAsyncTask(item.getFile_url(), (ImageView) holder.getView(R.id.image));
+//                    holder.setImageBitmap(R.id.image, ImageUtil.getVideoThumbnail(item.getFile_url()));
+                } else if (item.getExt_name().equals("jpg") || item.getExt_name().equals("png")) {
+                    Glide.with(activity).load(item.getFile_url()).placeholder(R.mipmap.unknown).centerCrop().crossFade().dontAnimate().into(((ImageView) holder.getView(R.id.image)));
+                } else {
+                    holder.setImageResource(R.id.image, R.mipmap.unknown);
+                }
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {
             @Override
             public void update(MyFilesBean.DataBean item, boolean isChecked) {
-                activity.update(item,isChecked);
+                activity.update(item, isChecked);
             }
         });
         listView.setAdapter(adapter);

@@ -3,11 +3,13 @@ package cn.qatime.player.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
@@ -22,6 +24,8 @@ import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.base.BaseApplication;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyFilesBean;
+import cn.qatime.player.utils.ImageUtil;
+import cn.qatime.player.utils.MyVideoThumbLoader;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.rx.HttpManager;
 import libraryextra.rx.body.ProgressResponseCallBack;
@@ -54,6 +58,7 @@ public class FileUploadActivity extends BaseActivity {
     };
     private int courseId;
     private MyFilesBean.DataBean item;
+    private ImageView image;
 
     @Override
     public int getContentView() {
@@ -68,6 +73,21 @@ public class FileUploadActivity extends BaseActivity {
         File file = (File) getIntent().getSerializableExtra("file");
         name.setText(file.getName());
         size.setText(DataCleanUtils.getFormatSize(file.length()));
+        String extName =file.getName().substring(file.getName().lastIndexOf("."),file.getName().length());
+        if (extName.equals("doc") || extName.equals("docx")) {
+            image.setImageResource(R.mipmap.word);
+        } else if (extName.equals("xls") || extName.equals("xlsx")) {
+            image.setImageResource(R.mipmap.excel);
+        } else if (extName.equals("pdf")) {
+            image.setImageResource(R.mipmap.pdf);
+        } else if (extName.equals("mp4")) {
+            MyVideoThumbLoader mVideoThumbLoader = new MyVideoThumbLoader();
+            mVideoThumbLoader.showThumbByAsyncTask(file,image);
+        } else if (extName.equals("jpg") || extName.equals("png")) {
+            Glide.with(this).load(file.getAbsolutePath()).placeholder(R.mipmap.unknown).centerCrop().crossFade().dontAnimate().into(image);
+        } else {
+            image.setImageResource( R.mipmap.unknown);
+        }
         courseId = getIntent().getIntExtra("id", 0);
         if (file != null) {
             HttpManager.post(UrlUtils.urlFiles + "files")
@@ -145,6 +165,7 @@ public class FileUploadActivity extends BaseActivity {
     private void initView() {
         name = (TextView) findViewById(R.id.name);
         size = (TextView) findViewById(R.id.size);
+        image = (ImageView) findViewById(R.id.image);
         progress = (ProgressBar) findViewById(R.id.progress_horizontal);
     }
 }
