@@ -4,7 +4,7 @@
 
         <shape>
             <corners android:radius="8.0dip" />
-            <gradient android:startColor="#ccc" android:endColor="#ccc" />
+            <gradient android:startColor="#e2e1e2" android:endColor="#e2e1e2" />
         </shape>
 
     </item>
@@ -14,7 +14,7 @@
         <clip>
             <shape>
                 <corners android:radius="8.0dip" />
-                <gradient android:startColor="#ccc" android:endColor="#ccc" android:angle="90.0" />
+                <gradient android:startColor="#e2e1e2" android:endColor="#e2e1e2" android:angle="90.0" />
             </shape>
         </clip>
     </item>

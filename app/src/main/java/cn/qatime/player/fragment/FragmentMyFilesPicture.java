@@ -19,7 +19,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,7 @@ public class FragmentMyFilesPicture extends BaseFragment {
     public ListViewSelectAdapter<MyFilesBean.DataBean> adapter;
     private List<MyFilesBean.DataBean> list = new ArrayList<>();
     private PersonalMyFilesActivity activity;
+    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Nullable
     @Override
@@ -71,6 +74,7 @@ public class FragmentMyFilesPicture extends BaseFragment {
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                holder.setText(R.id.time, "上传时间:" + parse.format(new Date(item.getCreated_at()*1000)));
                 Glide.with(activity).load(item.getFile_url()).placeholder(R.mipmap.unknown).centerCrop().crossFade().dontAnimate().into(((ImageView) holder.getView(R.id.image)));
 
             }

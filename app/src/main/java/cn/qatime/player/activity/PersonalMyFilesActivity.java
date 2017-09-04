@@ -75,7 +75,7 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
                 updateCheckbox();
             }
         });
-        rightImage.setImageResource(R.mipmap.calendar);
+        rightImage.setImageResource(R.mipmap.trash);
         rightImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

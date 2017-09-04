@@ -73,7 +73,7 @@ public class FileUploadActivity extends BaseActivity {
         File file = (File) getIntent().getSerializableExtra("file");
         name.setText(file.getName());
         size.setText(DataCleanUtils.getFormatSize(file.length()));
-        String extName =file.getName().substring(file.getName().lastIndexOf("."),file.getName().length());
+        String extName =file.getName().substring(file.getName().lastIndexOf(".")+1,file.getName().length());
         if (extName.equals("doc") || extName.equals("docx")) {
             image.setImageResource(R.mipmap.word);
         } else if (extName.equals("xls") || extName.equals("xlsx")) {

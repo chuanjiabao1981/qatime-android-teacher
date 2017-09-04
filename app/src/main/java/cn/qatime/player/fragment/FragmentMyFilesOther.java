@@ -2,22 +2,21 @@ package cn.qatime.player.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.ListView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.JsonSyntaxException;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +44,12 @@ public class FragmentMyFilesOther extends BaseFragment {
     public ListViewSelectAdapter<MyFilesBean.DataBean> adapter;
     private List<MyFilesBean.DataBean> list = new ArrayList<>();
     private PersonalMyFilesActivity activity;
+    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-             return inflater.inflate(R.layout.fragment_my_files, null);
+        return inflater.inflate(R.layout.fragment_my_files, null);
     }
 
     @Override
@@ -64,18 +64,19 @@ public class FragmentMyFilesOther extends BaseFragment {
         activity = (PersonalMyFilesActivity) getActivity();
         listView = (PullToRefreshListView) findViewById(R.id.list);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
-        adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files,activity.singleMode) {
+        adapter = new ListViewSelectAdapter<MyFilesBean.DataBean>(getActivity(), list, R.layout.item_personal_my_files, activity.singleMode) {
             @Override
             public void convert(ViewHolder holder, MyFilesBean.DataBean item, int position) {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.size, DataCleanUtils.getFormatSize(Double.valueOf(item.getFile_size())));
+                holder.setText(R.id.time, "上传时间:" + parse.format(new Date(item.getCreated_at() * 1000)));
                 holder.setImageResource(R.id.image, R.mipmap.unknown);
             }
         };
         adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyFilesBean.DataBean>() {
             @Override
             public void update(MyFilesBean.DataBean item, boolean isChecked) {
-                activity.update(item,isChecked);
+                activity.update(item, isChecked);
             }
         });
         listView.setAdapter(adapter);

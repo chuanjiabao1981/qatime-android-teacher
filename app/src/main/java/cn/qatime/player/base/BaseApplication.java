@@ -80,6 +80,10 @@ public class BaseApplication extends Application {
         BaseApplication.cashAccount = cashAccount;
     }
 
+    public static BaseApplication getInstance() {
+        return context;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

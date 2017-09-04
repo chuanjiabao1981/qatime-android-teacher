@@ -2,6 +2,7 @@ package cn.qatime.player.utils;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
@@ -10,6 +11,10 @@ import android.widget.ImageView;
 
 import java.io.File;
 import java.util.HashMap;
+
+import cn.qatime.player.R;
+import cn.qatime.player.base.BaseApplication;
+import libraryextra.utils.BitmapUtil;
 
 public class MyVideoThumbLoader {
     //创建cache
@@ -43,7 +48,6 @@ public class MyVideoThumbLoader {
     }
 
     public void showThumbByAsyncTask(String path, ImageView imgView) {
-        imgView.setTag(TAG, path);
         if (getVideoThumbToCache(path) == null) {
             //异步加载
             new MyBobAsyncTask(imgView, path, VideoType.URL).execute(path);
@@ -55,7 +59,6 @@ public class MyVideoThumbLoader {
 
     public void showThumbByAsyncTask(File file, ImageView imgView) {
         String path = file.getAbsolutePath();
-        imgView.setTag(TAG,path);
         if (getVideoThumbToCache(path) == null) {
             //异步加载
             new MyBobAsyncTask(imgView, path, VideoType.FILE).execute(path);
@@ -74,6 +77,7 @@ public class MyVideoThumbLoader {
             this.imgView = imageView;
             this.path = path;
             this.type = type;
+            imgView.setTag(TAG, path);
         }
 
         @Override
@@ -117,7 +121,9 @@ public class MyVideoThumbLoader {
             }
         }
 
-        if (bitmap == null) return null;
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(BaseApplication.getInstance().getResources(), R.mipmap.unknown);
+        }
         bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
                 ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
         return bitmap;

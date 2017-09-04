@@ -43,6 +43,15 @@ public class MyFilesBean {
         private String file_size;
         private String ext_name;
         private String file_url;
+        private long created_at;
+
+        public long getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(long created_at) {
+            this.created_at = created_at;
+        }
 
         public String getFile_url() {
             return file_url;

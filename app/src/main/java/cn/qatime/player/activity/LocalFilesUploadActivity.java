@@ -60,6 +60,7 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
                 startActivity(intent);
             }
         });
+        findViewById(R.id.right_text).setVisibility(View.VISIBLE);
         courseId = getIntent().getIntExtra("id", 0);
         initView();
         upload = (Button) findViewById(R.id.upload);
