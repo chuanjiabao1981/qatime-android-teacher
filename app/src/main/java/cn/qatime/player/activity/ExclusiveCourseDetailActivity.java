@@ -24,6 +24,7 @@ import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragmentActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.ExclusiveCourseDetailBean;
+import cn.qatime.player.bean.ExclusiveLessonPlayInfoBean;
 import cn.qatime.player.fragment.FragmentExclusiveCourseClassInfo;
 import cn.qatime.player.fragment.FragmentExclusiveCourseClassList;
 import cn.qatime.player.fragment.FragmentExclusiveCourseTeacherInfo;
@@ -60,6 +61,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private View layoutView;
     private String teamId;
     private PopupWindow pop;
+    private ExclusiveLessonPlayInfoBean playInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,29 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     }
 
     private void initData() {
+        DaYiJsonObjectRequest requestMember = new DaYiJsonObjectRequest(UrlUtils.urlExclusiveCourse + "/" + id + "/play", null,
+                new VolleyListener(ExclusiveCourseDetailActivity.this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        playInfo = JsonUtils.objectFromJson(response.toString(), ExclusiveLessonPlayInfoBean.class);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(requestMember);
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlExclusiveCourse + id + "/detail", null,
                 new VolleyListener(ExclusiveCourseDetailActivity.this) {
                     @Override
@@ -255,11 +280,15 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                 }
             });
             View popView = View.inflate(this, R.layout.exclusive_pop_menu, null);
+
             View menu1 = popView.findViewById(R.id.menu_1);
             View menu2 = popView.findViewById(R.id.menu_2);
             View menu3 = popView.findViewById(R.id.menu_3);
             View menu4 = popView.findViewById(R.id.menu_4);
             View menu5 = popView.findViewById(R.id.menu_5);
+
+            menu3.setVisibility(View.GONE);
+            menu4.setVisibility(View.GONE);
             menu1.setOnClickListener(this);
             menu2.setOnClickListener(this);
             menu3.setOnClickListener(this);
@@ -289,7 +318,6 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         Intent intent;
         switch (v.getId()) {
             case R.id.menu_1:
-                Toast.makeText(this, "menu1", Toast.LENGTH_SHORT).show();
                 pop.dismiss();
                 break;
             case R.id.menu_2:
@@ -297,23 +325,32 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                 intent.putExtra("id",id);
                 startActivity(intent);
                 pop.dismiss();
-                Toast.makeText(this, "menu2", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_3:
                 pop.dismiss();
-                Toast.makeText(this, "menu3", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_4:
                 pop.dismiss();
-                Toast.makeText(this, "menu4", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_5:
+                if(playInfo==null){
+                    Toast.makeText(this, "未获取到聊天群组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(this,MembersActivity.class);
+                intent.putExtra("courseId", id);
+                startActivity(intent);
                 pop.dismiss();
-                Toast.makeText(this, "menu5", Toast.LENGTH_SHORT).show();
+                pop.dismiss();
                 break;
             case R.id.announcement:
+                if(playInfo==null){
+                    Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                  intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getCustomized_group().getId());
+                intent.putExtra("teamId", playInfo.getData().getCustomized_group().getChat_team().getTeam_id());
                 intent.putExtra(  "type", Constant.CoursesType.exclusive);
                 startActivity(intent);
                 break;

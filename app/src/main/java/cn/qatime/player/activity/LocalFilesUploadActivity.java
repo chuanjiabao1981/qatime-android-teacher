@@ -47,6 +47,7 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
     private FragmentUploadFilesDoc fragmentUploadFilesDoc;
     private FragmentUploadFilesOther fragmentUploadFilesOther;
     private int courseId;
+    private String selectAction;
 
 
     @Override
@@ -56,14 +57,20 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
         setRightText("说明", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LocalFilesUploadActivity.this, WalletExplainActivity.class);
+                Intent intent = new Intent(LocalFilesUploadActivity.this, UploadExplainActivity.class);
                 startActivity(intent);
             }
         });
         findViewById(R.id.right_text).setVisibility(View.VISIBLE);
         courseId = getIntent().getIntExtra("id", 0);
+        if (courseId == 0) {
+            selectAction = "上传";
+        } else {
+            selectAction = "发送";
+        }
         initView();
         upload = (Button) findViewById(R.id.upload);
+        upload.setText(selectAction+"(" + 0 + "/1)");
         size = (TextView) findViewById(R.id.size);
         upload.setOnClickListener(this);
     }
@@ -153,9 +160,9 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
         fragmentUploadFilesOther.adapter.updateItem(item, isChecked);
 
         if (selectSet.size() <= 0) {
-            upload.setText("上传(" + 0 + "/1)");
+            upload.setText(selectAction+"(" + 0 + "/1)");
         } else {
-            upload.setText("上传(" + selectSet.size() + "/1)");
+            upload.setText(selectAction+"(" + selectSet.size() + "/1)");
         }
 
     }
