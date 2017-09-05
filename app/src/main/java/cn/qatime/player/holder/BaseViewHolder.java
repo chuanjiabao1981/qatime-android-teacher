@@ -470,7 +470,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * Sets the adapter of a adapter view.
+     * Sets the expandAdapter of a expandAdapter view.
      *
      * @param viewId  The view id.
      * @param adapter The adapter;

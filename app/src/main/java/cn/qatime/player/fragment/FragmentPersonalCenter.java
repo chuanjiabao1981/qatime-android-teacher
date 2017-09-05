@@ -21,6 +21,7 @@ import cn.qatime.player.activity.ClassTableActivity;
 import cn.qatime.player.activity.PayPSWForgetActivity;
 import cn.qatime.player.activity.PersonalInformationActivity;
 import cn.qatime.player.activity.PersonalMyExclusiveActivity;
+import cn.qatime.player.activity.PersonalMyFilesActivity;
 import cn.qatime.player.activity.PersonalMyInteractActivity;
 import cn.qatime.player.activity.PersonalMyTutorshipActivity;
 import cn.qatime.player.activity.PersonalMyVideoActivity;
@@ -52,8 +53,8 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private View close;
     private boolean closed = false;//是否提示过未设置支付密码
     private RecyclerView recyclerView;
-    private String[] menuString = {"课程表", "直播课", "一对一", "视频课", "专属课"};
-    private int[] menuRes = {R.mipmap.center_class_table, R.mipmap.center_my_live, R.mipmap.center_my_interact, R.mipmap.center_my_video, R.mipmap.center_my_exclusive};
+    private String[] menuString = {"课程表", "直播课", "一对一", "视频课", "专属课", "我的文件"};
+    private int[] menuRes = {R.mipmap.center_class_table, R.mipmap.center_my_live, R.mipmap.center_my_interact, R.mipmap.center_my_video, R.mipmap.center_my_exclusive, R.mipmap.center_my_files};
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -145,6 +146,9 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
                                 break;
                             case 4:
                                 startActivity(new Intent(getActivity(), PersonalMyExclusiveActivity.class));
+                                break;
+                            case 5:
+                                startActivity(new Intent(getActivity(), PersonalMyFilesActivity.class));
                                 break;
                         }
                     }

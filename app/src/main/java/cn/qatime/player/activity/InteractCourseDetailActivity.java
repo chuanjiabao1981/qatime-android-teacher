@@ -27,6 +27,7 @@ import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.SimpleViewPagerIndicator;
 import libraryextra.bean.InteractCourseDetailBean;
 import libraryextra.utils.JsonUtils;
+import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 
@@ -179,8 +180,13 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.announcement:
+                if(StringUtils.isNullOrBlanK(data.getData().getInteractive_course().getChat_team().getTeam_id())){
+                    Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(InteractCourseDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getInteractive_course().getId());
+                intent.putExtra("teamId", data.getData().getInteractive_course().getChat_team().getTeam_id());
                 intent.putExtra("type", Constant.CoursesType.interactive);
                 startActivity(intent);
                 break;

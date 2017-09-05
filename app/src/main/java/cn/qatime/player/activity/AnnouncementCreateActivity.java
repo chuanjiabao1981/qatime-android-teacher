@@ -1,6 +1,7 @@
 package cn.qatime.player.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
@@ -93,7 +94,9 @@ public class AnnouncementCreateActivity extends BaseActivity implements View.OnC
                             Toast.makeText(AnnouncementCreateActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
                             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                             inputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), 0);
-                            setResult(Constant.RESPONSE);
+                            Intent intent = new Intent();
+                            intent.putExtra("content",content.getText().toString());
+                            setResult(Constant.RESPONSE,intent);
                             finish();
                         }
 

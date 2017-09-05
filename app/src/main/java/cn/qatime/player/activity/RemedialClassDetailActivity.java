@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragmentActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
+import cn.qatime.player.bean.ExclusiveLessonPlayInfoBean;
 import cn.qatime.player.bean.LiveLessonDetailBean;
+import cn.qatime.player.bean.RemedialClassPlayInfoBean;
 import cn.qatime.player.fragment.FragmentClassDetailClassInfo;
 import cn.qatime.player.fragment.FragmentClassDetailClassList;
 import cn.qatime.player.fragment.FragmentClassDetailTeacherInfo;
@@ -58,6 +60,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     private TextView status;
     private TextView timeToStart;
     private View layoutView;
+    private RemedialClassPlayInfoBean playInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +147,29 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     }
 
     private void initData() {
+        DaYiJsonObjectRequest requestMember = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id + "/play_info", null,
+                new VolleyListener(RemedialClassDetailActivity.this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        playInfo = JsonUtils.objectFromJson(response.toString(), RemedialClassPlayInfoBean.class);
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(requestMember);
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlRemedialClass + "/" + id + "/detail", null,
                 new VolleyListener(RemedialClassDetailActivity.this) {
                     @Override
@@ -267,8 +293,13 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.announcement:
+                if(playInfo==null){
+                    Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(RemedialClassDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getCourse().getId());
+                intent.putExtra("teamId", playInfo.getData().getChat_team().getTeam_id());
                 intent.putExtra("type", Constant.CoursesType.courses);
                 startActivity(intent);
                 break;
