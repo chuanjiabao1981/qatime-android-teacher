@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.qatime.player"
-    android:versionName="0.0.2">
+    android:versionCode="1"
+    android:versionName="0.2.1">
 
     <!-- 权限声明 -->
     <!-- 访问网络状态-->
