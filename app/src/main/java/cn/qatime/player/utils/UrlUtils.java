@@ -56,6 +56,9 @@ public class UrlUtils {
     public static String cashAccounts = baseUrl + "/api/v1/payment/cash_accounts/";
     //视频课
     public static String urlVideoCourses = baseUrl + "api/v1/live_studio/video_courses/";
+    //课程表
+    public static String urlScheduleData = baseUrl + "api/v2/live_studio/teachers/";
+
 
     public static String getUrl(String function, Map<String, String> params) {
         String url = function + "?" + Map2String(params);
