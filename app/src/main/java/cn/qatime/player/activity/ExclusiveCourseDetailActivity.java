@@ -288,7 +288,6 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
             View menu5 = popView.findViewById(R.id.menu_5);
 
             menu3.setVisibility(View.GONE);
-            menu4.setVisibility(View.GONE);
             menu1.setOnClickListener(this);
             menu2.setOnClickListener(this);
             menu3.setOnClickListener(this);
@@ -330,6 +329,9 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                 pop.dismiss();
                 break;
             case R.id.menu_4:
+                intent = new Intent(this,ExclusiveStudentHomeWorksActivity.class);
+                intent.putExtra("courseId",id);
+                startActivity(intent);
                 pop.dismiss();
                 break;
             case R.id.menu_5:
