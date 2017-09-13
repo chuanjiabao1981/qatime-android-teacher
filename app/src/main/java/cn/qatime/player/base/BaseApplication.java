@@ -37,6 +37,7 @@ import custom.Configure;
 import libraryextra.bean.CashAccountBean;
 import libraryextra.bean.Profile;
 import libraryextra.rx.HttpManager;
+import libraryextra.rx.model.HttpHeaders;
 import libraryextra.utils.AppUtils;
 import libraryextra.utils.StringUtils;
 
@@ -102,8 +103,26 @@ public class BaseApplication extends Application {
 //        initUmengPush();
         initYunxin();
         StorageUtil.init(context, null);
+        initRx();
+//        initGlobeActivity();
     }
 
+    private void initRx() {
+        HttpManager.init(this);
+
+        //设置请求头
+        HttpHeaders headers = new HttpHeaders();
+        if (!StringUtils.isNullOrBlanK(getProfile().getToken())) {
+            headers.put("Remember-Token", getProfile().getToken());
+        }
+        HttpManager.getInstance()
+                .setReadTimeOut(60 * 1000)
+                .setWriteTimeOut(60 * 1000)
+                .setConnectTimeout(60 * 1000)
+                .setBaseUrl(UrlUtils.getBaseUrl())
+                //.addConverterFactory(GsonConverterFactory.create(gson))//本框架没有采用Retrofit的Gson转化，所以不用配置
+                .addCommonHeaders(headers);//设置全局公共头//设置全局公共参数
+    }
     private void initUmengPush() {
 //        final PushAgent mPushAgent = PushAgent.getInstance(this);
 //        mPushAgent.setDebugMode(UrlUtils.isDebug);
@@ -356,6 +375,9 @@ public class BaseApplication extends Application {
 
     public static void setProfile(Profile profile) {
         BaseApplication.profile = profile;
+        HttpHeaders header = new HttpHeaders();
+        header.put("Remember-Token", profile.getToken());
+        HttpManager.getInstance().addCommonHeaders(header);
         SPUtils.putObject(context, "profile", profile);
     }
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.qatime.player"
-    android:versionName="0.0.2">
+    android:versionCode="1"
+    android:versionName="0.2.1">
 
     <!-- 权限声明 -->
     <!-- 访问网络状态-->
@@ -351,6 +352,21 @@
             android:name=".activity.MembersActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.ExclusiveHomeWorksActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.ExclusiveHomeWorkCreateActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.ExclusiveHomeWorkItemsAddActivity" />
+        <activity android:name=".activity.ExclusiveStudentHomeWorksActivity" />
+        <activity android:name=".activity.HomeWorkItemsAddActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WatchPictureActivity" />
+        <activity android:name=".activity.HomeWorkDetailActivity" />
+        <activity android:name=".activity.HomeWorkItemEditActivity" />
+        <activity android:name=".activity.PersonalMyHomeworkActivity" />
     </application>
 
 </manifest>
