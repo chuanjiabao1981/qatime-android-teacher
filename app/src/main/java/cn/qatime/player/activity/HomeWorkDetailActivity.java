@@ -173,7 +173,6 @@ public class HomeWorkDetailActivity extends BaseActivity {
         }
         homeworkTitle.setText(item.getTitle());
         setTitle(item.getTitle());
-        createTime.setText(item.getTitle());
         long time = item.getHomework().getCreated_at() * 1000L;
         createTime.setText("创建时间 "+parse.format(new Date(time)));
         //融合
