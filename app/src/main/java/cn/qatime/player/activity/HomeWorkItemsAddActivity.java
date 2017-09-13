@@ -42,9 +42,10 @@ import libraryextra.view.GridViewForScrollView;
 
 /**
  * Created by lenovo on 2017/9/8.
+ * 添加新的作业
  */
 
-public class HomeWorkItemEditActivity extends BaseActivity implements View.OnClickListener {
+public class HomeWorkItemsAddActivity extends BaseActivity implements View.OnClickListener {
     private ImageView control;
     private TextView time;
     private ProgressBar progress;
@@ -58,20 +59,17 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
     private List<ImageItem> list = new ArrayList<>();
     private QuestionEditAdapter adapter;
     private Button bottom;
-    private int parent_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homework_item_edit);
-        setTitle("编辑批改");
-        parent_id = getIntent().getIntExtra("parent_id", 0);
+        setTitle("编辑作业");
         initView();
     }
 
     @Override
     public int getContentView() {
-        return 0;
+        return R.layout.activity_homework_items_add;
     }
 
     private void initView() {
@@ -99,13 +97,13 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == list.size()) {
-                    Intent intent = new Intent(HomeWorkItemEditActivity.this, PictureSelectActivity.class);
+                    Intent intent = new Intent(HomeWorkItemsAddActivity.this, PictureSelectActivity.class);
 //                intent.putExtra("gonecamera", true);
                     startActivityForResult(intent, Constant.REQUEST);
                 } else {
-                    Toast.makeText(HomeWorkItemEditActivity.this, "看大图", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeWorkItemsAddActivity.this, "看大图", Toast.LENGTH_SHORT).show();
                     ImageItem item = adapter.getItem(position);
-                    Intent intent = new Intent(HomeWorkItemEditActivity.this, WatchPictureActivity.class);
+                    Intent intent = new Intent(HomeWorkItemsAddActivity.this, WatchPictureActivity.class);
                     intent.putExtra("src", item.imagePath);
                     startActivity(intent);
                 }
@@ -153,10 +151,9 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
             case R.id.bottom_button:
                 String trim = content.getText().toString().trim();
                 if(StringUtils.isNullOrBlanK(trim)) {
-                    Toast.makeText(this, "回答不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "题目不能为空", Toast.LENGTH_SHORT).show();
                 }
                 HomeWorkItemBean homeWorkItemBean = new HomeWorkItemBean();
-                homeWorkItemBean.parent_id= parent_id;
                 homeWorkItemBean.content= trim;
                 homeWorkItemBean.imageItems = new ArrayList<>();
                 homeWorkItemBean.imageItems.addAll(list);
@@ -249,7 +246,7 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
                     .subscribe(new Observer<Long>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            HomeWorkItemEditActivity.this.d = d;
+                            HomeWorkItemsAddActivity.this.d = d;
                         }
 
                         @Override
@@ -333,7 +330,7 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
         Observer<Long> observer = new Observer<Long>() {
             @Override
             public void onSubscribe(Disposable d) {
-                HomeWorkItemEditActivity.this.d = d;
+                HomeWorkItemsAddActivity.this.d = d;
             }
 
             @Override

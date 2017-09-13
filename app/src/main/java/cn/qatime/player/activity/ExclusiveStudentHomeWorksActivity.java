@@ -19,8 +19,10 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import cn.qatime.player.R;
@@ -28,6 +30,7 @@ import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.StudentHomeWorksBean;
+import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.JsonUtils;
@@ -87,9 +90,9 @@ public class ExclusiveStudentHomeWorksActivity extends BaseActivity implements V
             public void convert(ViewHolder holder, StudentHomeWorksBean.DataBean item, int position) {
                 long time = item.getCreated_at() * 1000L;
                 holder.setText(R.id.name, item.getTitle())
-                        .setText(R.id.teacher_name, item.getUser_name())
-                        .setText(R.id.time, parse.format(new Date(time)))
-                        .setText(R.id.status,getStatus(item.getStatus()));
+                        .setText(R.id.user_name,item.getUser_name())
+                        .setText(R.id.time, "提交时间 "+parse.format(new Date(time)))
+                        .setText(R.id.status, getStatus(item.getStatus()));
             }
         };
 //        adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<StudentHomeWorksBean.DataBean>() {
@@ -103,12 +106,9 @@ public class ExclusiveStudentHomeWorksActivity extends BaseActivity implements V
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!adapter.isCheckboxShow()) {
-
-                } else {
-                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkedView);
-                    checkBox.setChecked(!checkBox.isChecked());
-                }
+                Intent intent = new Intent(ExclusiveStudentHomeWorksActivity.this,HomeWorkDetailActivity.class);
+                intent.putExtra("item",list.get(position-1));
+                startActivityForResult(intent, Constant.REQUEST);
             }
         });
 //        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -121,7 +121,9 @@ public class ExclusiveStudentHomeWorksActivity extends BaseActivity implements V
     }
 
     private String getStatus(String status) {
-        return "submitted".equals(status)?"未批改":"已批改";
+        if ("pending".equals(status)) return "未交";
+        else if ("submitted".equals(status)) return "待批";
+        else return "已批";
     }
 
     private void initData() {

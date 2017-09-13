@@ -360,8 +360,13 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.ExclusiveHomeWorkItemsAddActivity" />
         <activity android:name=".activity.ExclusiveStudentHomeWorksActivity" />
-        <activity android:name=".activity.HomeWorkItemEditActivity" />
+        <activity android:name=".activity.HomeWorkItemsAddActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.WatchPictureActivity" />
+        <activity android:name=".activity.HomeWorkDetailActivity" />
+        <activity android:name=".activity.HomeWorkItemEditActivity" />
+        <activity android:name=".activity.PersonalMyHomeworkActivity" />
     </application>
 
 </manifest>

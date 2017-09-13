@@ -7,24 +7,14 @@
     android:orientation="horizontal"
     android:paddingLeft="10dp">
 
-    <CheckBox
-        android:id="@+id/checkedView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:button="@null"
-        android:checked="false"
-        android:drawableLeft="@drawable/checkbox_selector"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:background="@drawable/tutor_text_background"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
 
         <TextView
@@ -36,15 +26,14 @@
             android:text="哈哈哈"
             android:textColor="#333"
             android:textSize="13sp" />
-
         <TextView
-            android:id="@+id/teacher_name"
+            android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="#666"
             android:textSize="12sp"
-            tools:text="222kb" />
+            tools:text="提交时间2016-11-11 11:11:11" />
 
         <TextView
             android:id="@+id/time"
@@ -54,5 +43,15 @@
             android:textColor="#666"
             android:textSize="12sp"
             tools:text="提交时间2016-11-11 11:11:11" />
+
+
+        <TextView
+            android:id="@+id/course_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="#666"
+            android:textSize="12sp"
+            tools:text="相关课程" />
     </LinearLayout>
 </LinearLayout>

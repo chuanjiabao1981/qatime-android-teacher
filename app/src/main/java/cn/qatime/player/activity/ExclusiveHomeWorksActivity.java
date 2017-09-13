@@ -30,6 +30,7 @@ import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.MyHomeWorksBean;
+import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
 import libraryextra.utils.JsonUtils;
@@ -79,8 +80,8 @@ public class ExclusiveHomeWorksActivity extends BaseActivity implements View.OnC
             public void convert(ViewHolder holder, MyHomeWorksBean.DataBean item, int position) {
                 long time = item.getCreated_at() * 1000L;
                 holder.setText(R.id.name, item.getTitle())
-                        .setText(R.id.teacher_name, item.getUser_name())
-                        .setText(R.id.time, parse.format(new Date(time)));
+                        .setText(R.id.submitted_num, item.getTasks_count()+"人已交")
+                        .setText(R.id.time,"发布时间"+parse.format(new Date(time)));
             }
         };
 //        adapter.setSelectListener(new ListViewSelectAdapter.SelectChangeListener<MyHomeWorksBean.DataBean>() {
@@ -94,12 +95,9 @@ public class ExclusiveHomeWorksActivity extends BaseActivity implements View.OnC
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!adapter.isCheckboxShow()) {
-
-                } else {
-                    CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkedView);
-                    checkBox.setChecked(!checkBox.isChecked());
-                }
+//                Intent intent = new Intent(ExclusiveHomeWorksActivity.this,HomeWorkDetailActivity.class);
+//                intent.putExtra("item",list.get(position-1));
+//                startActivityForResult(intent, Constant.REQUEST);
             }
         });
 //        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

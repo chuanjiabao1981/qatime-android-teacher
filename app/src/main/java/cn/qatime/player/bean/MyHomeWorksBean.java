@@ -1,12 +1,13 @@
 package cn.qatime.player.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lenovo on 2017/9/8.
  */
 
-public class MyHomeWorksBean {
+public class MyHomeWorksBean implements Serializable {
     private int status;
     private List<DataBean> data;
 
@@ -26,16 +27,25 @@ public class MyHomeWorksBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         private int id;
         private String title;
         private int parent_id;
         private String status;
         private int user_id;
+        private String tasks_count;
         private String user_name;
         private long created_at;
         private String model_name;
         private List<ItemsBean> items;
+
+        public String getTasks_count() {
+            return tasks_count;
+        }
+
+        public void setTasks_count(String tasks_count) {
+            this.tasks_count = tasks_count;
+        }
 
         public int getId() {
             return id;
@@ -109,7 +119,7 @@ public class MyHomeWorksBean {
             this.items = items;
         }
 
-        public static class ItemsBean {
+        public static class ItemsBean implements Serializable{
             /**
              * id : 4
              * body : 第一题

@@ -39,13 +39,13 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/teacher_name"
+            android:id="@+id/submitted_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="#666"
             android:textSize="12sp"
-            tools:text="222kb" />
+            tools:text="0人已交" />
 
         <TextView
             android:id="@+id/time"

@@ -11,12 +11,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.google.gson.JsonSyntaxException;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,11 +27,9 @@ import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.HomeWorkItemBean;
-import cn.qatime.player.bean.MyHomeWorksBean;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.ViewHolder;
-import libraryextra.utils.JsonUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
 
@@ -74,7 +70,7 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
         rightText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExclusiveHomeWorkItemsAddActivity.this,HomeWorkItemEditActivity.class);
+                Intent intent = new Intent(ExclusiveHomeWorkItemsAddActivity.this,HomeWorkItemsAddActivity.class);
                 startActivityForResult(intent, Constant.REQUEST);
             }
         });
