@@ -360,12 +360,16 @@
             android:name=".activity.ExclusiveHomeWorkCreateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ExclusiveHomeWorkItemsAddActivity" />
-        <activity android:name=".activity.ExclusiveStudentHomeWorksActivity" />
-        <activity
-            android:name=".activity.HomeWorkItemsAddActivity"
         <activity
             android:name=".activity.ExclusiveHomeWorkItemsAddActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ExclusiveStudentHomeWorksActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeWorkItemsAddActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
@@ -400,7 +404,5 @@
             android:name=".activity.QuestionResolveActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-            android:screenOrientation="portrait" />
     </application>
-
 </manifest>
