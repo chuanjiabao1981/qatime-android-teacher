@@ -352,21 +352,42 @@
             android:name=".activity.MembersActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ExclusiveHomeWorksActivity"
+        <activity
+            android:name=".activity.ExclusiveHomeWorksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ExclusiveHomeWorkCreateActivity"
+        <activity
+            android:name=".activity.ExclusiveHomeWorkCreateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ExclusiveHomeWorkItemsAddActivity" />
-        <activity android:name=".activity.ExclusiveStudentHomeWorksActivity" />
-        <activity android:name=".activity.HomeWorkItemsAddActivity"
+        <activity
+            android:name=".activity.ExclusiveHomeWorkItemsAddActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.WatchPictureActivity" />
-        <activity android:name=".activity.HomeWorkDetailActivity" />
-        <activity android:name=".activity.HomeWorkItemEditActivity" />
-        <activity android:name=".activity.PersonalMyHomeworkActivity" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ExclusiveStudentHomeWorksActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeWorkItemsAddActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WatchPictureActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeWorkDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.HomeWorkItemEditActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PersonalMyHomeworkActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
