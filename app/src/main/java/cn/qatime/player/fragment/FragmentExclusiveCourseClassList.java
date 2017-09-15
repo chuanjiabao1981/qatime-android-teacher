@@ -94,18 +94,12 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
                 holder.setText(R.id.name, item.getName());
                 holder.setText(R.id.live_time, item.getStart_time() + " " + item.getEnd_time());
                 holder.setText(R.id.address, "上课地点：" + item.getClass_address());
-                if (item.getStatus().equals("missed")) {
-                    holder.setText(status, getResourceString(R.string.class_missed));
-                } else if (item.getStatus().equals("init")) {//未开始
+                if (item.getStatus().equals("init")) {//未开始
                     holder.setText(status, getResourceString(R.string.class_init));
                 } else if (item.getStatus().equals("ready")) {//待开课
                     holder.setText(status, getResourceString(R.string.class_ready));
                 } else if (item.getStatus().equals("teaching")) {//直播中
-                    holder.setText(status, getResourceString(R.string.class_teaching));
-                } else if (item.getStatus().equals("closed")) {//已直播
-                    holder.setText(status, getResourceString(R.string.class_closed));
-                } else if (item.getStatus().equals("paused")) {
-                    holder.setText(status, getResourceString(R.string.class_teaching));
+                    holder.setText(status, "上课中");
                 } else {//closed finished billing completed
                     holder.setText(status, getResourceString(R.string.class_over));//已结束
                 }
