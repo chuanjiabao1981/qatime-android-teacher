@@ -97,7 +97,7 @@ public class ExclusiveQuestionsActivity extends BaseActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ExclusiveQuestionsActivity.this, QuestionDetailsActivity.class);
                 intent.putExtra("detail", list.get(position - 1));
-                startActivity(intent);
+                startActivityForResult(intent,Constant.REQUEST);
             }
         });
         listview.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
@@ -105,14 +105,12 @@ public class ExclusiveQuestionsActivity extends BaseActivity{
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 page = 1;
                 getData(0);
-                listview.onRefreshComplete();
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 page += 1;
                 getData(1);
-                listview.onRefreshComplete();
             }
         });
     }
@@ -133,6 +131,8 @@ public class ExclusiveQuestionsActivity extends BaseActivity{
                 new VolleyListener(this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
+                        listview.onRefreshComplete();
+
                         list.clear();
                         try {
                             QuestionsBean data = JsonUtils.objectFromJson(response.toString(), QuestionsBean.class);
@@ -147,17 +147,19 @@ public class ExclusiveQuestionsActivity extends BaseActivity{
 
                     @Override
                     protected void onError(JSONObject response) {
-
+                        listview.onRefreshComplete();
                     }
 
                     @Override
                     protected void onTokenOut() {
+                        listview.onRefreshComplete();
                         tokenOut();
                     }
                 }, new VolleyErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 super.onErrorResponse(volleyError);
+                listview.onRefreshComplete();
             }
         });
         addToRequestQueue(request);
