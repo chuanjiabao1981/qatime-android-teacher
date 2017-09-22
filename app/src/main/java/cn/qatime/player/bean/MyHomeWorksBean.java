@@ -28,7 +28,7 @@ public class MyHomeWorksBean implements Serializable {
     }
 
     public static class DataBean implements Serializable{
-        private int id;
+        private String id;
         private String title;
         private int parent_id;
         private String status;
@@ -47,11 +47,11 @@ public class MyHomeWorksBean implements Serializable {
             this.tasks_count = tasks_count;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

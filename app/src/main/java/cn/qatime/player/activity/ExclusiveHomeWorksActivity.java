@@ -95,9 +95,9 @@ public class ExclusiveHomeWorksActivity extends BaseActivity implements View.OnC
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(ExclusiveHomeWorksActivity.this,HomeWorkDetailActivity.class);
-//                intent.putExtra("item",list.get(position-1));
-//                startActivityForResult(intent, Constant.REQUEST);
+                Intent intent = new Intent(ExclusiveHomeWorksActivity.this,HomeWorkDetailActivity.class);
+                intent.putExtra("id",list.get(position-1).getId());
+                startActivityForResult(intent, Constant.REQUEST);
             }
         });
 //        listView.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

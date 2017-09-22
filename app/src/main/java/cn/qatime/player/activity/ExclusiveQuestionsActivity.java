@@ -1,6 +1,7 @@
 package cn.qatime.player.activity;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -96,7 +97,7 @@ public class ExclusiveQuestionsActivity extends BaseActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ExclusiveQuestionsActivity.this, QuestionDetailsActivity.class);
-                intent.putExtra("detail", list.get(position - 1));
+                intent.putExtra("id", list.get(position - 1).getId());
                 startActivityForResult(intent,Constant.REQUEST);
             }
         });

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -29,6 +30,7 @@ import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import libraryextra.adapter.CommonAdapter;
 import libraryextra.adapter.ViewHolder;
+import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -54,7 +56,12 @@ public class HomeWorkDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework_detail);
         initView();
-        initData();
+        String id = getIntent().getStringExtra("id");
+        if (StringUtils.isNullOrBlanK(id)) {
+            initData();
+        } else {
+            initDataById(id);
+        }
     }
 
     @Override
@@ -156,6 +163,50 @@ public class HomeWorkDetailActivity extends BaseActivity {
         return sb.toString();
     }
 
+    private void initDataById(String id) {
+        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlHomeworks + id, null, new VolleyListener(HomeWorkDetailActivity.this) {
+            @Override
+            protected void onTokenOut() {
+                tokenOut();
+            }
+
+            @Override
+            protected void onSuccess(JSONObject response) {
+                item = new StudentHomeWorksBean.DataBean();
+                try {
+                    MyHomeWorksBean.DataBean homeworkBean = JsonUtils.objectFromJson(response.getJSONObject("data").getString("homework"), MyHomeWorksBean.DataBean.class);
+                    item.setHomework(homeworkBean);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (item.getHomework() == null) {
+                    Toast.makeText(HomeWorkDetailActivity.this, "作业获取失败", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                homeworkTitle.setText(item.getHomework().getTitle());
+                setTitle(item.getHomework().getTitle());
+                long time = item.getHomework().getCreated_at() * 1000L;
+                createTime.setText("创建时间 " + parse.format(new Date(time)));
+                //融合
+                List<MyHomeWorksBean.DataBean.ItemsBean> homeworks = item.getHomework().getItems();
+                for (MyHomeWorksBean.DataBean.ItemsBean homework : homeworks) {
+                    HomeworkDetailBean homeworkDetailBean = new HomeworkDetailBean();
+                    homeworkDetailBean.homework = homework;
+                    list.add(homeworkDetailBean);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            protected void onError(JSONObject response) {
+                Toast.makeText(HomeWorkDetailActivity.this, "作业获取失败", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new VolleyErrorListener()));
+    }
+
+
     private void initData() {
         item = (StudentHomeWorksBean.DataBean) getIntent().getSerializableExtra("item");
         if (item.getStatus().equals("submitted") || item.getStatus().equals("resolved")) {
@@ -174,7 +225,7 @@ public class HomeWorkDetailActivity extends BaseActivity {
         homeworkTitle.setText(item.getTitle());
         setTitle(item.getTitle());
         long time = item.getHomework().getCreated_at() * 1000L;
-        createTime.setText("创建时间 "+parse.format(new Date(time)));
+        createTime.setText("创建时间 " + parse.format(new Date(time)));
         //融合
         List<MyHomeWorksBean.DataBean.ItemsBean> homeworks = item.getHomework().getItems();
         List<StudentHomeWorksBean.DataBean.ItemsBean> items = item.getItems();
@@ -257,6 +308,9 @@ public class HomeWorkDetailActivity extends BaseActivity {
                         .setText(R.id.title, item.homework.getBody());
 
                 TextView correctHomework = holder.getView(R.id.correct_homework);
+                if(StringUtils.isNullOrBlanK(HomeWorkDetailActivity.this.item.getStatus())){
+                    return;
+                }
                 if (HomeWorkDetailActivity.this.item.getStatus().equals("submitted") || HomeWorkDetailActivity.this.item.getStatus().equals("resolved")) {
                     View answerLayout = holder.getView(R.id.answer_layout);
                     answerLayout.setVisibility(View.VISIBLE);

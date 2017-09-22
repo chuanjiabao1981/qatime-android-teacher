@@ -238,19 +238,26 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         }
     }
 
+    protected void setCustomMatchParent() {
+        LinearLayout bodyContainer = (LinearLayout) view.findViewById(R.id.message_item_body);
+        ViewGroup.LayoutParams layoutParams1 = contentContainer.getLayoutParams();
+        layoutParams1.width=ViewGroup.LayoutParams.MATCH_PARENT;
+        ViewGroup.LayoutParams layoutParams2 = bodyContainer.getLayoutParams();
+        layoutParams2.width=ViewGroup.LayoutParams.MATCH_PARENT;
+    }
     private void setHeadImageView() {
         ImageView show = isReceivedMessage() ? avatarLeft : avatarRight;
         ImageView hide = isReceivedMessage() ? avatarRight : avatarLeft;
-        hide.setVisibility(View.GONE);
+        hide.setVisibility(View.INVISIBLE);
         if (!isShowHeadImage()) {
-            show.setVisibility(View.GONE);
+            show.setVisibility(View.INVISIBLE);
             return;
         }
         if (isMiddleItem()) {
-            show.setVisibility(View.GONE);
+            show.setVisibility(View.INVISIBLE);
         } else {
             show.setVisibility(View.VISIBLE);
-            UserInfoProvider.UserInfo userinfo = BaseApplication.getUserInfoProvide().getUserInfo(message.getFromAccount());
+            UserInfoProvider.UserInfo userinfo = BaseApplication.getInstance().getUserInfoProvide().getUserInfo(message.getFromAccount());
             if (userinfo != null)
                 Glide.with(context).load(userinfo.getAvatar()).placeholder(R.mipmap.head_default).crossFade().dontAnimate().into(show);
         }

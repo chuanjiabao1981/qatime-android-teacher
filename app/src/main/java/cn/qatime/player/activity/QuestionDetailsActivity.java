@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import cn.qatime.player.bean.QuestionsBean;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.UrlUtils;
 import cn.qatime.player.view.ExpandView;
+import libraryextra.utils.JsonUtils;
 import libraryextra.utils.StringUtils;
 import libraryextra.utils.VolleyErrorListener;
 import libraryextra.utils.VolleyListener;
@@ -76,37 +78,64 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
         });
     }
 
-    private void initData() {
-        question = (QuestionsBean.DataBean) getIntent().getSerializableExtra("detail");
-        setTitle(question.getTitle());
-        setRightText("提交", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (question.getStatus().equals("resolved")) {
-                    reResolveQuestion();
-                }else {
-                    resolveQuestion();
-                }
-            }
-        });
-        questionName.setText(question.getTitle());
-        long time = question.getCreated_at() * 1000L;
-        createTime.setText("创建时间 " + parse.format(new Date(time)));
-        author.setText(question.getUser_name());
-        expandView.initExpandView(question.getBody(), null, null, true);
-        if ("resolved".equals(question.getStatus())) {//已回复
-            resolveQuestion.setText("修改回答");
-            findViewById(R.id.reply_layout).setVisibility(View.VISIBLE);
-            replyView.initExpandView(question.getAnswer().getBody(), null, null, true);
-        }
 
-        resolveQuestion.setOnClickListener(new View.OnClickListener() {
+    private void initData() {
+        String id = getIntent().getStringExtra("id");
+        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlQuestions+id,null,new VolleyListener(QuestionDetailsActivity.this){
+
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(QuestionDetailsActivity.this, QuestionResolveActivity.class);
-                startActivityForResult(intent, Constant.REQUEST);
+            protected void onTokenOut() {
+
             }
-        });
+
+            @Override
+            protected void onSuccess(JSONObject response) {
+                try {
+                    question = JsonUtils.objectFromJson(response.getString("data"), QuestionsBean.DataBean.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (question == null) {
+                    Toast.makeText(QuestionDetailsActivity.this, "问题获取失败", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setTitle(question.getTitle());
+                setRightText("提交", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (question.getStatus().equals("resolved")) {
+                            reResolveQuestion();
+                        }else {
+                            resolveQuestion();
+                        }
+                    }
+                });
+                questionName.setText(question.getTitle());
+                long time = question.getCreated_at() * 1000L;
+                createTime.setText("创建时间 " + parse.format(new Date(time)));
+                author.setText(question.getUser_name());
+                expandView.initExpandView(question.getBody(), null, null, true);
+                if ("resolved".equals(question.getStatus())) {//已回复
+                    resolveQuestion.setText("修改回答");
+                    findViewById(R.id.reply_layout).setVisibility(View.VISIBLE);
+                    replyView.initExpandView(question.getAnswer().getBody(), null, null, true);
+                }
+
+                resolveQuestion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(QuestionDetailsActivity.this, QuestionResolveActivity.class);
+                        startActivityForResult(intent, Constant.REQUEST);
+                    }
+                });
+            }
+
+            @Override
+            protected void onError(JSONObject response) {
+
+            }
+        },new VolleyErrorListener()));
     }
 
     @Override

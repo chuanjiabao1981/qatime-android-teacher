@@ -59,7 +59,8 @@ public class UrlUtils {
     //课程表
     public static String urlScheduleData = baseUrl + "api/v2/live_studio/teachers/";
     public static String urlLiveStudio=baseUrl + "api/v1/live_studio/";
-
+    public static String urlHomeworks = baseUrl + "api/v1/live_studio/homeworks/";
+    public static String urlQuestions = baseUrl + "api/v1/live_studio/questions/";
 
     public static String getUrl(String function, Map<String, String> params) {
         String url = function + "?" + Map2String(params);
