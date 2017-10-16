@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -207,7 +208,12 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
 
                     @Override
                     protected void onError(JSONObject response) {
-
+                        try {
+                            JSONObject error = response.getJSONObject("error");
+                            Toast.makeText(ExclusiveHomeWorkItemsAddActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -228,8 +234,8 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
         for (HomeWorkItemBean homeWorkItemBean : list) {
             sb.append("{\"body\":\"")
                     .append(homeWorkItemBean.content)
-            .append("\"");
-            if ((homeWorkItemBean.audioAttachment!=null&&homeWorkItemBean.audioAttachment.id != null) || homeWorkItemBean.imageItems.size() > 0) {
+                    .append("\"");
+            if ((homeWorkItemBean.audioAttachment != null && homeWorkItemBean.audioAttachment.id != null) || (homeWorkItemBean.imageItems != null && homeWorkItemBean.imageItems.size() > 0)) {
                 sb.append(",")
                         .append("\"quotes_attributes\":[");
                 for (AttachmentsBean attachment : homeWorkItemBean.imageItems) {
@@ -237,7 +243,7 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
                             .append(attachment.id)
                             .append("\"},");
                 }
-                if (homeWorkItemBean.audioAttachment!=null&&homeWorkItemBean.audioAttachment.id != null) {
+                if (homeWorkItemBean.audioAttachment != null && homeWorkItemBean.audioAttachment.id != null) {
                     sb.append("{\"attachment_id\":\"")
                             .append(homeWorkItemBean.audioAttachment.id)
                             .append("\"},");
@@ -247,7 +253,7 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
             sb.append("},");
         }
         sb.setCharAt(sb.length() - 1, ']');
-        Logger.e("sbsb",sb.toString());
+        Logger.e("sbsb", sb.toString());
         return sb.toString();
     }
 

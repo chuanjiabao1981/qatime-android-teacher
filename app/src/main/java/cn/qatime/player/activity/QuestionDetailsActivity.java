@@ -221,7 +221,14 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     protected void onError(JSONObject response) {
-
+                        try {
+                            JSONObject error = response.getJSONObject("error");
+                            if(error.getInt("code")==3002){
+                                Toast.makeText(QuestionDetailsActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -270,7 +277,14 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     protected void onError(JSONObject response) {
-
+                        try {
+                            JSONObject error = response.getJSONObject("error");
+                            if(error.getInt("code")==3002){
+                                Toast.makeText(QuestionDetailsActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

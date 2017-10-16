@@ -113,7 +113,7 @@ public class ExpandView extends FrameLayout implements View.OnClickListener {
         mIsExpand = true;
     }
 
-    public void initExpandView(String content, String audioUrl, List<ImageItem> list, final boolean show) {
+    public void initExpandView(String content, String audioUrl, List<ImageItem> imageList, final boolean show) {
         getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -131,7 +131,7 @@ public class ExpandView extends FrameLayout implements View.OnClickListener {
         this.content = (TextView) findViewById(R.id.content);
         this.content.setText(content);
         this.audioFileName = audioUrl;
-        this.list = list;
+        this.list = imageList;
 
         if (this.list == null) {//不管有没有都要加载  否则复用会造成下边空白
             list = new ArrayList<>();
