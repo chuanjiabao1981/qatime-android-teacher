@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ import java.util.Set;
 import cn.qatime.player.R;
 import cn.qatime.player.adapter.ListViewSelectAdapter;
 import cn.qatime.player.base.BaseActivity;
+import cn.qatime.player.bean.AttachmentsBean;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.bean.HomeWorkItemBean;
 import cn.qatime.player.utils.Constant;
@@ -70,7 +72,7 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
         rightText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExclusiveHomeWorkItemsAddActivity.this,HomeWorkItemsAddActivity.class);
+                Intent intent = new Intent(ExclusiveHomeWorkItemsAddActivity.this, HomeWorkItemsAddActivity.class);
                 startActivityForResult(intent, Constant.REQUEST);
             }
         });
@@ -85,7 +87,7 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
         adapter = new ListViewSelectAdapter<HomeWorkItemBean>(this, list, R.layout.item_homework, singleMode) {
             @Override
             public void convert(ViewHolder holder, HomeWorkItemBean item, int position) {
-                String num = position+1 + "";
+                String num = position + 1 + "";
                 if (position < 10) {
                     num = 0 + num;
                 }
@@ -187,15 +189,15 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
     }
 
     private void issueHomework() {
-        if(list.size()<=0){
+        if (list.size() <= 0) {
             Toast.makeText(this, "请添加作业内容", Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<>();
-        map.put("title",getIntent().getStringExtra("title"));
-        map.put("task_items_attributes",getContentString());
+        map.put("title", getIntent().getStringExtra("title"));
+        map.put("task_items_attributes", getContentString());
         JSONObject obj = new JSONObject(map);
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST,UrlUtils.urlGroups + courseId + "/homeworks", obj,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST, UrlUtils.urlGroups + courseId + "/homeworks", obj,
                 new VolleyListener(this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
@@ -224,19 +226,36 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
     private String getContentString() {
         StringBuilder sb = new StringBuilder("[");
         for (HomeWorkItemBean homeWorkItemBean : list) {
-          sb.append("{\"body\":\"")
-                  .append(homeWorkItemBean.content)
-                  .append("\"},");
+            sb.append("{\"body\":\"")
+                    .append(homeWorkItemBean.content)
+            .append("\"");
+            if ((homeWorkItemBean.audioAttachment!=null&&homeWorkItemBean.audioAttachment.id != null) || homeWorkItemBean.imageItems.size() > 0) {
+                sb.append(",")
+                        .append("\"quotes_attributes\":[");
+                for (AttachmentsBean attachment : homeWorkItemBean.imageItems) {
+                    sb.append("{\"attachment_id\":\"")
+                            .append(attachment.id)
+                            .append("\"},");
+                }
+                if (homeWorkItemBean.audioAttachment!=null&&homeWorkItemBean.audioAttachment.id != null) {
+                    sb.append("{\"attachment_id\":\"")
+                            .append(homeWorkItemBean.audioAttachment.id)
+                            .append("\"},");
+                }
+                sb.setCharAt(sb.length() - 1, ']');
+            }
+            sb.append("},");
         }
-        sb.setCharAt(sb.length()-1, ']');
+        sb.setCharAt(sb.length() - 1, ']');
+        Logger.e("sbsb",sb.toString());
         return sb.toString();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==Constant.REQUEST&&resultCode==Constant.RESPONSE){
+        if (requestCode == Constant.REQUEST && resultCode == Constant.RESPONSE) {
             HomeWorkItemBean item = (HomeWorkItemBean) data.getSerializableExtra("item");
-            if(item!=null){
+            if (item != null) {
                 list.add(item);
                 adapter.notifyDataSetChanged();
             }
