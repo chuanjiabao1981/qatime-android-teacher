@@ -12,8 +12,8 @@ import libraryextra.bean.ImageItem;
 public class HomeWorkItemBean implements Serializable{
    public int parent_id;
    public String content;
-   public List<ImageItem> imageItems;
-   public String videoPath;
+   public List<AttachmentsBean> imageItems;
+   public AttachmentsBean audioAttachment;
 
    @Override
    public boolean equals(Object o) {

@@ -64,7 +64,7 @@ public class PersonalMyFilesActivity extends BaseActivity implements View.OnClic
         if (courseId == 0) {
             selectAction = "删除";
         } else {
-            selectAction = "发送";
+            selectAction = "上传";
         }
         rightText = (TextView) findViewById(R.id.right_text);
         rightImage = (ImageView) findViewById(R.id.right);

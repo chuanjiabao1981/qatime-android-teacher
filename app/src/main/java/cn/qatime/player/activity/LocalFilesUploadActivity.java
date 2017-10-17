@@ -66,7 +66,7 @@ public class LocalFilesUploadActivity extends BaseActivity implements View.OnCli
         if (courseId == 0) {
             selectAction = "上传";
         } else {
-            selectAction = "发送";
+            selectAction = "上传";
         }
         initView();
         upload = (Button) findViewById(R.id.upload);

@@ -89,13 +89,13 @@ public class FileUploadActivity extends BaseActivity {
             image.setImageResource( R.mipmap.unknown);
         }
         courseId = getIntent().getIntExtra("id", 0);
-        if (file != null) {
+        if (file.exists()) {
             HttpManager.post(UrlUtils.urlFiles + "files")
                     .headers("Remember-Token", BaseApplication.getProfile().getToken())
                     .params("file", file, new ProgressResponseCallBack() {
                         @Override
                         public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {
-                            int pro = (int) (bytesWritten / contentLength * 100);
+                            int pro = (int) ((float)bytesWritten / contentLength * 100);
                             Message msg = Message.obtain();
                             msg.what = pro;
                             msg.obj = done;
