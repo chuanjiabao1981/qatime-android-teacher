@@ -167,8 +167,13 @@ public class HomeWorkDetailActivity extends BaseActivity {
                     .append(homeWorkItemBean.content)
                     .append("\"},");
         }
-        sb.setCharAt(sb.length() - 1, ']');
-        return sb.toString();
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+            Logger.e(sb.toString());
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     private String getContentStringWithParentId() {
@@ -220,9 +225,13 @@ public class HomeWorkDetailActivity extends BaseActivity {
             }
             sb.append("},");
         }
-        sb.setCharAt(sb.length() - 1, ']');
-        Logger.e(sb.toString());
-        return sb.toString();
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+            Logger.e(sb.toString());
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     private void initDataById(String id) {

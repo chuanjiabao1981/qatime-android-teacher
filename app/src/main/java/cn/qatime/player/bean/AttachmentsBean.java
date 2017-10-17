@@ -18,7 +18,7 @@ public class AttachmentsBean implements Serializable {
 
         AttachmentsBean that = (AttachmentsBean) o;
 
-        return id.equals(that.id);
+        return id.equals(that.id)||file_url.equals(that.file_url);
     }
 
     @Override

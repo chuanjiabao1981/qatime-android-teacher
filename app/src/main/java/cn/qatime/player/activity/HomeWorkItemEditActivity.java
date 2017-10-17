@@ -122,7 +122,7 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
         adapter.setOnEventListener(new QuestionEditAdapter.OnEventListener() {
             @Override
             public void onDelete(int position) {
-                if (list.get(position).status == ImageItem.Status.SUCCESS||list.get(position).status == ImageItem.Status.ERROR) {
+                if (list.get(position).status != ImageItem.Status.UPLOADING) {
                     ImageItem remove = list.remove(position);
                     adapter.notifyDataSetChanged();
                     AttachmentsBean removeItem = new AttachmentsBean();
@@ -242,7 +242,6 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
 
                         @Override
                         public void onSuccess(String o) {
-                            play.setImageResource(R.mipmap.question_play);
                             try {
                                 JSONObject response = new JSONObject(o);
                                 String id = response.getJSONObject("data").getString("id");
@@ -257,6 +256,7 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
                                     imageAttachmentList.add(attachment);
                                 } else {
                                     audioAttachment.id = id;
+                                    play.setImageResource(R.mipmap.question_play);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

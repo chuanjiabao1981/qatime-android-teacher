@@ -252,9 +252,13 @@ public class ExclusiveHomeWorkItemsAddActivity extends BaseActivity implements V
             }
             sb.append("},");
         }
-        sb.setCharAt(sb.length() - 1, ']');
-        Logger.e("sbsb", sb.toString());
-        return sb.toString();
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+            Logger.e(sb.toString());
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     @Override

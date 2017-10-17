@@ -109,11 +109,11 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
                 setRightText("提交", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (question.getStatus().equals("resolved")) {
-                            reResolveQuestion();
-                        }else {
+//                        if (question.getStatus().equals("resolved")) {
+//                            reResolveQuestion();
+//                        }else {
                             resolveQuestion();
-                        }
+//                        }
                     }
                 });
                 questionName.setText(question.getTitle());
@@ -179,6 +179,7 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.REQUEST && resultCode == Constant.RESPONSE) {
             answerBean = (QuestionsBean.DataBean.AnswerBean) data.getSerializableExtra("answer");
+            answerBean.setId(question.getAnswer().getId());
             question.setAnswer(answerBean);
             resolveQuestion.setText("修改回答");
             findViewById(R.id.reply_layout).setVisibility(View.VISIBLE);
@@ -251,9 +252,13 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
                     .append(attachment.id)
                     .append("\"},");
         }
-        sb.setCharAt(sb.length() - 1, ']');
-        Logger.e(sb.toString());
-        return sb.toString();
+        if (sb.length() > 1) {
+            sb.setCharAt(sb.length() - 1, ']');
+            Logger.e(sb.toString());
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     private void reResolveQuestion() {
