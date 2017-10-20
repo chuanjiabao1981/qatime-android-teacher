@@ -75,12 +75,6 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
         createTime = (TextView) findViewById(R.id.create_time);
         author = (TextView) findViewById(R.id.author);
         findViewById(R.id.expand).setOnClickListener(this);
-        resolveQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
 
@@ -179,7 +173,9 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.REQUEST && resultCode == Constant.RESPONSE) {
             answerBean = (QuestionsBean.DataBean.AnswerBean) data.getSerializableExtra("answer");
-            answerBean.setId(question.getAnswer().getId());
+//            if(question.getAnswer()!=null){
+//                answerBean.setId(question.getAnswer().getId());
+//            }
             question.setAnswer(answerBean);
             resolveQuestion.setText("修改回答");
             findViewById(R.id.reply_layout).setVisibility(View.VISIBLE);
