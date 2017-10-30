@@ -79,7 +79,11 @@ public class HomeWorkDetailActivity extends BaseActivity {
                 Toast.makeText(this, "请先添加全部批改", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+        }else {
+            if(correctList.size()==0) {
+                Toast.makeText(this, "请添加修改后提交", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
         Map<String, String> map = new HashMap<>();
         map.put("task_items_attributes", getContentStringWithParentId());
