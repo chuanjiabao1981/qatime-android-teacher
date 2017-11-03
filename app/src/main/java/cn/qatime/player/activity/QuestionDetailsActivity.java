@@ -111,8 +111,13 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
                     }
                 });
                 questionName.setText(question.getTitle());
-                long time = question.getCreated_at() * 1000L;
-                createTime.setText("创建时间 " + parse.format(new Date(time)));
+                if("resolved".equals(question.getStatus())){
+                    long replyT = question.getAnswer().getCreated_at() * 1000L;
+                    createTime.setText("回复时间 "+parse.format(new Date(replyT)));
+                }else {
+                    long time = question.getCreated_at() * 1000L;
+                    createTime.setText("创建时间 " + parse.format(new Date(time)));
+                }
                 author.setText(question.getUser_name());
                 List<AttachmentsBean> questionAttachments = question.getAttachments();
                 AttachmentsBean audioAttachments = new AttachmentsBean();

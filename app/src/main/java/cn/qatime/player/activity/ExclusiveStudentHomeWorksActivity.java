@@ -88,7 +88,7 @@ public class ExclusiveStudentHomeWorksActivity extends BaseActivity implements V
         adapter = new ListViewSelectAdapter<StudentHomeWorksBean.DataBean>(this, list, R.layout.item_homeworks_student_commit, singleMode) {
             @Override
             public void convert(ViewHolder holder, StudentHomeWorksBean.DataBean item, int position) {
-                long time = item.getCreated_at() * 1000L;
+                long time = item.getPublished_at() * 1000L;
                 holder.setText(R.id.name, item.getTitle())
                         .setText(R.id.user_name,item.getUser_name())
                         .setText(R.id.time, "提交时间 "+parse.format(new Date(time)))
