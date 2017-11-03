@@ -182,8 +182,10 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             status.setText(getStatus(data.getData().getCustomized_group().getStatus()));
                             name.setText(data.getData().getCustomized_group().getName());
                             title.setText(data.getData().getCustomized_group().getName());
-                            studentnumber.setText(getString(R.string.student_number, data.getData().getCustomized_group().getView_tickets_count()));
-                            String price = data.getData().getCustomized_group().getPrice();
+                            studentnumber.setText(String.format("报名人数 %1$d/%2$d",
+                                    data.getData().getCustomized_group().getUsers_count() > data.getData().getCustomized_group().getMax_users() ? data.getData().getCustomized_group().getMax_users() : data.getData().getCustomized_group().getUsers_count(),
+                                    data.getData().getCustomized_group().getMax_users()));
+                            String price =df.format(data.getData().getCustomized_group().getPrice());
                             if (price.startsWith(".")) {
                                 price = "0" + price;
                             }
@@ -195,6 +197,9 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                                 }
                                 if (!data.getData().getCustomized_group().getIcons().isCoupon_free()) {
                                     couponFree.setVisibility(View.GONE);
+                                }
+                                if (!data.getData().getCustomized_group().getIcons().isJoin_cheap()) {
+                                    joinCheap.setVisibility(View.GONE);
                                 }
                             }
                             try {
