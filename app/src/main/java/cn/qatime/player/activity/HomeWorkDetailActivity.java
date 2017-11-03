@@ -44,6 +44,9 @@ import libraryextra.view.ListViewForScrollView;
  * Created by lenovo on 2017/9/11.
  */
 
+
+
+
 public class HomeWorkDetailActivity extends BaseActivity {
 
     private StudentHomeWorksBean.DataBean item;
@@ -299,8 +302,16 @@ public class HomeWorkDetailActivity extends BaseActivity {
         }
         homeworkTitle.setText(item.getTitle());
         setTitle(item.getTitle());
-        long time = item.getHomework().getCreated_at() * 1000L;
-        createTime.setText("创建时间 " + parse.format(new Date(time)));
+        if ("pending".equals(item.getStatus())) {
+            long time = item.getCreated_at() * 1000L;
+            createTime.setText("创建时间" + parse.format(new Date(time)));
+        } else if ("submitted".equals(item.getStatus())) {
+            long time = item.getPublished_at() * 1000L;
+            createTime.setText("提交时间" + parse.format(new Date(time)));
+        } else {
+            long time = item.getResolved_at() * 1000L;
+            createTime.setText("批改时间" + parse.format(new Date(time)));
+        }
         //融合
         List<MyHomeWorksBean.DataBean.ItemsBean> homeworks = item.getHomework().getItems();
         List<StudentHomeWorksBean.DataBean.ItemsBean> items = item.getItems();
