@@ -117,6 +117,11 @@ public class MessageActivity extends BaseActivity implements ModuleProxy, InputP
                 return;
             }
             messageListPanel.onIncomingMessage(messages);
+            TeamMember team = TeamDataCache.getInstance().getTeamMember(sessionId, BaseApplication.getInstance().getAccount());
+            if (team != null) {
+                isMute = team.isMute();
+                inputpanel.setMute(isMute);
+            }
         }
     };
 

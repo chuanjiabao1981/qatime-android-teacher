@@ -340,7 +340,7 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
                 onInputShowListener.OnInputShow();
                 break;
             case R.id.buttonTextMessage:
-                switchToTextLayout();// 显示文本发送的布局
+                switchToTextLayout(true);// 显示文本发送的布局
                 onInputShowListener.OnInputShow();
                 break;
             case R.id.send://发送按钮
@@ -376,7 +376,7 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
         }
     }
 
-    private void switchToTextLayout() {
+    private void switchToTextLayout(boolean isOpenInput) {
         audioRecord.setVisibility(View.GONE);
         content.setVisibility(View.VISIBLE);
 
@@ -384,8 +384,10 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
             tagViewPager.setVisibility(GONE);
             emoji.setImageResource(R.mipmap.biaoqing);
         }
-        content.requestFocus();
-        openInput();
+        if (isOpenInput) {
+            content.requestFocus();
+            openInput();
+        }
 
         buttonTextMessage.setVisibility(GONE);
         buttonAudioMessage.setVisibility(View.VISIBLE);
@@ -422,10 +424,28 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
 
     public void setMute(boolean mute) {
         this.isMute = mute;
+
+        closeEmojiAndInput();
+        if (content.getVisibility() == GONE) {
+            switchToTextLayout(false);
+        }
+        content.setText("");
         if (isMute) {
             content.setHint(R.string.have_muted);
+            content.setEnabled(false);
+            send.setEnabled(false);
+            //左边切换语音文字按钮
+            buttonAudioMessage.setEnabled(false);
+
+            emoji.setEnabled(false);
+            imageSelect.setEnabled(false);
         } else {
             content.setHint("");
+            content.setEnabled(true);
+            send.setEnabled(true);
+            buttonAudioMessage.setEnabled(true);
+            emoji.setEnabled(true);
+            imageSelect.setEnabled(true);
         }
     }
 
@@ -455,6 +475,11 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
                     onStartAudioRecord();
                     start = System.currentTimeMillis();
                 } else if (event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_UP) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                            return true;
+                        }
+                    }
                     touched = false;
                     if (audioRecordListener != null) {
                         audioRecordListener.audioRecordStop();
@@ -468,6 +493,11 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
                     start = 0;
                     end = 0;
                 } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                            return true;
+                        }
+                    }
                     touched = false;
                     cancelAudioRecord(isCancelled(v, event));
                 }
