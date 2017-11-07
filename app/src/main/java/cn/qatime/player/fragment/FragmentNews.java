@@ -34,6 +34,7 @@ import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.qatime.player.R;
@@ -212,11 +213,22 @@ public class FragmentNews extends BaseFragment {
             return;
         }
         items.clear();
-        for (RecentContact item : loadedRecents) {
+        Iterator<RecentContact> iterator = loadedRecents.iterator();
+        while (iterator.hasNext()) {
+            RecentContact item = iterator.next();
+            Team team = TeamDataCache.getInstance().getTeamById(item.getContactId());
+            if (team != null && !team.isMyTeam()) {
+                NIMClient.getService(MsgService.class).deleteRecentContact(item);
+                NIMClient.getService(MsgService.class).clearChattingHistory(item.getContactId(), item.getSessionType());
+                iterator.remove();
+                Logger.e("删除已退出的群组");
+                continue;
+            }
             MessageListBean bean = new MessageListBean();
             bean.setContactId(item.getContactId());
-            Team team = TeamDataCache.getInstance().getTeamById(item.getContactId());
-            bean.setMute(team.mute());
+            if (team != null) {
+                bean.setMute(team.mute());
+            }
             bean.setSessionType(item.getSessionType());
             bean.setUnreadCount(item.getUnreadCount());
             bean.setTime(item.getTime());
@@ -357,9 +369,19 @@ public class FragmentNews extends BaseFragment {
     Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
         @Override
         public void onEvent(List<RecentContact> messages) {
-            int index;
-            for (RecentContact msg : messages) {
-                index = -1;
+            // 若列表中已存在的群组状态（是否已解散）发生变化，只会在初次加载时删除
+            Iterator<RecentContact> iterator = messages.iterator();
+            while (iterator.hasNext()) {
+                RecentContact msg = iterator.next();
+                Team team = TeamDataCache.getInstance().getTeamById(msg.getContactId());
+                if (team != null && !team.isMyTeam()) {
+                    NIMClient.getService(MsgService.class).deleteRecentContact(msg);
+                    NIMClient.getService(MsgService.class).clearChattingHistory(msg.getContactId(), msg.getSessionType());
+                    iterator.remove();
+                    Logger.e("删除已退出的群组");
+                    continue;
+                }
+                int index = -1;
                 for (int i = 0; i < items.size(); i++) {
                     if (msg.getContactId().equals(items.get(i).getContactId())
                             && msg.getSessionType() == (items.get(i).getSessionType())) {
@@ -374,8 +396,9 @@ public class FragmentNews extends BaseFragment {
                     items.remove(index);
                 }
                 bean.setContactId(msg.getContactId());
-                Team team = TeamDataCache.getInstance().getTeamById(bean.getContactId());
-                bean.setMute(team.mute());
+                if (team != null) {
+                    bean.setMute(team.mute());
+                }
                 bean.setSessionType(msg.getSessionType());
                 if (StringUtils.isNullOrBlanK(bean.getName())) {
                     bean.setName(TeamDataCache.getInstance().getTeamName(msg.getContactId()).replace("讨论组", ""));
