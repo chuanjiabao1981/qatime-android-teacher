@@ -4,8 +4,8 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     signingConfigs {
         debug {
             v1SigningEnabled true
@@ -24,8 +24,10 @@ android {
     }
     defaultConfig {
         applicationId "cn.qatime.player"
-        minSdkVersion 15
-        targetSdkVersion 25
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
     }
     buildTypes {
         debug {
@@ -78,15 +80,11 @@ android {
             variant.productFlavors.each { product ->
                 buildName = product.name.replace("flavors_", "")
             }
-            output.outputFile = new File(output.outputFile.parent, appName + "_" + buildName + "_" + getVersionNameFromManifest() + ".apk");
+            output.outputFile = new File(output.outputFile.parent, appName + "_" + buildName + "_" + rootProject.ext.versionName + ".apk");
         }
     }
 }
 
-def getVersionNameFromManifest() {
-    def manifestParser = new com.android.builder.core.DefaultManifestParser(android.sourceSets.main.manifest.srcFile)
-    return manifestParser.getVersionName()
-}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
