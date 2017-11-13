@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,8 @@ public class QuestionResolveActivity extends BaseActivity implements View.OnClic
                     Toast.makeText(QuestionResolveActivity.this, "看大图", Toast.LENGTH_SHORT).show();
                     ImageItem item = adapter.getItem(position);
                     Intent intent = new Intent(QuestionResolveActivity.this, WatchPictureActivity.class);
-                    intent.putExtra("src", item.imagePath);
+                    intent.putExtra("imageItems", (Serializable) list);
+                    intent.putExtra("position", position);
                     startActivity(intent);
                 }
             }
