@@ -24,7 +24,7 @@ public class PersonalMyExclusiveActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("我的专属课");
+        setTitle("我的小班课");
         initView();
     }
 

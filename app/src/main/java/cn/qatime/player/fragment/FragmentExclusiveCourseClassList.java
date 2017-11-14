@@ -29,6 +29,8 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
 
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private ExclusiveCourseDetailBean.DataBean data;
+    private View scheduleText;
+    private View offlineText;
 
     @Nullable
     @Override
@@ -40,6 +42,8 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
 
 
     private void initview(View view) {
+        scheduleText = view.findViewById(R.id.schedule_text);
+        offlineText = view.findViewById(R.id.offline_text);
         ListView listViewOnLine = (ListView) view.findViewById(R.id.list1);
         listViewOnLine.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
         adapterOnLine = new CommonAdapter<ExclusiveCourseDetailBean.DataBean.CustomizedGroupBean.ScheduledLessonsBean>(getActivity(), listOnLine, R.layout.item_fragment_exclusive_course_list_online) {
@@ -144,6 +148,12 @@ public class FragmentExclusiveCourseClassList extends BaseFragment {
             listOnLine.addAll(data.getData().getCustomized_group().getScheduled_lessons());
             listOffLine.clear();
             listOffLine.addAll(data.getData().getCustomized_group().getOffline_lessons());
+            if(listOnLine.size()>0){
+                scheduleText.setVisibility(View.VISIBLE);
+            }
+            if(listOffLine.size()>0){
+                offlineText.setVisibility(View.VISIBLE);
+            }
             if (adapterOnLine != null) {
                 adapterOnLine.notifyDataSetChanged();
             }

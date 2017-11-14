@@ -186,7 +186,7 @@
 
         <TextView
             style="@style/setting_text_style"
-            android:text="修改登陆密码" />
+            android:text="修改登录密码" />
 
         <View
             android:layout_width="0dp"

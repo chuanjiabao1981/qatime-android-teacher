@@ -61,7 +61,7 @@
                 android:checked="true"
                 android:drawableLeft="@drawable/checkbox_selector"
                 android:drawablePadding="5dp"
-                android:text="专属课程"
+                android:text="小班课程"
                 android:textColor="#333333" />
         </LinearLayout>
     </LinearLayout>

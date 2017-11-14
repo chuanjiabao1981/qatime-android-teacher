@@ -276,7 +276,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
 
                     @Override
                     protected void httpSuccess(final String result) {
-                        //由于已经登陆，所以为profile赋值
+                        //由于已经登录，所以为profile赋值
                         PersonalInformationBean sData = JsonUtils.objectFromJson(result, PersonalInformationBean.class);
                         if (sData != null && sData.getData() != null) {
                             BaseApplication.getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
@@ -502,7 +502,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void onBackPressed() {//此页面返回清理token（未修改信息，清理登陆状态)
+    public void onBackPressed() {//此页面返回清理token（未修改信息，清理登录状态)
         BaseApplication.clearToken();
         finish();
     }

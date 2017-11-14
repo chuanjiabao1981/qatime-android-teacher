@@ -122,7 +122,7 @@ public class NotifyCourseActivity extends BaseActivity implements CompoundButton
     }
 
     private void initStatus() {
-        // TODO: 2017/5/4 专属课程  直播课状态
+        // TODO: 2017/5/4 小班课程  直播课状态
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlUser + BaseApplication.getUserId() + "/notifications/settings", null,
                 new VolleyListener(NotifyCourseActivity.this) {
 
