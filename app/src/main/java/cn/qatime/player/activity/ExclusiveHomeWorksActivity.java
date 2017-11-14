@@ -39,7 +39,7 @@ import libraryextra.utils.VolleyListener;
 
 /**
  * Created by lenovo on 2017/9/8.
- * 专属课作业列表
+ * 小班课作业列表
  */
 
 public class ExclusiveHomeWorksActivity extends BaseActivity implements View.OnClickListener {

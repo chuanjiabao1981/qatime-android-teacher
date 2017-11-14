@@ -73,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 设备已在其他地方登陆
+     * 设备已在其他地方登录
      */
     public void tokenOut() {
         BaseApplication.clearToken();

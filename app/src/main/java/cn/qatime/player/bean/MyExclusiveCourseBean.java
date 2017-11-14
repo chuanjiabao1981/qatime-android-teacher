@@ -15,7 +15,7 @@ public class MyExclusiveCourseBean implements Serializable {
 
     /**
      * status : 1
-     * data : [{"id":1,"name":"测试专属课1","publicizes_url":{"app_info":"http://testing.qatime.cn/assets/groups/mathematics/app_info_default-af5e8db92e98e136a1a7b724b7dedd49.png","list":"http://testing.qatime.cn/assets/groups/mathematics/list_default-1b3bf1a3d82979605caea89854b60a44.png","info":"http://testing.qatime.cn/assets/groups/mathematics/info_default-3c9e978bbb618ce34ebd31defd6e2c61.png"},"subject":"数学","grade":"高一","status":"published","teacher_name":"王志成","price":200,"current_price":200,"sell_type":"charge","view_tickets_count":0,"events_count":3,"closed_events_count":0,"start_at":null,"end_at":null,"objective":"测试专属课1","suit_crowd":"测试专属课1","description":"<p>测试专属课1测试专属课1<br><\/p>","icons":{"refund_any_time":true,"coupon_free":true,"cheap_moment":false,"join_cheap":false,"free_taste":false},"teacher_percentage":70}]
+     * data : [{"id":1,"name":"测试小班课1","publicizes_url":{"app_info":"http://testing.qatime.cn/assets/groups/mathematics/app_info_default-af5e8db92e98e136a1a7b724b7dedd49.png","list":"http://testing.qatime.cn/assets/groups/mathematics/list_default-1b3bf1a3d82979605caea89854b60a44.png","info":"http://testing.qatime.cn/assets/groups/mathematics/info_default-3c9e978bbb618ce34ebd31defd6e2c61.png"},"subject":"数学","grade":"高一","status":"published","teacher_name":"王志成","price":200,"current_price":200,"sell_type":"charge","view_tickets_count":0,"events_count":3,"closed_events_count":0,"start_at":null,"end_at":null,"objective":"测试小班课1","suit_crowd":"测试小班课1","description":"<p>测试小班课1测试小班课1<br><\/p>","icons":{"refund_any_time":true,"coupon_free":true,"cheap_moment":false,"join_cheap":false,"free_taste":false},"teacher_percentage":70}]
      */
 
     private int status;
@@ -40,7 +40,7 @@ public class MyExclusiveCourseBean implements Serializable {
     public static class DataBean {
         /**
          * id : 1
-         * name : 测试专属课1
+         * name : 测试小班课1
          * publicizes_url : {"app_info":"http://testing.qatime.cn/assets/groups/mathematics/app_info_default-af5e8db92e98e136a1a7b724b7dedd49.png","list":"http://testing.qatime.cn/assets/groups/mathematics/list_default-1b3bf1a3d82979605caea89854b60a44.png","info":"http://testing.qatime.cn/assets/groups/mathematics/info_default-3c9e978bbb618ce34ebd31defd6e2c61.png"}
          * subject : 数学
          * grade : 高一
@@ -54,9 +54,9 @@ public class MyExclusiveCourseBean implements Serializable {
          * closed_events_count : 0
          * start_at : null
          * end_at : null
-         * objective : 测试专属课1
-         * suit_crowd : 测试专属课1
-         * description : <p>测试专属课1测试专属课1<br></p>
+         * objective : 测试小班课1
+         * suit_crowd : 测试小班课1
+         * description : <p>测试小班课1测试小班课1<br></p>
          * icons : {"refund_any_time":true,"coupon_free":true,"cheap_moment":false,"join_cheap":false,"free_taste":false}
          * teacher_percentage : 70
          */

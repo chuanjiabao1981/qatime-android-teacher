@@ -20,7 +20,7 @@ public class UrlUtils {
     public static String urlLogin = baseUrl + "api/v1/sessions";
     //辅导班
     public static String urlRemedialClass = baseUrl + "api/v1/live_studio/courses";
-    //专属课
+    //小班课
     public static String urlExclusiveCourse = baseUrl + "api/v1/live_studio/customized_groups/";
     //获取验证码
     public static String urlGetCode = baseUrl + "api/v1/captcha";

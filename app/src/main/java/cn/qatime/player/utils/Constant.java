@@ -46,6 +46,6 @@ public class Constant {
     public static class CoursesType {
         public static String courses = "courses";//直播课
         public static String interactive = "interactive";//一对一
-        public static String exclusive = "exclusive";//专属课
+        public static String exclusive = "exclusive";//小班课
     }
 }

@@ -55,7 +55,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     private View close;
     private boolean closed = false;//是否提示过未设置支付密码
     private RecyclerView recyclerView;
-    private String[] menuString = {"课程表", "直播课", "一对一", "视频课", "专属课", "提问管理", "作业管理", "我的文件"};
+    private String[] menuString = {"课程表", "直播课", "一对一", "视频课", "小班课", "提问管理", "作业管理", "我的文件"};
     private int[] menuRes = {R.mipmap.center_class_table, R.mipmap.center_my_live, R.mipmap.center_my_interact, R.mipmap.center_my_video, R.mipmap.center_my_exclusive, R.mipmap.center_my_question, R.mipmap.center_my_homework, R.mipmap.center_my_files};
 
     @Override

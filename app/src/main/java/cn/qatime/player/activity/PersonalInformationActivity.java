@@ -310,7 +310,7 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
 
                 @Override
                 protected void httpSuccess(final String result) {
-                    //由于已经登陆，所以为profile赋值
+                    //由于已经登录，所以为profile赋值
                     PersonalInformationBean sData = JsonUtils.objectFromJson(result, PersonalInformationBean.class);
                     if (sData != null && sData.getData() != null) {
                         BaseApplication.getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
