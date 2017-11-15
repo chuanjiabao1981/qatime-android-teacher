@@ -264,9 +264,15 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
                     StartActivity.this.startActivity(new Intent(StartActivity.this, GuideActivity.class));
                     StartActivity.this.finish();
                 } else {
+<<<<<<< Updated upstream
                     Logger.e("no第一次登录");
                     if (!StringUtils.isNullOrBlanK(BaseApplication.getProfile().getToken())) {//token不空  直接自动登录到mianactivity
                         Logger.e("token----" + BaseApplication.getProfile().getToken());
+=======
+                    Logger.e("no第一次登陆");
+                    if (!StringUtils.isNullOrBlanK(BaseApplication.getInstance().getProfile().getToken())) {//token不空  直接自动登录到mianactivity
+                        Logger.e("token----" + BaseApplication.getInstance().getProfile().getToken());
+>>>>>>> Stashed changes
                         Intent intent = new Intent(StartActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();

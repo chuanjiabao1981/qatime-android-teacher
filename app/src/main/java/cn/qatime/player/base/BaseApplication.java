@@ -55,7 +55,7 @@ public class BaseApplication extends Application {
      */
     public static boolean chatMessageNotifyStatus;
 
-    public static boolean isChatMessageNotifyStatus() {
+    public boolean isChatMessageNotifyStatus() {
         return chatMessageNotifyStatus;
     }
 
@@ -75,11 +75,11 @@ public class BaseApplication extends Application {
         return Queue;
     }
 
-    public static CashAccountBean getCashAccount() {
+    public CashAccountBean getCashAccount() {
         return cashAccount;
     }
 
-    public static void setCashAccount(CashAccountBean cashAccount) {
+    public void setCashAccount(CashAccountBean cashAccount) {
         BaseApplication.cashAccount = cashAccount;
     }
 
@@ -253,7 +253,7 @@ public class BaseApplication extends Application {
         /** 云信集成end*/
     }
 
-    public static void setOptions(boolean voiceStatus, boolean shakeStatus) {
+    public void setOptions(boolean voiceStatus, boolean shakeStatus) {
 //        PushAgent.getInstance(context).setNotificationPlayVibrate(voiceStatus ? MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE : MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
 //        PushAgent.getInstance(context).setNotificationPlaySound(shakeStatus ? MsgConstant.NOTIFICATION_PLAY_SDK_ENABLE : MsgConstant.NOTIFICATION_PLAY_SDK_DISABLE);
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
@@ -368,15 +368,15 @@ public class BaseApplication extends Application {
         }
     }
 
-    public static Profile getProfile() {
+    public Profile getProfile() {
         return profile == null ? new Profile() : profile;
     }
 
-    public static int getUserId() {
+    public int getUserId() {
         return profile != null && profile.getData() != null && profile.getData().getUser() != null ? profile.getData().getUser().getId() : 0;
     }
 
-    public static void setProfile(Profile profile) {
+    public void setProfile(Profile profile) {
         BaseApplication.profile = profile;
         HttpHeaders header = new HttpHeaders();
         header.put("Remember-Token", profile.getToken());
@@ -385,7 +385,7 @@ public class BaseApplication extends Application {
     }
 
     //
-    public static void clearToken() {
+    public void clearToken() {
         if (profile != null && profile.getData() != null) {
             profile.getData().setRemember_token("");
             if (profile.getData().getUser() != null && profile.getData().getUser().getChat_account() != null) {
@@ -443,7 +443,7 @@ public class BaseApplication extends Application {
     /**
      * 登录云信的账号
      */
-    public static String getAccount() {
+    public String getAccount() {
         if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
             return getProfile().getData().getUser().getChat_account().getAccid();
         } else {
@@ -454,7 +454,7 @@ public class BaseApplication extends Application {
     /**
      * 登录云信的token
      */
-    public static String getAccountToken() {
+    public String getAccountToken() {
         if (getProfile().getData() != null && getProfile().getData().getUser() != null && getProfile().getData().getUser().getChat_account() != null) {
             return getProfile().getData().getUser().getChat_account().getToken();
         } else {

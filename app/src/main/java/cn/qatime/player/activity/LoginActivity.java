@@ -264,7 +264,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 DialogUtils.dismissDialog(progress);
                                 if (data.getString("result") != null && data.getString("result").equals("failed")) {
                                     Toast.makeText(LoginActivity.this, getResources().getString(R.string.account_or_password_error), Toast.LENGTH_SHORT).show();
-                                    BaseApplication.clearToken();
+                                    BaseApplication.getInstance().clearToken();
                                     login.setClickable(true);
                                     password.setText("");
                                     //当密码错误5次以上，开始使用验证码
@@ -324,7 +324,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 //                                }
                                 if (profile != null && !TextUtils.isEmpty(profile.getData().getRemember_token())) {
                                     //登录成功且有个人信息  设置profile
-                                    BaseApplication.setProfile(profile);
+                                    BaseApplication.getInstance().setProfile(profile);
                                     SPUtils.put(LoginActivity.this, "username", username.getText().toString());
                                     loginAccount();//登录云信
                                 } else {
@@ -333,7 +333,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             }
                         } catch (JSONException e) {
                             DialogUtils.dismissDialog(progress);
-                            BaseApplication.clearToken();
+                            BaseApplication.getInstance().clearToken();
                         }
 
 
@@ -342,14 +342,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     protected void onError(JSONObject response) {
                         DialogUtils.dismissDialog(progress);
-                        BaseApplication.clearToken();
+                        BaseApplication.getInstance().clearToken();
                         login.setClickable(true);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 DialogUtils.dismissDialog(progress);
-                BaseApplication.clearToken();
+                BaseApplication.getInstance().clearToken();
                 Toast.makeText(LoginActivity.this, getResourceString(R.string.after_try_again), Toast.LENGTH_SHORT).show();
                 login.setClickable(true);
                 password.setText("");
@@ -368,8 +368,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 登录云信
      */
     private void loginAccount() {
-        String account = BaseApplication.getAccount();
-        String token = BaseApplication.getAccountToken();
+        String account = BaseApplication.getInstance().getAccount();
+        String token = BaseApplication.getInstance().getAccountToken();
 
         if (!StringUtils.isNullOrBlanK(account) && !StringUtils.isNullOrBlanK(token)) {
             NIMClient.getService(AuthService.class).login(new LoginInfo(account, token)).setCallback(new RequestCallback<LoginInfo>() {
@@ -464,7 +464,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (response.getJSONObject("data").has("remember_token")) {//返回登錄信息
                             Profile data = JsonUtils.objectFromJson(response.toString(), Profile.class);
                             if (data != null && data.getData() != null && !StringUtils.isNullOrBlanK(data.getData().getRemember_token())) {
-                                BaseApplication.setProfile(data);
+                                BaseApplication.getInstance().setProfile(data);
                                 SPUtils.put(LoginActivity.this, "username", username.getText().toString());
                                 loginAccount();//登录云信
                             } else {

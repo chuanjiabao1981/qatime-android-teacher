@@ -12,7 +12,6 @@
         android:gravity="center"
         android:text="进入聊天"
         android:padding="5dp"
-        android:visibility="gone"
         android:textColor="#fff"
         android:textSize="16sp" />
 

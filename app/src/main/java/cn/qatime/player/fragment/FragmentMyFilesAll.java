@@ -136,7 +136,7 @@ public class FragmentMyFilesAll extends BaseFragment {
     private void initData(final int type) {
         Map<String, String> map = new HashMap<>();
         map.put("cate", "");
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlFiles + "teachers/" + BaseApplication.getUserId() + "/files", map), null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlFiles + "teachers/" + BaseApplication.getInstance().getUserId() + "/files", map), null,
                 new VolleyListener(getActivity()) {
                     @Override
                     protected void onSuccess(JSONObject response) {

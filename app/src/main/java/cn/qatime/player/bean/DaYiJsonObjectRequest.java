@@ -36,7 +36,7 @@ public class DaYiJsonObjectRequest extends JsonObjectRequest {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> map = new HashMap<>();
-        map.put("Remember-Token", BaseApplication.getProfile().getToken());
+        map.put("Remember-Token", BaseApplication.getInstance().getProfile().getToken());
         return map;
     }
 }

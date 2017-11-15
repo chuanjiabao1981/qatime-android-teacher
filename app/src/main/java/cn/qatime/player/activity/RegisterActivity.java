@@ -407,7 +407,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 //                                            }
 //                                        }
                                         if (profile != null && !TextUtils.isEmpty(profile.getData().getRemember_token())) {
-                                            BaseApplication.setProfile(profile);
+                                            BaseApplication.getInstance().setProfile(profile);
                                             loginAccount();
                                         } else {
                                             //没有数据或token
@@ -504,8 +504,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void loginAccount() {
-        String account = BaseApplication.getAccount();
-        String token = BaseApplication.getAccountToken();
+        String account = BaseApplication.getInstance().getAccount();
+        String token = BaseApplication.getInstance().getAccountToken();
 
         if (!StringUtils.isNullOrBlanK(account) && !StringUtils.isNullOrBlanK(token)) {
             NIMClient.getService(AuthService.class).login(new LoginInfo(account, token)).setCallback(new RequestCallback<LoginInfo>() {
@@ -553,7 +553,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         Map<String, String> map = new HashMap<>();
         map.put("openid", openid);
         DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.POST,
-                UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/wechat", map), null, new VolleyListener(RegisterActivity.this) {
+                UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getInstance().getUserId() + "/wechat", map), null, new VolleyListener(RegisterActivity.this) {
             @Override
             protected void onTokenOut() {
                 tokenOut();

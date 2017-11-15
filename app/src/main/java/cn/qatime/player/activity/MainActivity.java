@@ -63,7 +63,7 @@ public class MainActivity extends BaseFragmentActivity {
     private void checkUserInfo() {
 //        if (BaseApplication.isLogined()) {
 
-        DaYiJsonObjectRequest request1 = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + BaseApplication.getUserId() + "/info", null, new VolleyListener(MainActivity.this) {
+        DaYiJsonObjectRequest request1 = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + BaseApplication.getInstance().getUserId() + "/info", null, new VolleyListener(MainActivity.this) {
             @Override
             protected void onTokenOut() {
                 tokenOut();
@@ -105,12 +105,12 @@ public class MainActivity extends BaseFragmentActivity {
             @Override
             protected void onError(JSONObject response) {
                 Toast.makeText(MainActivity.this, getResourceString(R.string.login_failed), Toast.LENGTH_SHORT).show();
-                BaseApplication.clearToken();
+                BaseApplication.getInstance().clearToken();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                BaseApplication.clearToken();
+                BaseApplication.getInstance().clearToken();
             }
         });
         addToRequestQueue(request1);
@@ -237,7 +237,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void refreshCashAccount() {
-            addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/cash", null, new VolleyListener(MainActivity.this) {
+            addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getInstance().getUserId() + "/cash", null, new VolleyListener(MainActivity.this) {
 
                 @Override
                 protected void onTokenOut() {
@@ -247,7 +247,7 @@ public class MainActivity extends BaseFragmentActivity {
                 @Override
                 protected void onSuccess(JSONObject response) {
                     CashAccountBean cashAccount = JsonUtils.objectFromJson(response.toString(), CashAccountBean.class);
-                    BaseApplication.setCashAccount(cashAccount);
+                    BaseApplication.getInstance().setCashAccount(cashAccount);
                     EventBus.getDefault().post(BusEvent.ON_REFRESH_CASH_ACCOUNT);
                 }
 

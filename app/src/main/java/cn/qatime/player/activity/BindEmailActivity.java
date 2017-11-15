@@ -151,11 +151,11 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                 }
                 String code = this.code.getText().toString().trim();
                 map = new HashMap<>();
-                map.put("id", "" + BaseApplication.getUserId());
+                map.put("id", "" + BaseApplication.getInstance().getUserId());
                 map.put("email", captchaEmail);
                 map.put("captcha_confirmation", code);
 
-                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/email", map), null, new VolleyListener(this) {
+                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getInstance().getUserId() + "/email", map), null, new VolleyListener(this) {
                     @Override
                     protected void onTokenOut() {
                         tokenOut();
@@ -164,8 +164,8 @@ public class BindEmailActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
-                        BaseApplication.getProfile().getData().getUser().setEmail(captchaEmail);
-                        BaseApplication.setProfile(BaseApplication.getProfile());
+                        BaseApplication.getInstance().getProfile().getData().getUser().setEmail(captchaEmail);
+                        BaseApplication.getInstance().setProfile(BaseApplication.getInstance().getProfile());
                         Toast.makeText(BindEmailActivity.this, getResourceString(R.string.bind_email_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindEmailActivity.this, SecurityManagerActivity.class);
                         startActivity(intent);

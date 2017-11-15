@@ -102,7 +102,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
         if (statusLogin) {
             currentPhoneView.setVisibility(View.VISIBLE);
             number.setVisibility(View.GONE);
-            captchaPhone = BaseApplication.getProfile().getData().getUser().getLogin_mobile() + "";
+            captchaPhone = BaseApplication.getInstance().getProfile().getData().getUser().getLogin_mobile() + "";
             currentPhone.setText(captchaPhone);
             getcode.setEnabled(true);
         } else {
@@ -195,7 +195,7 @@ public class ForgetPasswordActivity extends BaseActivity implements View.OnClick
                             Toast.makeText(ForgetPasswordActivity.this, getResourceString(R.string.phone_not_exist), Toast.LENGTH_SHORT).show();
                         } else {
                             if (statusLogin) {
-                                BaseApplication.clearToken();
+                                BaseApplication.getInstance().clearToken();
                                 Toast.makeText(ForgetPasswordActivity.this, getResourceString(R.string.change_password_success), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
                                 intent.putExtra("sign", "exit_login");

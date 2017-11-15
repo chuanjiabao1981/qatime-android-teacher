@@ -6,22 +6,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseFragmentActivity;
 import cn.qatime.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.player.bean.ExclusiveLessonPlayInfoBean;
 import cn.qatime.player.bean.LiveLessonDetailBean;
 import cn.qatime.player.bean.RemedialClassPlayInfoBean;
 import cn.qatime.player.fragment.FragmentClassDetailClassInfo;
@@ -42,13 +44,13 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     private SimpleViewPagerIndicator mIndicator;
     private ArrayList<Fragment> fragBaseFragments = new ArrayList<>();
     private TextView name;
-    private TextView title;
+    //    private TextView title;
     private LiveLessonDetailBean data;
     private ViewPager mViewPager;
     private int pager = 0;
     TextView price;
     TextView studentnumber;
-    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
+    //    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     DecimalFormat df = new DecimalFormat("#.00");
     private TextView transferPrice;
     private TextView refundAnyTime;
@@ -61,6 +63,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     private TextView timeToStart;
     private View layoutView;
     private RemedialClassPlayInfoBean playInfo;
+    private PopupWindow pop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,48 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
         return R.layout.activity_remedial_class_detail;
     }
 
+    /**
+     * @param status 课程状态
+     */
+    private void initMenu(String status) {
+        if (pop == null) {
+            setRightImage(R.mipmap.exclusive_menu, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pop.showAsDropDown(v);
+                    backgroundAlpha(0.9f);
+                }
+            });
+            View popView = View.inflate(this, R.layout.exclusive_pop_menu, null);
+            View menu1 = popView.findViewById(R.id.menu_1);
+            View menu2 = popView.findViewById(R.id.menu_2);
+            View menu3 = popView.findViewById(R.id.menu_3);
+            View menu4 = popView.findViewById(R.id.menu_4);
+            View menu5 = popView.findViewById(R.id.menu_5);
+
+            if (Constant.CourseStatus.completed.equals(status)) {
+                menu1.setVisibility(View.GONE);
+            }
+            menu2.setVisibility(View.GONE);
+            menu3.setVisibility(View.GONE);
+            menu4.setVisibility(View.GONE);
+            menu1.setOnClickListener(this);
+            menu5.setOnClickListener(this);
+            pop = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    backgroundAlpha(1);
+                }
+            });
+        }
+    }
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().setAttributes(lp);
+    }
 
     public void initView() {
         name = (TextView) findViewById(R.id.name);
@@ -98,7 +143,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
         status = (TextView) findViewById(R.id.status);
         layoutView = findViewById(R.id.layout_view);
 
-        title = (TextView) findViewById(R.id.title);
+//        title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
         transferPrice = (TextView) findViewById(R.id.transfer_price);
         studentnumber = (TextView) findViewById(R.id.student_number);
@@ -176,6 +221,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
                     protected void onSuccess(JSONObject response) {
                         data = JsonUtils.objectFromJson(response.toString(), LiveLessonDetailBean.class);
                         if (data != null && data.getData() != null && data.getData().getCourse() != null) {
+                            initMenu(data.getData().getCourse().getStatus());
                             status.setText(getStatus(data.getData().getCourse().getStatus()));
                             name.setText(data.getData().getCourse().getName());
                             setTitle(data.getData().getCourse().getName());
@@ -227,23 +273,23 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
                                     transferPrice.setVisibility(View.GONE);
                                 }
 
+                            } else if (data.getData().getCourse().getSell_type().equals("free")) {
+                                price.setText("免费");
                             }
-                        } else if (data.getData().getCourse().getSell_type().equals("free")) {
-                            price.setText("免费");
-                        }
 
-                        if (data.getData().getCourse().getIcons() != null) {
-                            if (!data.getData().getCourse().getIcons().isCoupon_free()) {
-                                couponFree.setVisibility(View.GONE);
-                            }
-                            if (!data.getData().getCourse().getIcons().isRefund_any_time()) {
-                                refundAnyTime.setVisibility(View.GONE);
-                            }
-                            if (!data.getData().getCourse().getIcons().isFree_taste()) {
-                                freeTaste.setVisibility(View.GONE);
-                            }
-                            if (!data.getData().getCourse().getIcons().isJoin_cheap()) {
-                                joinCheap.setVisibility(View.GONE);
+                            if (data.getData().getCourse().getIcons() != null) {
+                                if (!data.getData().getCourse().getIcons().isCoupon_free()) {
+                                    couponFree.setVisibility(View.GONE);
+                                }
+                                if (!data.getData().getCourse().getIcons().isRefund_any_time()) {
+                                    refundAnyTime.setVisibility(View.GONE);
+                                }
+                                if (!data.getData().getCourse().getIcons().isFree_taste()) {
+                                    freeTaste.setVisibility(View.GONE);
+                                }
+                                if (!data.getData().getCourse().getIcons().isJoin_cheap()) {
+                                    joinCheap.setVisibility(View.GONE);
+                                }
                             }
                         }
 
@@ -293,7 +339,7 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.announcement:
-                if(playInfo==null){
+                if (playInfo == null) {
                     Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -302,6 +348,29 @@ public class RemedialClassDetailActivity extends BaseFragmentActivity implements
                 intent.putExtra("teamId", playInfo.getData().getChat_team().getTeam_id());
                 intent.putExtra("type", Constant.CoursesType.courses);
                 startActivity(intent);
+                break;
+            case R.id.menu_1:
+
+                if (playInfo == null || playInfo.getData() == null || playInfo.getData().getChat_team() == null || StringUtils.isNullOrBlanK(playInfo.getData().getChat_team().getTeam_id())) {
+                    Toast.makeText(this, "id为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(RemedialClassDetailActivity.this, MessageActivity.class);
+                intent.putExtra("sessionId", playInfo.getData().getChat_team().getTeam_id());
+                intent.putExtra("sessionType", SessionTypeEnum.None);
+                intent.putExtra("name", data.getData().getCourse().getName());
+                startActivity(intent);
+                pop.dismiss();
+                break;
+            case R.id.menu_5:
+                if (playInfo == null || playInfo.getData() == null || playInfo.getData().getChat_team() == null) {
+                    Toast.makeText(this, "未获取到聊天群组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(RemedialClassDetailActivity.this, MembersActivity.class);
+                intent.putExtra("members", playInfo.getData().getChat_team());
+                startActivity(intent);
+                pop.dismiss();
                 break;
         }
     }

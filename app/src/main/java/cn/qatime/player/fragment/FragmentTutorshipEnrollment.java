@@ -140,7 +140,7 @@ public class FragmentTutorshipEnrollment extends BaseFragment {
         map.put("per_page", "10");
         map.put("status", "published");
 
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/courses", map), null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getInstance().getUserId() + "/courses", map), null,
                 new VolleyListener(getActivity()) {
                     @Override
                     protected void onSuccess(JSONObject response) {

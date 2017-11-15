@@ -17,6 +17,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -432,6 +433,7 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
         content.setText("");
         if (isMute) {
             content.setHint(R.string.have_muted);
+            content.setGravity(Gravity.CENTER);
             content.setEnabled(false);
             send.setEnabled(false);
             //左边切换语音文字按钮
@@ -441,6 +443,7 @@ public class InputPanel implements View.OnClickListener, IAudioRecordCallback {
             imageSelect.setEnabled(false);
         } else {
             content.setHint("");
+            content.setGravity(Gravity.CENTER_VERTICAL);
             content.setEnabled(true);
             send.setEnabled(true);
             buttonAudioMessage.setEnabled(true);

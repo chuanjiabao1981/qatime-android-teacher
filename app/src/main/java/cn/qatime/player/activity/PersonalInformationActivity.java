@@ -147,7 +147,7 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
 
     private void initData() {
 
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + BaseApplication.getUserId() + "/info", null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlPersonalInformation + BaseApplication.getInstance().getUserId() + "/info", null,
                 new VolleyListener(PersonalInformationActivity.this) {
 
 
@@ -298,7 +298,7 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
             }
 
 
-            int userId = BaseApplication.getUserId();
+            int userId = BaseApplication.getInstance().getUserId();
             String url = UrlUtils.urlPersonalInformation + userId;
             UpLoadUtil util = new UpLoadUtil(url) {
                 @Override
@@ -313,8 +313,8 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
                     //由于已经登录，所以为profile赋值
                     PersonalInformationBean sData = JsonUtils.objectFromJson(result, PersonalInformationBean.class);
                     if (sData != null && sData.getData() != null) {
-                        BaseApplication.getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
-                        Profile profile = BaseApplication.getProfile();
+                        BaseApplication.getInstance().getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
+                        Profile profile = BaseApplication.getInstance().getProfile();
                         Profile.User user = profile.getData().getUser();
                         user.setId(sData.getData().getId());
                         user.setName(sData.getData().getName());
@@ -325,7 +325,7 @@ public class PersonalInformationActivity extends BaseActivity implements View.On
                         user.setLogin_mobile(sData.getData().getLogin_mobile());
                         user.setChat_account(sData.getData().getChat_account());
                         profile.getData().setUser(user);
-                        BaseApplication.setProfile(profile);
+                        BaseApplication.getInstance().setProfile(profile);
                     }
                     DialogUtils.dismissDialog(progress);
                     setResult(Constant.RESPONSE);

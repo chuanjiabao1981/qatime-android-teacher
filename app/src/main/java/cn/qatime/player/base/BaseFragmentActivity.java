@@ -77,7 +77,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      * 设备已在其他地方登录
      */
     public void tokenOut() {
-        BaseApplication.clearToken();
+        BaseApplication.getInstance().clearToken();
         if (alertDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             alertDialog = builder.create();
