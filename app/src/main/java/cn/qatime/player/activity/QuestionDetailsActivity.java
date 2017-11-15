@@ -1,8 +1,10 @@
 package cn.qatime.player.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
     private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private TextView resolveQuestion;
     private QuestionsBean.DataBean.AnswerBean answerBean;
+    private AlertDialog alertDialog;
 
 
     @Override
@@ -103,18 +106,18 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
                 setRightText("提交", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        if (question.getStatus().equals("resolved")) {
-//                            reResolveQuestion();
-//                        }else {
+                        if (question.getStatus().equals("resolved")) {
+                            dialog();
+                        } else {
                             resolveQuestion();
-//                        }
+                        }
                     }
                 });
                 questionName.setText(question.getTitle());
-                if("resolved".equals(question.getStatus())){
+                if ("resolved".equals(question.getStatus())) {
                     long replyT = question.getAnswer().getCreated_at() * 1000L;
-                    createTime.setText("回复时间 "+parse.format(new Date(replyT)));
-                }else {
+                    createTime.setText("回复时间 " + parse.format(new Date(replyT)));
+                } else {
                     long time = question.getCreated_at() * 1000L;
                     createTime.setText("创建时间 " + parse.format(new Date(time)));
                 }
@@ -208,7 +211,9 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
             return;
         }
         Map<String, String> map = new HashMap<>();
-        map.put("body", question.getAnswer().getBody());
+        if (!StringUtils.isNullOrBlanK(question.getAnswer().getBody())) {
+            map.put("body", question.getAnswer().getBody());
+        }
         if (answerBean.getAttachments() != null && answerBean.getAttachments().size() > 0) {
             map.put("quotes_attributes", getContentString());
         }
@@ -262,48 +267,33 @@ public class QuestionDetailsActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void reResolveQuestion() {
-        if (StringUtils.isNullOrBlanK(answerBean)) {
-            Toast.makeText(this, "请输入回答内容", Toast.LENGTH_SHORT).show();
-            return;
+    private void dialog() {
+        if (alertDialog == null) {
+            View view = View.inflate(QuestionDetailsActivity.this, R.layout.dialog_cancel_or_confirm, null);
+            Button cancel = (Button) view.findViewById(R.id.cancel);
+            Button confirm = (Button) view.findViewById(R.id.confirm);
+            TextView text = (TextView) view.findViewById(R.id.text);
+            text.setText("重新提交将覆盖原有内容且不可恢复，是否提交？");
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resolveQuestion();
+                    alertDialog.dismiss();
+                }
+            });
+            AlertDialog.Builder builder = new AlertDialog.Builder(QuestionDetailsActivity.this);
+            alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setContentView(view);
+        } else {
+            alertDialog.show();
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("body", question.getAnswer().getBody());
-        if (answerBean.getAttachments() != null && answerBean.getAttachments().size() > 0) {
-            map.put("quotes_attributes", getContentString());
-        }
-        JSONObject obj = new JSONObject(map);
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.PATCH, UrlUtils.urlLiveStudio + "answers/" + question.getAnswer().getId(), obj,
-                new VolleyListener(this) {
-                    @Override
-                    protected void onSuccess(JSONObject response) {
-                        setResult(Constant.RESPONSE);
-                        finish();
-                    }
-
-                    @Override
-                    protected void onError(JSONObject response) {
-                        try {
-                            JSONObject error = response.getJSONObject("error");
-                            if(error.getInt("code")==3002){
-                                Toast.makeText(QuestionDetailsActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void onTokenOut() {
-                        tokenOut();
-                    }
-                }, new VolleyErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                super.onErrorResponse(volleyError);
-            }
-        });
-        addToRequestQueue(request);
     }
 
     @Override

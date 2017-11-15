@@ -292,7 +292,7 @@ public class QuestionResolveActivity extends BaseActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.bottom_button:
                 String body = content.getText().toString().trim();
-                if (StringUtils.isNullOrBlanK(body)) {
+                if (StringUtils.isNullOrBlanK(body)&&imageAttachmentList.size()==0&&StringUtils.isNullOrBlanK(audioFileName)) {
                     Toast.makeText(this, "请输入回答内容", Toast.LENGTH_SHORT).show();
                     return;
                 }

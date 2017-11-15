@@ -291,8 +291,9 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.bottom_button:
                 String trim = content.getText().toString().trim();
-                if (StringUtils.isNullOrBlanK(trim)) {
+                if (StringUtils.isNullOrBlanK(trim)&&imageAttachmentList.size()==0&&StringUtils.isNullOrBlanK(audioFileName) ) {
                     Toast.makeText(this, "批改不能为空", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (list.size() != imageAttachmentList.size()) {//判断图片有没有全部上传成功
                     Toast.makeText(this, "图片上传未完成", Toast.LENGTH_SHORT).show();

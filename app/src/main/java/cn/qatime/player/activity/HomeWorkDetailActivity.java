@@ -1,8 +1,10 @@
 package cn.qatime.player.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,8 +47,6 @@ import libraryextra.view.ListViewForScrollView;
  */
 
 
-
-
 public class HomeWorkDetailActivity extends BaseActivity {
 
     private StudentHomeWorksBean.DataBean item;
@@ -57,6 +57,7 @@ public class HomeWorkDetailActivity extends BaseActivity {
     private List<HomeworkDetailBean> list;
     private HomeworkDetailBean doingItem;
     private List<HomeWorkItemBean> correctList = new ArrayList<>();
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +83,8 @@ public class HomeWorkDetailActivity extends BaseActivity {
                 Toast.makeText(this, "请先添加全部批改", Toast.LENGTH_SHORT).show();
                 return;
             }
-        }else {
-            if(correctList.size()==0) {
+        } else {
+            if (correctList.size() == 0) {
                 Toast.makeText(this, "请添加修改后提交", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -103,7 +104,7 @@ public class HomeWorkDetailActivity extends BaseActivity {
                     protected void onError(JSONObject response) {
                         try {
                             JSONObject error = response.getJSONObject("error");
-                            if(error.getInt("code")==3002){
+                            if (error.getInt("code") == 3002) {
                                 Toast.makeText(HomeWorkDetailActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -124,62 +125,32 @@ public class HomeWorkDetailActivity extends BaseActivity {
         addToRequestQueue(request);
     }
 
-    private void reCorrectHomework() {
-        if (correctList.size() <= 0) {
-            Toast.makeText(this, "未添加修改内容", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Map<String, String> map = new HashMap<>();
-        map.put("task_items_attributes", getContentStringWithId());
-        JSONObject obj = new JSONObject(map);
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(Request.Method.PATCH, UrlUtils.urlLiveStudio + "corrections/" + item.getCorrection().getId(), obj,
-                new VolleyListener(this) {
-                    @Override
-                    protected void onSuccess(JSONObject response) {
-                        setResult(Constant.RESPONSE);
-                        finish();
-                    }
-
-                    @Override
-                    protected void onError(JSONObject response) {
-                        try {
-                            JSONObject error = response.getJSONObject("error");
-                            if(error.getInt("code")==3002){
-                                Toast.makeText(HomeWorkDetailActivity.this, error.getString("msg"), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    protected void onTokenOut() {
-                        tokenOut();
-                    }
-                }, new VolleyErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                super.onErrorResponse(volleyError);
-            }
-        });
-        addToRequestQueue(request);
-    }
-
-    private String getContentStringWithId() {
-        StringBuilder sb = new StringBuilder("[");
-        for (HomeWorkItemBean homeWorkItemBean : correctList) {
-            sb.append("{\"id\":")
-                    .append(homeWorkItemBean.parent_id)
-                    .append(",\"body\":\"")
-                    .append(homeWorkItemBean.content)
-                    .append("\"},");
-        }
-        if (sb.length() > 1) {
-            sb.setCharAt(sb.length() - 1, ']');
-            Logger.e(sb.toString());
-            return sb.toString();
+    private void dialog() {
+        if (alertDialog == null) {
+            View view = View.inflate(HomeWorkDetailActivity.this, R.layout.dialog_cancel_or_confirm, null);
+            Button cancel = (Button) view.findViewById(R.id.cancel);
+            Button confirm = (Button) view.findViewById(R.id.confirm);
+            TextView text = (TextView) view.findViewById(R.id.text);
+            text.setText("重新提交将覆盖原有内容且不可恢复，是否提交？");
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    correctHomework();
+                    alertDialog.dismiss();
+                }
+            });
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeWorkDetailActivity.this);
+            alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.setContentView(view);
         } else {
-            return "";
+            alertDialog.show();
         }
     }
 
@@ -291,11 +262,11 @@ public class HomeWorkDetailActivity extends BaseActivity {
             setRightText("提交", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    if (item.getStatus().equals("submitted")) {
-                    correctHomework();
-//                    } else if (item.getStatus().equals("resolved")) {
-//                        reCorrectHomework();
-//                    }
+                    if (item.getStatus().equals("submitted")) {
+                        correctHomework();
+                    } else if (item.getStatus().equals("resolved")) {
+                        dialog();
+                    }
                 }
             });
             findViewById(R.id.right_text).setVisibility(View.VISIBLE);
@@ -474,12 +445,12 @@ public class HomeWorkDetailActivity extends BaseActivity {
                                 answerView.initExpandView(item.answer.getBody(), answerAudioAttachments.file_url, answerImageAttachments, true);
                             } else {
                                 ExpandView answerView = holder.getView(R.id.answer_view);
-                                answerView.initExpandView("无", null, null, true);
+                                answerView.initExpandView("未作答", null, null, true);
                             }
                         } else {//已做但是答案为空  理论上不会出现   answer为空id为空
                             correctHomework.setVisibility(View.GONE);//answer的id为空没办法批改
                             ExpandView answerView = holder.getView(R.id.answer_view);
-                            answerView.initExpandView("无", null, null, true);
+                            answerView.initExpandView("未作答", null, null, true);
                         }
 
                         if (item.correction != null) {//已添加批改但未提交   此时item没有id
@@ -524,12 +495,12 @@ public class HomeWorkDetailActivity extends BaseActivity {
                                 answerView.initExpandView(item.answer.getBody(), answerAudioAttachments.file_url, answerImageAttachments, true);
                             } else {
                                 ExpandView answerView = holder.getView(R.id.answer_view);
-                                answerView.initExpandView("无", null, null, true);
+                                answerView.initExpandView("未作答", null, null, true);
                             }
                         } else {//已做但是答案为空  理论上不会出现   answer为空id为空
 //                            correctHomework.setVisibility(View.GONE);//answer的id为空但是correction的id未知，如果有可以批改
                             ExpandView answerView = holder.getView(R.id.answer_view);
-                            answerView.initExpandView("无", null, null, true);
+                            answerView.initExpandView("未作答", null, null, true);
                         }
                         View correctionLayout = holder.getView(R.id.correction_layout);
                         correctionLayout.setVisibility(View.VISIBLE);
@@ -554,11 +525,11 @@ public class HomeWorkDetailActivity extends BaseActivity {
                                 correctView.initExpandView(item.correction.getBody(), correctionAudioAttachments.file_url, correctionImageAttachments, true);
                             } else {
                                 ExpandView correctView = holder.getView(R.id.correction_view);
-                                correctView.initExpandView("无", null, null, true);
+                                correctView.initExpandView("未批改", null, null, true);
                             }
                         } else {//已批改的状态但是没有批改结果  理论上不会出现   correction为空id为空
                             ExpandView correctView = holder.getView(R.id.correction_view);
-                            correctView.initExpandView("无", null, null, true);
+                            correctView.initExpandView("未批改", null, null, true);
                         }
                     }
 
