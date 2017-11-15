@@ -71,11 +71,11 @@ public class NotifyMessageActivity extends BaseActivity implements CompoundButto
         switch (buttonView.getId()) {
             case R.id.voice:
                 SPUtils.put(this, "voice_status", isChecked);
-                BaseApplication.setOptions(isChecked, (boolean) SPUtils.get(this, "shake_status", true));
+                BaseApplication.getInstance().setOptions(isChecked, (boolean) SPUtils.get(this, "shake_status", true));
                 break;
             case R.id.shake:
                 SPUtils.put(this, "shake_status", isChecked);
-                BaseApplication.setOptions((boolean) SPUtils.get(this, "voice_status", true), isChecked);
+                BaseApplication.getInstance().setOptions((boolean) SPUtils.get(this, "voice_status", true), isChecked);
                 break;
             case R.id.notify_status://消息提醒开关
                 BaseApplication.setChatMessageNotifyStatus(isChecked);
@@ -86,7 +86,7 @@ public class NotifyMessageActivity extends BaseActivity implements CompoundButto
                  *                    {@link #MSG_CHATTING_ACCOUNT_ALL} 目前没有与任何人对话，但能看到消息提醒（比如在消息列表界面），不需要在状态栏做消息通知
                  *                    {@link #MSG_CHATTING_ACCOUNT_NONE} 目前没有与任何人对话，需要状态栏消息通知
                  */
-                NIMClient.getService(MsgService.class).setChattingAccount(BaseApplication.isChatMessageNotifyStatus()? MsgService.MSG_CHATTING_ACCOUNT_NONE:MsgService.MSG_CHATTING_ACCOUNT_ALL, SessionTypeEnum.None);
+                NIMClient.getService(MsgService.class).setChattingAccount(BaseApplication.getInstance().isChatMessageNotifyStatus()? MsgService.MSG_CHATTING_ACCOUNT_NONE:MsgService.MSG_CHATTING_ACCOUNT_ALL, SessionTypeEnum.None);
                 SPUtils.put(this, "notify_status", isChecked);
                 break;
         }

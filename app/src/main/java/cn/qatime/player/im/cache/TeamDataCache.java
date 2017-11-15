@@ -386,7 +386,7 @@ public class TeamDataCache {
      * @return
      */
     public String getTeamMemberDisplayNameYou(String tid, String account) {
-        if (account.equals(BaseApplication.getAccount())) {
+        if (account.equals(BaseApplication.getInstance().getAccount())) {
             return "你";
         }
 

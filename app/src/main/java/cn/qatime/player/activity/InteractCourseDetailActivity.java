@@ -6,10 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 
 import org.json.JSONObject;
 
@@ -45,6 +49,8 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     DecimalFormat df = new DecimalFormat("#.00");
     private TextView refundAnyTime;
     private TextView couponFree;
+    private PopupWindow pop;
+    private InteractCourseDetailBean playInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,46 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
         return R.layout.activity_interact_course_detail;
     }
 
+    private void initMenu(String status) {
+        if (pop == null) {
+            setRightImage(R.mipmap.exclusive_menu, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pop.showAsDropDown(v);
+                    backgroundAlpha(0.9f);
+                }
+            });
+            View popView = View.inflate(this, R.layout.exclusive_pop_menu, null);
+            View menu1 = popView.findViewById(R.id.menu_1);
+            View menu2 = popView.findViewById(R.id.menu_2);
+            View menu3 = popView.findViewById(R.id.menu_3);
+            View menu4 = popView.findViewById(R.id.menu_4);
+            View menu5 = popView.findViewById(R.id.menu_5);
+
+            if (Constant.CourseStatus.completed.equals(status)) {
+                menu1.setVisibility(View.GONE);
+            }
+            menu2.setVisibility(View.GONE);
+            menu3.setVisibility(View.GONE);
+            menu4.setVisibility(View.GONE);
+            menu1.setOnClickListener(this);
+            menu5.setOnClickListener(this);
+            pop = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    backgroundAlpha(1);
+                }
+            });
+        }
+    }
+
+
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().setAttributes(lp);
+    }
 
     public void initView() {
         name = (TextView) findViewById(R.id.name);
@@ -125,13 +171,14 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     }
 
     private void initData() {
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlInteractCourses+ id + "/detail" , null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.urlInteractCourses + id + "/detail", null,
                 new VolleyListener(InteractCourseDetailActivity.this) {
                     @Override
                     protected void onSuccess(JSONObject response) {
                         data = JsonUtils.objectFromJson(response.toString(), InteractCourseDetailBean.class);
 
                         if (data != null && data.getData() != null && data.getData().getInteractive_course().getLive_start_time() != null) {
+                            initMenu(data.getData().getInteractive_course().getStatus());
                             name.setText(data.getData().getInteractive_course().getName());
                             title.setText(data.getData().getInteractive_course().getName());
                             String price;
@@ -174,13 +221,36 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
             }
         });
         addToRequestQueue(request);
+        DaYiJsonObjectRequest requestPlay = new DaYiJsonObjectRequest(UrlUtils.urlInteractCourses + id + "/detail", null,
+                new VolleyListener(InteractCourseDetailActivity.this) {
+                    @Override
+                    protected void onSuccess(JSONObject response) {
+                        playInfo = JsonUtils.objectFromJson(response.toString(), InteractCourseDetailBean.class);
+
+                    }
+
+                    @Override
+                    protected void onError(JSONObject response) {
+                    }
+
+                    @Override
+                    protected void onTokenOut() {
+                        tokenOut();
+                    }
+                }, new VolleyErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                super.onErrorResponse(volleyError);
+            }
+        });
+        addToRequestQueue(requestPlay);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.announcement:
-                if(StringUtils.isNullOrBlanK(data.getData().getInteractive_course().getChat_team().getTeam_id())){
+                if (StringUtils.isNullOrBlanK(data.getData().getInteractive_course().getChat_team().getTeam_id())) {
                     Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -189,6 +259,30 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
                 intent.putExtra("teamId", data.getData().getInteractive_course().getChat_team().getTeam_id());
                 intent.putExtra("type", Constant.CoursesType.interactive);
                 startActivity(intent);
+                break;
+            case R.id.menu_1:
+
+                if (playInfo == null || playInfo.getData() == null || playInfo.getData().getInteractive_course() == null || playInfo.getData().getInteractive_course().getChat_team() == null ||
+                        StringUtils.isNullOrBlanK(playInfo.getData().getInteractive_course().getChat_team().getTeam_id())) {
+                    Toast.makeText(this, "id为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(InteractCourseDetailActivity.this, MessageActivity.class);
+                intent.putExtra("sessionId", playInfo.getData().getInteractive_course().getChat_team().getTeam_id());
+                intent.putExtra("sessionType", SessionTypeEnum.None);
+                intent.putExtra("name", data.getData().getInteractive_course().getName());
+                startActivity(intent);
+                pop.dismiss();
+                break;
+            case R.id.menu_5:
+                if (playInfo == null || playInfo.getData() == null || playInfo.getData().getInteractive_course() == null || playInfo.getData().getInteractive_course().getChat_team() == null) {
+                    Toast.makeText(this, "未获取到聊天群组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(InteractCourseDetailActivity.this, MembersActivity.class);
+                intent.putExtra("members", playInfo.getData().getInteractive_course().getChat_team());
+                startActivity(intent);
+                pop.dismiss();
                 break;
         }
     }

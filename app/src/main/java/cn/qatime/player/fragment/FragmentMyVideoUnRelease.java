@@ -138,14 +138,11 @@ public class FragmentMyVideoUnRelease extends BaseFragment {
         map.put("per_page", "10");
         map.put("status", "unpublished");
 
-        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getUserId() + "/video_courses", map), null,
+        DaYiJsonObjectRequest request = new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlTeachers + BaseApplication.getInstance().getUserId() + "/video_courses", map), null,
                 new VolleyListener(getActivity()) {
-
-
                     @Override
                     protected void onSuccess(JSONObject response) {
                         isLoad = true;
-                        Logger.e(response.toString());
                         if (type == 1) {
                             list.clear();
                         }

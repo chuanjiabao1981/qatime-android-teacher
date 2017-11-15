@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 
 import org.json.JSONObject;
 
@@ -48,10 +49,10 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private int pager = 0;
     TextView price;
     TextView studentnumber;
-    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
+    //    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     DecimalFormat df = new DecimalFormat("#.00");
     private TextView refundAnyTime;
-    private TextView freeTaste;
+    //    private TextView freeTaste;
     private TextView couponFree;
     private TextView joinCheap;
 
@@ -59,7 +60,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     private TextView status;
     private TextView timeToStart;
     private View layoutView;
-    private String teamId;
+    //    private String teamId;
     private PopupWindow pop;
     private ExclusiveLessonPlayInfoBean playInfo;
 
@@ -68,7 +69,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         super.onCreate(savedInstanceState);
 
         id = getIntent().getIntExtra("id", 0);//联网id
-        teamId = getIntent().getStringExtra("teamId");
+//        teamId = getIntent().getStringExtra("teamId");
         pager = getIntent().getIntExtra("pager", 0);
         initView();
         if (id == 0) {
@@ -93,7 +94,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         fragBaseFragments.add(new FragmentExclusiveCourseClassList());
 
         refundAnyTime = (TextView) findViewById(R.id.refund_any_time);
-        freeTaste = (TextView) findViewById(R.id.free_taste);
+//        freeTaste = (TextView) findViewById(R.id.free_taste);
         couponFree = (TextView) findViewById(R.id.coupon_free);
         joinCheap = (TextView) findViewById(R.id.join_cheap);
         progress = (TextView) findViewById(R.id.progress);
@@ -185,7 +186,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             studentnumber.setText(String.format("报名人数 %1$d/%2$d",
                                     data.getData().getCustomized_group().getUsers_count() > data.getData().getCustomized_group().getMax_users() ? data.getData().getCustomized_group().getMax_users() : data.getData().getCustomized_group().getUsers_count(),
                                     data.getData().getCustomized_group().getMax_users()));
-                            String price =df.format(data.getData().getCustomized_group().getPrice());
+                            String price = df.format(data.getData().getCustomized_group().getPrice());
                             if (price.startsWith(".")) {
                                 price = "0" + price;
                             }
@@ -204,7 +205,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             }
                             try {
                                 if ("init".equals(data.getData().getCustomized_group().getStatus()) || "published".equals(data.getData().getCustomized_group().getStatus())) {
-                                    int value = DateUtils.daysBetween(Long.valueOf(data.getData().getCustomized_group().getStart_at())*1000, System.currentTimeMillis());
+                                    int value = DateUtils.daysBetween(data.getData().getCustomized_group().getStart_at() * 1000, System.currentTimeMillis());
                                     progress.setVisibility(View.GONE);
                                     if (value > 0) {
                                         timeToStart.setVisibility(View.VISIBLE);
@@ -301,9 +302,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
             pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    WindowManager.LayoutParams lp = getWindow().getAttributes();
-                    lp.alpha = 1f;
-                    getWindow().setAttributes(lp);
+                    backgroundAlpha(1);
                 }
             });
         }
@@ -321,46 +320,54 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         Intent intent;
         switch (v.getId()) {
             case R.id.menu_1:
+                if (playInfo == null) {
+                    Toast.makeText(this, "未获取到聊天群组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent = new Intent(this, MessageActivity.class);
+                intent.putExtra("sessionId", playInfo.getData().getCustomized_group().getChat_team().getTeam_id());
+                intent.putExtra("sessionType", SessionTypeEnum.None);
+                intent.putExtra("name", data.getData().getCustomized_group().getName());
+                startActivity(intent);
                 pop.dismiss();
                 break;
             case R.id.menu_2:
-                intent = new Intent(this,ExclusiveFilesActivity.class);
-                intent.putExtra("id",id);
+                intent = new Intent(this, ExclusiveFilesActivity.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
                 pop.dismiss();
                 break;
             case R.id.menu_3:
-                intent = new Intent(this,ExclusiveQuestionsActivity.class);
-                intent.putExtra("courseId",id);
+                intent = new Intent(this, ExclusiveQuestionsActivity.class);
+                intent.putExtra("courseId", id);
                 startActivity(intent);
                 pop.dismiss();
                 break;
             case R.id.menu_4:
-                intent = new Intent(this,ExclusiveStudentHomeWorksActivity.class);
-                intent.putExtra("courseId",id);
+                intent = new Intent(this, ExclusiveStudentHomeWorksActivity.class);
+                intent.putExtra("courseId", id);
                 startActivity(intent);
                 pop.dismiss();
                 break;
             case R.id.menu_5:
-                if(playInfo==null){
+                if (playInfo == null) {
                     Toast.makeText(this, "未获取到聊天群组", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                intent = new Intent(this,MembersActivity.class);
-                intent.putExtra("courseId", id);
+                intent = new Intent(ExclusiveCourseDetailActivity.this, MembersActivity.class);
+                intent.putExtra("members", playInfo.getData().getCustomized_group().getChat_team());
                 startActivity(intent);
-                pop.dismiss();
                 pop.dismiss();
                 break;
             case R.id.announcement:
-                if(playInfo==null){
+                if (playInfo == null) {
                     Toast.makeText(this, "未获取到群组信息", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                 intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
+                intent = new Intent(ExclusiveCourseDetailActivity.this, AnnouncementListActivity.class);
                 intent.putExtra("id", data.getData().getCustomized_group().getId());
                 intent.putExtra("teamId", playInfo.getData().getCustomized_group().getChat_team().getTeam_id());
-                intent.putExtra(  "type", Constant.CoursesType.exclusive);
+                intent.putExtra("type", Constant.CoursesType.exclusive);
                 startActivity(intent);
                 break;
         }

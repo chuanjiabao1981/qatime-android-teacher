@@ -206,7 +206,7 @@ public class HomeWorkItemEditActivity extends BaseActivity implements View.OnCli
         File file = new File(path);
         if (file.exists()) {
             HttpManager.post(UrlUtils.urlLiveStudio + "attachments")
-                    .headers("Remember-Token", BaseApplication.getProfile().getToken())
+                    .headers("Remember-Token", BaseApplication.getInstance().getProfile().getToken())
                     .params("file", file, new ProgressResponseCallBack() {
                         @Override
                         public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {

@@ -161,7 +161,7 @@ public class UserPreferences {
     }
 
     static SharedPreferences getSharedPreferences() {
-        return SPUtils.getSharedPreferences(BaseApplication.getAccount());
+        return SPUtils.getSharedPreferences(BaseApplication.getInstance().getAccount());
     }
 
     public static boolean isEarPhoneModeEnable() {

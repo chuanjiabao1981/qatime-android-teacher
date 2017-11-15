@@ -199,7 +199,7 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
                 }
                 break;
             case R.id.complete://完成
-                String url = UrlUtils.urlPersonalInformation + BaseApplication.getUserId();
+                String url = UrlUtils.urlPersonalInformation + BaseApplication.getInstance().getUserId();
                 UpLoadUtil util = new UpLoadUtil(url) {
                     @Override
                     public void httpStart() {
@@ -226,7 +226,7 @@ public class PersonalInformationChangeActivity extends BaseActivity implements V
                     }
                 };
 
-                if (StringUtils.isNullOrBlanK(BaseApplication.getUserId())) {
+                if (StringUtils.isNullOrBlanK(BaseApplication.getInstance().getUserId())) {
                     Toast.makeText(PersonalInformationChangeActivity.this, getResources().getString(R.string.id_is_empty), Toast.LENGTH_SHORT).show();
                     return;
                 }

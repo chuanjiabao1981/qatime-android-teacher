@@ -264,7 +264,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
                 startActivityForResult(intent, Constant.REQUEST_PICTURE_SELECT);
                 break;
             case R.id.complete://完成
-                int userId = BaseApplication.getUserId();
+                int userId = BaseApplication.getInstance().getUserId();
                 String url = UrlUtils.urlPersonalInformation + userId;
                 UpLoadUtil util = new UpLoadUtil(url) {
                     @Override
@@ -279,8 +279,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
                         //由于已经登录，所以为profile赋值
                         PersonalInformationBean sData = JsonUtils.objectFromJson(result, PersonalInformationBean.class);
                         if (sData != null && sData.getData() != null) {
-                            BaseApplication.getProfile().getData().getUser().setAvatar_url(sData.getData().getAvatar_url());
-                            Profile profile = BaseApplication.getProfile();
+                            Profile profile = BaseApplication.getInstance().getProfile();
                             Profile.User user = profile.getData().getUser();
                             user.setId(sData.getData().getId());
                             user.setName(sData.getData().getName());
@@ -291,7 +290,7 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
                             user.setLogin_mobile(sData.getData().getLogin_mobile());
                             user.setChat_account(sData.getData().getChat_account());
                             profile.getData().setUser(user);
-                            BaseApplication.setProfile(profile);
+                            BaseApplication.getInstance().setProfile(profile);
                         }
                         DialogUtils.dismissDialog(progress);
 //                        if (getIntent().getIntExtra("register_action", Constant.REGIST_1) == Constant.REGIST_1) {
@@ -502,8 +501,13 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
+<<<<<<< Updated upstream
     public void onBackPressed() {//此页面返回清理token（未修改信息，清理登录状态)
         BaseApplication.clearToken();
+=======
+    public void onBackPressed() {//此页面返回清理token（未修改信息，清理登陆状态)
+        BaseApplication.getInstance().clearToken();
+>>>>>>> Stashed changes
         finish();
     }
 

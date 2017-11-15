@@ -74,7 +74,7 @@ public class FundRecordEarningF extends BaseFragment {
     private void initData(final int loadType) {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
-        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getUserId() + "/earning_records", null, new VolleyListener(getActivity()) {
+        addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.urlpayment + BaseApplication.getInstance().getUserId() + "/earning_records", null, new VolleyListener(getActivity()) {
 
             @Override
             protected void onTokenOut() {

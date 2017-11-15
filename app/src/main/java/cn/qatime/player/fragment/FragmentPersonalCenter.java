@@ -74,7 +74,7 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     }
 
     private void initCashAccountSafe() {
-        CashAccountBean cashAccount = BaseApplication.getCashAccount();
+        CashAccountBean cashAccount = BaseApplication.getInstance().getCashAccount();
         if (cashAccount != null && cashAccount.getData() != null) {
             if (!cashAccount.getData().isHas_password()) {
                 cashAccountSafe.setVisibility(View.VISIBLE);
@@ -99,13 +99,13 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         initRecyclerView();
 
-        if (BaseApplication.getProfile().getData() != null && BaseApplication.getProfile().getData().getUser() != null) {
-            Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
+        if (BaseApplication.getInstance().getProfile().getData() != null && BaseApplication.getInstance().getProfile().getData().getUser() != null) {
+            Glide.with(getActivity()).load(BaseApplication.getInstance().getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.error_header).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
         }
-        name.setText(BaseApplication.getProfile().getData().getUser().getName());
-        nickName.setText("昵称:" + BaseApplication.getProfile().getData().getUser().getNick_name());
-        if (BaseApplication.getCashAccount() != null) {
-            balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
+        name.setText(BaseApplication.getInstance().getProfile().getData().getUser().getName());
+        nickName.setText("昵称:" + BaseApplication.getInstance().getProfile().getData().getUser().getNick_name());
+        if (BaseApplication.getInstance().getCashAccount() != null) {
+            balance.setText("￥" + BaseApplication.getInstance().getCashAccount().getData().getBalance());
         }
 
         setting.setOnClickListener(this);
@@ -113,7 +113,6 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
         information.setOnClickListener(this);
     }
 
-    @Deprecated
     private void initRecyclerView() {
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         layoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -175,8 +174,8 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     @Subscribe
     public void onEvent(BusEvent event) {
         if (event == BusEvent.ON_REFRESH_CASH_ACCOUNT) {
-            if (BaseApplication.getCashAccount() != null) {
-                balance.setText("￥" + BaseApplication.getCashAccount().getData().getBalance());
+            if (BaseApplication.getInstance().getCashAccount() != null) {
+                balance.setText("￥" + BaseApplication.getInstance().getCashAccount().getData().getBalance());
             }
             if (!closed) {
                 initCashAccountSafe();
@@ -214,9 +213,9 @@ public class FragmentPersonalCenter extends BaseFragment implements View.OnClick
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.REQUEST && resultCode == Constant.RESPONSE) {
-            Glide.with(getActivity()).load(BaseApplication.getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.personal_information_head).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
-            name.setText(StringUtils.isNullOrBlanK(BaseApplication.getProfile().getData().getUser().getName()) ? "无" : BaseApplication.getProfile().getData().getUser().getName());
-            nickName.setText("昵称：" + (StringUtils.isNullOrBlanK(BaseApplication.getProfile().getData().getUser().getNick_name()) ? "无" : BaseApplication.getProfile().getData().getUser().getNick_name()));
+            Glide.with(getActivity()).load(BaseApplication.getInstance().getProfile().getData().getUser().getEx_big_avatar_url()).placeholder(R.mipmap.personal_information_head).crossFade().transform(new GlideCircleTransform(getActivity())).into(headSculpture);
+            name.setText(StringUtils.isNullOrBlanK(BaseApplication.getInstance().getProfile().getData().getUser().getName()) ? "无" : BaseApplication.getInstance().getProfile().getData().getUser().getName());
+            nickName.setText("昵称：" + (StringUtils.isNullOrBlanK(BaseApplication.getInstance().getProfile().getData().getUser().getNick_name()) ? "无" : BaseApplication.getInstance().getProfile().getData().getUser().getNick_name()));
         }
     }
 

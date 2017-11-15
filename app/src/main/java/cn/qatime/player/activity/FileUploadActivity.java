@@ -91,7 +91,7 @@ public class FileUploadActivity extends BaseActivity {
         courseId = getIntent().getIntExtra("id", 0);
         if (file.exists()) {
             HttpManager.post(UrlUtils.urlFiles + "files")
-                    .headers("Remember-Token", BaseApplication.getProfile().getToken())
+                    .headers("Remember-Token", BaseApplication.getInstance().getProfile().getToken())
                     .params("file", file, new ProgressResponseCallBack() {
                         @Override
                         public void onResponseProgress(long bytesWritten, long contentLength, boolean done) {

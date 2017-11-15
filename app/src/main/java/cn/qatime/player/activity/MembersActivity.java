@@ -1,12 +1,7 @@
 package cn.qatime.player.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.ListView;
-
-import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,15 +11,9 @@ import java.util.List;
 import cn.qatime.player.R;
 import cn.qatime.player.adapter.FragmentNEVideoPlayerAdapter;
 import cn.qatime.player.base.BaseActivity;
-import cn.qatime.player.bean.DaYiJsonObjectRequest;
-import cn.qatime.player.bean.ExclusiveLessonPlayInfoBean;
-import cn.qatime.player.utils.UrlUtils;
 import libraryextra.bean.ChatTeamBean;
-import libraryextra.utils.JsonUtils;
 import libraryextra.utils.PinyinUtils;
 import libraryextra.utils.StringUtils;
-import libraryextra.utils.VolleyErrorListener;
-import libraryextra.utils.VolleyListener;
 
 /**
  * Created by lenovo on 2017/9/5.
@@ -33,64 +22,27 @@ import libraryextra.utils.VolleyListener;
 public class MembersActivity extends BaseActivity {
     private List<ChatTeamBean.Accounts> list = new ArrayList<>();
     private FragmentNEVideoPlayerAdapter adapter;
-    private Handler hd = new Handler();
-    private int id;
-    private ExclusiveLessonPlayInfoBean playInfo;
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            adapter.notifyDataSetChanged();
-            hd.removeCallbacks(this);
-        }
-    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_members);
+
         setTitle("成员列表");
         ListView listView = (ListView) findViewById(R.id.listview);
         adapter = new FragmentNEVideoPlayerAdapter(this, list, R.layout.item_fragment_nevideo_player);
         listView.setAdapter(adapter);
 
-        id = getIntent().getIntExtra("courseId", 0);
-        initData();
+        ChatTeamBean chatTeam = (ChatTeamBean) getIntent().getSerializableExtra("members");
+        if (chatTeam != null) {
+            setData(chatTeam.getAccounts());
+        }
 
     }
 
     @Override
     public int getContentView() {
-        return 0;
-    }
-
-    private void initData() {
-        DaYiJsonObjectRequest requestMember = new DaYiJsonObjectRequest(UrlUtils.urlExclusiveCourse + "/" + id + "/play", null,
-                new VolleyListener(MembersActivity.this) {
-                    @Override
-                    protected void onSuccess(JSONObject response) {
-                        playInfo = JsonUtils.objectFromJson(response.toString(), ExclusiveLessonPlayInfoBean.class);
-                        if (playInfo != null) {
-                            setData(playInfo.getData().getCustomized_group().getChat_team().getAccounts());
-                        }
-                    }
-
-                    @Override
-                    protected void onError(JSONObject response) {
-
-                    }
-
-                    @Override
-                    protected void onTokenOut() {
-                        tokenOut();
-                    }
-                }, new VolleyErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                super.onErrorResponse(volleyError);
-            }
-        });
-        addToRequestQueue(requestMember);
+        return R.layout.activity_members;
     }
 
     /**
@@ -135,7 +87,7 @@ public class MembersActivity extends BaseActivity {
                     return lhs.getFirstLetters().compareTo(rhs.getFirstLetters());
                 }
             });
-            hd.postDelayed(runnable, 200);
+            adapter.notifyDataSetChanged();
         }
     }
 }

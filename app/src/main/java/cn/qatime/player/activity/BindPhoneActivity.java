@@ -156,11 +156,11 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     return;
                 }
                 map = new HashMap<>();
-                map.put("id", "" + BaseApplication.getUserId());
+                map.put("id", "" + BaseApplication.getInstance().getUserId());
                 map.put("login_mobile", captchaPhone);
                 map.put("captcha_confirmation", code.getText().toString().trim());
 
-                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getUserId() + "/login_mobile", map), null, new VolleyListener(this) {
+                addToRequestQueue(new DaYiJsonObjectRequest(Request.Method.PUT, UrlUtils.getUrl(UrlUtils.urlUser + BaseApplication.getInstance().getUserId() + "/login_mobile", map), null, new VolleyListener(this) {
                     @Override
                     protected void onTokenOut() {
                         tokenOut();
@@ -169,8 +169,8 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     protected void onSuccess(JSONObject response) {
                         Logger.e("验证成功");
-                        BaseApplication.getProfile().getData().getUser().setLogin_mobile(captchaPhone);
-                        BaseApplication.setProfile(BaseApplication.getProfile());
+                        BaseApplication.getInstance().getProfile().getData().getUser().setLogin_mobile(captchaPhone);
+                        BaseApplication.getInstance().setProfile(BaseApplication.getInstance().getProfile());
                         Toast.makeText(BindPhoneActivity.this, getResourceString(R.string.bind_phone_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(BindPhoneActivity.this, MainActivity.class);
                         intent.putExtra("sign", "exit_login");
