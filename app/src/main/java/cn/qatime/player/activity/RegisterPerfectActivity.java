@@ -501,13 +501,8 @@ public class RegisterPerfectActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-<<<<<<< Updated upstream
-    public void onBackPressed() {//此页面返回清理token（未修改信息，清理登录状态)
-        BaseApplication.clearToken();
-=======
     public void onBackPressed() {//此页面返回清理token（未修改信息，清理登陆状态)
         BaseApplication.getInstance().clearToken();
->>>>>>> Stashed changes
         finish();
     }
 
