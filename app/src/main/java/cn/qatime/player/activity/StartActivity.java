@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.qatime.player.BuildConfig;
 import cn.qatime.player.R;
 import cn.qatime.player.base.BaseActivity;
 import cn.qatime.player.base.BaseApplication;
@@ -35,7 +36,6 @@ import cn.qatime.player.bean.DaYiJsonObjectRequest;
 import cn.qatime.player.utils.Constant;
 import cn.qatime.player.utils.SPUtils;
 import cn.qatime.player.utils.UrlUtils;
-import libraryextra.utils.AppUtils;
 import libraryextra.utils.DownFileUtil;
 import libraryextra.utils.FileUtil;
 import libraryextra.utils.NetUtils;
@@ -54,6 +54,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((TextView) findViewById(R.id.version)).setText("V " + BuildConfig.VERSION_NAME);
         File file = new File(Constant.CACHEPATH);
         deleteDir(file);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -141,7 +142,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
      */
     private void removeOldApk() {
         File fileName = new File(Environment.getExternalStorageDirectory() + "/qatime_apk");
-        if (fileName != null && fileName.exists() && fileName.isFile()) {
+        if (fileName.exists() && fileName.isFile()) {
             fileName.delete();
         }
     }
@@ -152,7 +153,7 @@ public class StartActivity extends BaseActivity implements View.OnClickListener 
         Map<String, String> map = new HashMap<>();
         map.put("category", "teacher_live");
         map.put("platform", "android");
-        map.put("version", AppUtils.getVersionName(this));
+        map.put("version", BuildConfig.VERSION_NAME);
 //        map.put("version", "0.0.1");
         addToRequestQueue(new DaYiJsonObjectRequest(UrlUtils.getUrl(UrlUtils.urlcheckUpdate, map), null, new VolleyListener(this) {
             @Override

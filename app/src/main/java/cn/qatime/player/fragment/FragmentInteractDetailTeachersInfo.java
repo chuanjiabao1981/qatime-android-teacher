@@ -1,14 +1,12 @@
 package cn.qatime.player.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,14 +37,17 @@ public class FragmentInteractDetailTeachersInfo extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_interact_detail_teachers_info, container, false);
-        initview(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_interact_detail_teachers_info, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initview();
+    }
 
-    private void initview(View view) {
-        ListView listView = (ListView) view.findViewById(R.id.id_stickynavlayout_innerscrollview);
+    private void initview() {
+        ListView listView = (ListView) findViewById(R.id.id_stickynavlayout_innerscrollview);
         listView.setEmptyView(View.inflate(getActivity(), R.layout.empty_view, null));
         list = new ArrayList<>();
         adapter = new CommonAdapter<TeacherBean>(getActivity(), list, R.layout.item_course_teacher_info) {
@@ -59,30 +60,9 @@ public class FragmentInteractDetailTeachersInfo extends BaseFragment {
                     TextView teachingyears = holder.getView(R.id.teaching_years);
                     TextView school = holder.getView(R.id.school);
                     ImageView sex = holder.getView(R.id.sex);
-                    WebView describe = holder.getView(R.id.describe);
-
-                    describe.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            return true;
-                        }
-                    });
-
-                    describe.setBackgroundColor(0); // 设置背景色
-                    describe.getBackground().setAlpha(0); // 设置填充透明度 范围：0-255
-                    describe.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY); //取消滚动条白边效果
-                    WebSettings settings = describe.getSettings();
-                    settings.setDefaultTextEncodingName("UTF-8");
-                    settings.setBlockNetworkImage(false);
-                    settings.setDefaultFontSize(14);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        settings.setMixedContentMode(settings.MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
-                    }
-
+                    TextView describe = holder.getView(R.id.describe);
 
                     sex.setImageResource("male".equals(item.getGender()) ? R.mipmap.male : R.mipmap.female);
-//                    sex.setText(getSex(item.getGender()));
-//                    sex.setTextColor(getSexColor(item.getGender()));
                     name.setText(item.getName());
                     if (!StringUtils.isNullOrBlanK(item.getTeaching_years())) {
                         if (item.getTeaching_years().equals("within_three_years")) {
@@ -96,7 +76,7 @@ public class FragmentInteractDetailTeachersInfo extends BaseFragment {
                         }
                     }
 
-                    SchoolBean schoolBean = JsonUtils.objectFromJson(FileUtil.readFile(getActivity().getFilesDir() + "/school.txt").toString(), SchoolBean.class);
+                    SchoolBean schoolBean = JsonUtils.objectFromJson(FileUtil.readFile(getActivity().getFilesDir() + "/school.txt"), SchoolBean.class);
                     if (schoolBean != null && schoolBean.getData() != null) {
                         for (int i = 0; i < schoolBean.getData().size(); i++) {
                             if (item.getSchool() == schoolBean.getData().get(i).getId()) {
@@ -117,16 +97,19 @@ public class FragmentInteractDetailTeachersInfo extends BaseFragment {
                             startActivity(intent);
                         }
                     });
-                    String body = StringUtils.isNullOrBlanK(item.getDesc()) ? getString(R.string.no_desc) : item.getDesc();
-                    body = body.replace("\r\n", "<br>");
-                    String css = "<style>* {color:#666666;margin:0;padding:0}</style>";//默认color（android标签下以及所有未设置颜色的标签）
-                    describe.loadDataWithBaseURL(null, css + body, "text/html", "UTF-8", null);
+                    describe.setText(StringUtils.isNullOrBlanK(item.getDesc()) ? getString(R.string.no_desc) : item.getDesc());
                 }
             }
         };
         listView.setAdapter(adapter);
-
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), TeacherDataActivity.class);
+                intent.putExtra("teacherId", list.get(i).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     public void setData(InteractCourseDetailBean data) {
@@ -134,27 +117,6 @@ public class FragmentInteractDetailTeachersInfo extends BaseFragment {
             list.addAll(data.getData().getInteractive_course().getTeachers());
             adapter.notifyDataSetChanged();
         }
-
-
     }
-
-    private int getSexColor(String gender) {
-        if ("male".equals(gender)) {
-            return 0xff00ccff;
-        } else if ("female".equals(gender)) {
-            return 0xffff9966;
-        }
-        return 0xffff9966;
-    }
-
-    private String getSex(String gender) {
-        if ("male".equals(gender)) {
-            return "♂";
-        } else if ("female".equals(gender)) {
-            return "♀";
-        }
-        return "";
-    }
-
 
 }
