@@ -51,10 +51,8 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
     TextView studentnumber;
     //    private SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd");
     DecimalFormat df = new DecimalFormat("#.00");
-    private TextView refundAnyTime;
     //    private TextView freeTaste;
     private TextView couponFree;
-    private TextView joinCheap;
 
     private TextView progress;
     private TextView status;
@@ -93,10 +91,7 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
         fragBaseFragments.add(new FragmentExclusiveCourseTeacherInfo());
         fragBaseFragments.add(new FragmentExclusiveCourseClassList());
 
-        refundAnyTime = (TextView) findViewById(R.id.refund_any_time);
-//        freeTaste = (TextView) findViewById(R.id.free_taste);
         couponFree = (TextView) findViewById(R.id.coupon_free);
-        joinCheap = (TextView) findViewById(R.id.join_cheap);
         progress = (TextView) findViewById(R.id.progress);
         timeToStart = (TextView) findViewById(R.id.time_to_start);
         status = (TextView) findViewById(R.id.status);
@@ -193,14 +188,8 @@ public class ExclusiveCourseDetailActivity extends BaseFragmentActivity implemen
                             ExclusiveCourseDetailActivity.this.price.setText("free".equals(data.getData().getCustomized_group().getSell_type()) ? "免费" : ("￥" + price));
 
                             if (data.getData().getCustomized_group().getIcons() != null) {
-                                if (!data.getData().getCustomized_group().getIcons().isRefund_any_time()) {
-                                    refundAnyTime.setVisibility(View.GONE);
-                                }
                                 if (!data.getData().getCustomized_group().getIcons().isCoupon_free()) {
                                     couponFree.setVisibility(View.GONE);
-                                }
-                                if (!data.getData().getCustomized_group().getIcons().isJoin_cheap()) {
-                                    joinCheap.setVisibility(View.GONE);
                                 }
                             }
                             try {

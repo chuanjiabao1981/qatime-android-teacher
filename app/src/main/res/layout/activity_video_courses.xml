@@ -32,6 +32,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/identification_light"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text=" 无需插班"
+                    android:textColor="#109f10"
+                    android:textSize="11dp" />
+
                 <TextView
                     android:id="@+id/free_taste"
                     android:layout_width="wrap_content"
@@ -44,25 +55,25 @@
                     android:textSize="11dp" />
 
                 <TextView
-                    android:id="@+id/coupon_free"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/identification_light"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:text=" 报名立减"
+                    android:text=" 支持回放"
                     android:textColor="#109f10"
                     android:textSize="11dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@mipmap/identification_light"
                     android:gravity="center"
                     android:padding="3dp"
-                    android:visibility="invisible"
                     android:text=""
                     android:textColor="#109f10"
-                    android:textSize="11dp" />
+                    android:textSize="11dp"
+                    android:visibility="invisible" />
             </LinearLayout>
 
             <LinearLayout

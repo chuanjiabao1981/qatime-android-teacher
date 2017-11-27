@@ -47,8 +47,6 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
     private int pager = 0;
     TextView price;
     DecimalFormat df = new DecimalFormat("#.00");
-    private TextView refundAnyTime;
-    private TextView couponFree;
     private PopupWindow pop;
     private InteractCourseDetailBean playInfo;
 
@@ -119,9 +117,6 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
         fragBaseFragments.add(new FragmentInteractDetailTeachersInfo());
         fragBaseFragments.add(new FragmentInteractDetailClassList());
 
-        refundAnyTime = (TextView) findViewById(R.id.refund_any_time);
-        couponFree = (TextView) findViewById(R.id.coupon_free);
-
         title = (TextView) findViewById(R.id.title);
         price = (TextView) findViewById(R.id.price);
         findViewById(R.id.announcement).setOnClickListener(this);
@@ -191,16 +186,6 @@ public class InteractCourseDetailActivity extends BaseFragmentActivity implement
                             ((FragmentInteractDetailClassInfo) fragBaseFragments.get(0)).setData(data);
                             ((FragmentInteractDetailTeachersInfo) fragBaseFragments.get(1)).setData(data);
                             ((FragmentInteractDetailClassList) fragBaseFragments.get(2)).setData(data);
-                            if (data.getData().getInteractive_course().getIcons() != null) {
-                                if (!data.getData().getInteractive_course().getIcons().isRefund_any_time()) {
-                                    refundAnyTime.setVisibility(View.GONE);
-                                }
-
-                                if (!data.getData().getInteractive_course().getIcons().isCoupon_free()) {
-                                    couponFree.setVisibility(View.GONE);
-                                }
-                            }
-
                         }
                     }
 
